@@ -54,7 +54,8 @@ Usar una fila por tarea. Una tarea solo puede tener un responsable activo.
 | ID | Prioridad | Tarea | Responsable | Estado | Archivos previstos | Última actualización |
 |---|---|---|---|---|---|---|
 | M-001 | Alta | Definir el siguiente entregable con Rubén | Sin asignar | Terminada | — | 2026-07-11 |
-| M-002 | Alta | Migrar el sitio estático (HTML) a Next.js/React/TypeScript/Tailwind, IA multi-página (Home/Products/Services/About/Contact/Legal), deploy Cloudflare Pages | Claude | En curso | app/, components/, content/, lib/, public/, next.config.ts, package.json, tailwind.config.ts | 2026-07-11 |
+| M-002 | Alta | Migrar el sitio estático (HTML) a Next.js/React/TypeScript/Tailwind, IA multi-página (Home/Products/Services/About/Contact/Legal), deploy Cloudflare Pages | Claude | En revisión | app/, components/, content/, lib/, public/, next.config.ts, package.json | 2026-07-11 |
+| M-003 | Alta | Cutover de despliegue: crear proyecto Cloudflare Pages, mover dominio monarka.tech, crear cuenta Formspree, luego borrar los .html viejos y assets/ raíz | Sin asignar (requiere a Rubén) | Pendiente | home.html, cata.html, privacy.html, index.html, waiting.html, assets/, CNAME | 2026-07-11 |
 
 Estados permitidos: `Pendiente`, `En curso`, `Bloqueada`, `En revisión`, `Terminada`.
 
@@ -145,7 +146,15 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 - Riesgos/preguntas: decisiones que todavía necesita Rubén
 ```
 
-No hay handoffs activos.
+### H-001 — Migración Next.js lista para revisión; falta cutover de despliegue
+- De: Claude
+- Para: Rubén (y Codex si continúa el trabajo)
+- Tarea: M-002 (código) / M-003 (cutover, nueva)
+- Estado: App Next.js 16 + TS + Tailwind v4 + shadcn/ui + Framer Motion completa en 14 rutas (`/`, `/about`, `/contact`, `/products`, `/products/cata` + 5 subrutas, `/legal` + 2 subrutas, `/services`). `npm run build` y `npm run lint` pasan limpio. Contenido real (home, CATA, política de privacidad) migrado verbatim; páginas sin copy real (Services, CATA FAQ/Terms/Support/Delete-Account, Legal Terms) muestran placeholder "contenido pendiente" visible. Assets comprimidos (logo 638KB→106KB). SEO base añadida (metadata por ruta, sitemap.xml, robots.txt, favicons reales, manifest). `public/_redirects` cubre las URLs viejas de GitHub Pages.
+- Pendiente: (1) Rubén crea el proyecto Cloudflare Pages y conecta este repo; (2) Rubén mueve el dominio monarka.tech de GitHub Pages a Cloudflare Pages; (3) Rubén crea cuenta Formspree y llena `NEXT_PUBLIC_FORMSPREE_DINER` / `NEXT_PUBLIC_FORMSPREE_RESTAURANT` en las variables de entorno de Cloudflare Pages; (4) solo después de que Cloudflare esté sirviendo el sitio en vivo, borrar `home.html`, `cata.html`, `privacy.html`, `index.html`, `waiting.html`, `assets/` (raíz) y `CNAME` — **no se borraron todavía a propósito** porque GitHub Pages sigue sirviendo el sitio en vivo desde esos archivos y borrarlos ahora tumbaría monarka.tech antes del cutover. Nada de este trabajo se ha empujado (`push`) a origin.
+- Archivos: `app/`, `components/`, `content/`, `lib/`, `public/`, `next.config.ts`, `package.json`
+- Verificación: `npm run build` (19-22 rutas estáticas, sin errores), `npm run lint` (limpio), revisión visual en navegador (Playwright headless) de las 8 páginas principales en desktop y móvil — sin errores de consola, sin imágenes rotas, temas Monarka/CATA/Legal renderizando correctamente.
+- Riesgos/preguntas: Contenido pendiente en Services, CATA FAQ/Terms/Support/Delete-Account y Legal Terms — necesita copy real de Rubén (no se inventó nada). Confirmar con Rubén si quiere que Codex o Claude redacten un primer borrador de Términos de Servicio o si eso lo maneja él/asesoría legal directamente.
 
 ## 10. Bitácora
 
@@ -156,8 +165,10 @@ Añadir entradas nuevas arriba de las anteriores.
 - Tomó la tarea M-002: migración completa del sitio estático a Next.js/React/TypeScript/Tailwind.
 - Inventarió el sitio actual (secciones, assets, formularios, SEO) antes de diseñar la migración.
 - Definió arquitectura, sitemap y sistema de componentes siguiendo `Monarka_Overnight_AI_Kit`; plan aprobado por Rubén.
-- Verificación: se confirmó Node v22.17.1 / npm 10.9.2 disponibles antes de iniciar el scaffold.
-- Pendiente: ver M-002 en el tablero; próximos pasos en el Morning Engineering Report al finalizar.
+- Construyó la app completa: fundación (tokens de diseño, temas por ruta, fuentes, layout, componentes compartidos) y las 14 rutas del sitemap con contenido migrado 1:1 desde el HTML original.
+- Comprimió assets (`scripts/optimize-images.mjs`), generó favicons/manifest reales, añadió sitemap.xml/robots.txt, y `public/_redirects` para las URLs viejas.
+- Verificación: `npm run build` y `npm run lint` limpios; revisión visual en navegador headless de las 8 páginas principales (desktop 1440px y móvil 375px), sin errores de consola.
+- Pendiente: M-003 (cutover de despliegue) — ver Handoff H-001. Morning Engineering Report guardado en `D:\RULES ]\Monarka_Overnight_AI_Kit\reports\`.
 
 ### 2026-07-11 — Codex
 
