@@ -1,0 +1,225 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Three route-scoped themes, matching the three visual identities from the
+  original static pages: Monarka (default, warm/black), CATA (neon/void),
+  Legal (blue/void). Applied via `data-theme` on a layout wrapper — see
+  components/layout/theme-scope.tsx.
+*/
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-jetbrains-mono);
+  --font-heading: var(--font-heading);
+  --color-sidebar-ring: var(--ring);
+  --color-sidebar-border: var(--border);
+  --color-sidebar-accent-foreground: var(--accent-foreground);
+  --color-sidebar-accent: var(--accent);
+  --color-sidebar-primary-foreground: var(--primary-foreground);
+  --color-sidebar-primary: var(--primary);
+  --color-sidebar-foreground: var(--foreground);
+  --color-sidebar: var(--card);
+  --color-chart-1: var(--accent);
+  --color-chart-2: var(--brand-accent-2);
+  --color-chart-3: var(--brand-teal);
+  --color-chart-4: var(--brand-gold);
+  --color-chart-5: var(--brand-green);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--card-foreground);
+  --color-popover: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  /* Brand-specific extras (not part of the shadcn semantic set) */
+  --color-brand-accent-2: var(--brand-accent-2);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-teal: var(--brand-teal);
+  --color-brand-rare: var(--brand-rare);
+  --color-brand-red: var(--brand-red);
+  --color-brand-green: var(--brand-green);
+  --color-brand-dim: var(--brand-dim);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border-2: var(--border-2);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ---------- Monarka theme (default) — warm black, orange accent ---------- */
+:root,
+[data-theme="monarka"] {
+  --background: #000000;
+  --foreground: #f5f5f7;
+  --card: #0a0a0a;
+  --card-foreground: #f5f5f7;
+  --border: #1c1c1e;
+  --border-2: #2c2c2e;
+  --input: #1c1c1e;
+  --ring: #e8633e;
+  --primary: #f5f5f7;
+  --primary-foreground: #000000;
+  --secondary: #111111;
+  --secondary-foreground: #f5f5f7;
+  --muted: #111111;
+  --muted-foreground: rgba(245, 245, 247, 0.6);
+  --accent: #e8633e;
+  --accent-foreground: #ffffff;
+  --destructive: #b8442a;
+  --destructive-foreground: #ffffff;
+
+  --brand-accent-2: #ef9f27;
+  --brand-teal: #4aabca;
+  --brand-gold: #ef9f27;
+  --brand-rare: #9b6fde;
+  --brand-red: #b8442a;
+  --brand-green: #3fbf8c;
+  --brand-dim: rgba(245, 245, 247, 0.28);
+  --surface-1: #0a0a0a;
+  --surface-2: #111111;
+  --surface-3: #1a1a1a;
+
+  --font-body: var(--font-inter);
+  --font-heading: var(--font-inter);
+  --radius: 0.9rem;
+}
+
+/* ---------- CATA theme — neon/void, gamified ---------- */
+[data-theme="cata"] {
+  --background: #100d0b;
+  --foreground: #f2ede8;
+  --card: #1c1815;
+  --card-foreground: #f2ede8;
+  --border: #3d332a;
+  --border-2: #5a4b3c;
+  --input: #3d332a;
+  --ring: #e8633e;
+  --primary: #e8633e;
+  --primary-foreground: #100d0b;
+  --secondary: #1c1815;
+  --secondary-foreground: #f2ede8;
+  --muted: #1c1815;
+  --muted-foreground: #a8978a;
+  --accent: #e8633e;
+  --accent-foreground: #ffffff;
+  --destructive: #b8442a;
+  --destructive-foreground: #ffffff;
+
+  --brand-accent-2: #ef9f27;
+  --brand-gold: #ef9f27;
+  --brand-teal: #4aabca;
+  --brand-rare: #9b6fde;
+  --brand-red: #b8442a;
+  --brand-green: #3fbf8c;
+  --brand-dim: #4a3f35;
+  --surface-1: #1c1815;
+  --surface-2: #272019;
+  --surface-3: #272019;
+
+  --font-body: var(--font-rajdhani);
+  --font-heading: var(--font-orbitron);
+  --radius: 0.25rem;
+}
+
+/* ---------- Legal theme — blue/void, calmer variant of the CATA system --- */
+[data-theme="legal"] {
+  --background: #030a14;
+  --foreground: #c8e4f8;
+  --card: #061826;
+  --card-foreground: #c8e4f8;
+  --border: #1a3a5c;
+  --border-2: #2a5a8c;
+  --input: #1a3a5c;
+  --ring: #5bb8ff;
+  --primary: #5bb8ff;
+  --primary-foreground: #030a14;
+  --secondary: #061826;
+  --secondary-foreground: #c8e4f8;
+  --muted: #061826;
+  --muted-foreground: #4a8ab5;
+  --accent: #5bb8ff;
+  --accent-foreground: #030a14;
+  --destructive: #b8442a;
+  --destructive-foreground: #ffffff;
+
+  --brand-accent-2: #c9902a;
+  --brand-gold: #c9902a;
+  --brand-teal: #1d9e75;
+  --brand-rare: #9b6fde;
+  /* CATA-specific callouts inside legal copy (e.g. "this section applies to CATA") */
+  --brand-red: #e8633e;
+  --brand-green: #3fbf8c;
+  --brand-dim: #1e4060;
+  --surface-1: #061826;
+  --surface-2: #0a2030;
+  --surface-3: #0a2030;
+
+  --font-body: var(--font-rajdhani);
+  --font-heading: var(--font-orbitron);
+  --radius: 0.25rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans scroll-smooth;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
