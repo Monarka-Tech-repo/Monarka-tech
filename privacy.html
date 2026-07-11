@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidad — Monarka TECH</title>
+<link rel="icon" href="assets/cata/cata-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --neon:#5BB8FF;--neon2:rgba(91,184,255,0.1);
+  --void:#030A14;--surface:#061826;--surface2:#0A2030;
+  --border:#1A3A5C;--border2:#2A5A8C;
+  --teal:#1D9E75;--gold:#C9902A;
+  --text:#C8E4F8;--muted:#4A8AB5;--dim:#1E4060;
+  --cata-neon:#E8633E;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--void);color:var(--text);font-family:'Rajdhani',sans-serif;overflow-x:hidden;cursor:none;}
+
+.cd{position:fixed;width:6px;height:6px;background:var(--neon);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .08s;}
+.cr{position:fixed;width:38px;height:38px;border:1px solid rgba(91,184,255,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .2s,height .2s,border-color .2s;}
+
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 3rem;background:rgba(3,10,20,.8);backdrop-filter:blur(20px);border-bottom:1px solid rgba(26,58,92,.5);transition:padding .3s;}
+nav.scrolled{padding:.7rem 3rem;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-txt{font-family:'Orbitron',monospace;font-size:.85rem;font-weight:700;letter-spacing:.14em;color:#fff;}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center;}
+.nav-links a{font-size:.76rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--neon);}
+
+.privacy-hero{position:relative;z-index:1;padding:9rem 3rem 3rem;text-align:center;}
+.privacy-tag{font-size:.62rem;letter-spacing:.4em;text-transform:uppercase;color:var(--teal);margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:10px;}
+.privacy-tag::before,.privacy-tag::after{content:'';width:24px;height:1px;background:var(--teal);}
+.privacy-title{font-family:'Orbitron',monospace;font-size:clamp(1.4rem,3vw,2.2rem);font-weight:900;color:#fff;margin-bottom:.6rem;}
+.privacy-updated{font-size:.78rem;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+
+.privacy-content{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:2rem 3rem 4rem;}
+.privacy-section{margin-bottom:2.5rem;}
+.privacy-section h2{font-family:'Orbitron',monospace;font-size:.82rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--neon);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:1px solid var(--border);}
+.privacy-section.cata-section h2{color:var(--cata-neon);border-bottom-color:rgba(232,99,62,.3);}
+.privacy-section h3{font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;color:#fff;margin:1.2rem 0 .5rem;}
+.privacy-section p{font-size:.92rem;color:var(--text);line-height:1.8;margin-bottom:.8rem;opacity:.85;}
+.privacy-section ul{list-style:none;margin-bottom:1rem;padding-left:0;}
+.privacy-section ul li{font-size:.88rem;color:var(--text);opacity:.8;line-height:1.7;padding-left:1.4rem;position:relative;margin-bottom:.3rem;}
+.privacy-section ul li::before{content:'▸';position:absolute;left:0;color:var(--neon);font-size:.8rem;}
+.privacy-section.cata-section ul li::before{color:var(--cata-neon);}
+.privacy-section a{color:var(--neon);text-decoration:underline;text-underline-offset:3px;}
+
+.cata-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(232,99,62,.1);border:1px solid rgba(232,99,62,.25);padding:3px 10px;border-radius:12px;font-family:'Orbitron',monospace;font-size:.55rem;font-weight:700;letter-spacing:.1em;color:var(--cata-neon);vertical-align:middle;margin-left:6px;}
+
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.5rem 3rem;text-align:center;}
+.f-copy{font-size:.65rem;color:var(--dim);}
+.f-links-inline{display:flex;justify-content:center;gap:2rem;margin-bottom:1rem;}
+.f-links-inline a{font-size:.76rem;color:var(--muted);text-decoration:none;transition:color .2s;}
+.f-links-inline a:hover{color:var(--neon);}
+
+@media(max-width:700px){
+  nav{padding:.9rem 1.2rem;}
+  .privacy-hero{padding:7rem 1.5rem 2rem;}
+  .privacy-content{padding:1.5rem 1.5rem 3rem;}
+  footer{padding:2rem 1.2rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="cd" id="cd"></div>
+<div class="cr" id="cr"></div>
+<canvas id="bg"></canvas>
+
+<nav>
+  <a href="home.html" class="nav-logo">
+    <span class="nav-logo-txt">MONARKA TECH</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="home.html">Inicio</a></li>
+    <li><a href="cata.html">CATA</a></li>
+    <li><a href="home.html#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<div class="privacy-hero">
+  <div class="privacy-tag">Documento Legal</div>
+  <h1 class="privacy-title">Política de Privacidad</h1>
+  <p class="privacy-updated">Última actualización: 12 de junio de 2026</p>
+</div>
+
+<main class="privacy-content">
+
+  <!-- ══ INTRO ══ -->
+  <section class="privacy-section">
+    <h2>1. Introducción</h2>
+    <p>En Monarka TECH ("nosotros", "nuestro"), con sede en El Paso, TX, nos comprometemos a proteger tu privacidad. Esta Política de Privacidad describe cómo recopilamos, usamos, almacenamos y compartimos la información personal que obtenemos a través de:</p>
+    <ul>
+      <li>Nuestro sitio web monarka.tech</li>
+      <li>La aplicación móvil CATA — Dining Journal (iOS y Android)</li>
+      <li>Cualquier otro servicio digital operado por Monarka TECH</li>
+    </ul>
+    <p>Al usar nuestros servicios, aceptas las prácticas descritas en esta política. Si no estás de acuerdo, te pedimos que no utilices nuestros servicios.</p>
+  </section>
+
+  <!-- ══ INFO RECOPILADA ══ -->
+  <section class="privacy-section">
+    <h2>2. Información que Recopilamos</h2>
+
+    <h3>2.1 Información que proporcionas directamente</h3>
+    <ul>
+      <li>Nombre, dirección de correo electrónico y datos de contacto al crear una cuenta o llenar formularios de contacto</li>
+      <li>Información de perfil como nombre de usuario y foto de perfil</li>
+      <li>Contenido que publicas, incluyendo reseñas, comentarios, fotos y calificaciones</li>
+      <li>Comunicaciones que nos envías a través de formularios de contacto o correo electrónico</li>
+    </ul>
+
+    <h3>2.2 Información recopilada automáticamente</h3>
+    <ul>
+      <li>Datos del dispositivo: modelo, sistema operativo, identificadores únicos</li>
+      <li>Datos de uso: páginas visitadas, funciones utilizadas, tiempo de sesión</li>
+      <li>Datos de ubicación aproximada (solo si otorgas permiso explícito)</li>
+      <li>Dirección IP y datos de conexión</li>
+    </ul>
+  </section>
+
+  <!-- ══ CATA SPECIFIC ══ -->
+  <section class="privacy-section cata-section">
+    <h2>3. Datos Específicos de CATA <span class="cata-badge">CATA App</span></h2>
+    <p>La aplicación CATA — Dining Journal recopila información adicional relacionada con la experiencia gastronómica:</p>
+
+    <h3>3.1 Contenido gastronómico</h3>
+    <ul>
+      <li>Registros de platillos (Log Dish): fotos, nombres, calificaciones, notas personales y restaurante asociado</li>
+      <li>Colecciones de platillos en "My Menu", Food Journeys y estadísticas de logros (Badges)</li>
+      <li>Actividad social: publicaciones en el Feed, likes, comentarios, usuarios que sigues</li>
+    </ul>
+
+    <h3>3.2 Datos de restaurantes y servicios</h3>
+    <ul>
+      <li>Búsquedas de restaurantes y resultados de exploración en el mapa</li>
+      <li>Restaurantes marcados como visitados y páginas de restaurante reclamadas</li>
+      <li>Contenido publicado en Restaurant Mode: menús oficiales, historias de 48h</li>
+    </ul>
+
+    <h3>3.3 Gamificación y logros</h3>
+    <ul>
+      <li>Puntos acumulados y posición en el Leaderboard por ciudad</li>
+      <li>Badges desbloqueados, Food Journeys creados y estadísticas de uso</li>
+    </ul>
+
+    <h3>3.4 Datos sociales y comunidades</h3>
+    <ul>
+      <li>Comunidades y grupos a los que perteneces</li>
+      <li>Participación en mesas (Group Tables) y eventos de la comunidad</li>
+    </ul>
+  </section>
+
+  <!-- ══ USO DE INFO ══ -->
+  <section class="privacy-section">
+    <h2>4. Cómo Usamos tu Información</h2>
+    <ul>
+      <li>Proveer, mantener y mejorar nuestros servicios y aplicaciones</li>
+      <li>Personalizar tu experiencia y recomendaciones</li>
+      <li>Procesar reservaciones y solicitudes de servicio</li>
+      <li>Enviar comunicaciones relevantes sobre tu cuenta o servicios</li>
+      <li>Generar estadísticas agregadas y anónimas para mejorar la plataforma</li>
+      <li>Prevenir fraude y proteger la seguridad de nuestros usuarios</li>
+      <li>Cumplir con obligaciones legales aplicables</li>
+    </ul>
+  </section>
+
+  <!-- ══ COMPARTIR ══ -->
+  <section class="privacy-section">
+    <h2>5. Compartir Información</h2>
+    <p>No vendemos tu información personal. Podemos compartir datos en los siguientes casos:</p>
+    <ul>
+      <li><strong>Contenido público:</strong> Las publicaciones del Feed, reseñas y tu perfil público son visibles para otros usuarios según tu configuración de privacidad</li>
+      <li><strong>Restaurantes asociados:</strong> Cuando realizas una reservación, compartimos la información necesaria con el establecimiento</li>
+      <li><strong>Proveedores de servicio:</strong> Trabajamos con terceros que nos ayudan a operar nuestros servicios (hosting, análisis, notificaciones), bajo acuerdos de confidencialidad</li>
+      <li><strong>Requisitos legales:</strong> Cuando sea requerido por ley, orden judicial o proceso legal</li>
+      <li><strong>Protección de derechos:</strong> Para proteger los derechos, propiedad o seguridad de Monarka TECH, nuestros usuarios o el público</li>
+    </ul>
+  </section>
+
+  <!-- ══ ALMACENAMIENTO ══ -->
+  <section class="privacy-section">
+    <h2>6. Almacenamiento y Seguridad</h2>
+    <p>Implementamos medidas de seguridad técnicas y organizativas para proteger tu información, incluyendo cifrado en tránsito y en reposo. Sin embargo, ningún sistema es completamente seguro, y no podemos garantizar seguridad absoluta.</p>
+    <p>Retenemos tu información personal mientras tu cuenta esté activa o según sea necesario para proveer nuestros servicios. Puedes solicitar la eliminación de tu cuenta y datos en cualquier momento.</p>
+  </section>
+
+  <!-- ══ DERECHOS ══ -->
+  <section class="privacy-section">
+    <h2>7. Tus Derechos</h2>
+    <p>Dependiendo de tu ubicación, puedes tener los siguientes derechos:</p>
+    <ul>
+      <li><strong>Acceso:</strong> Solicitar una copia de los datos personales que tenemos sobre ti</li>
+      <li><strong>Corrección:</strong> Solicitar la corrección de datos inexactos</li>
+      <li><strong>Eliminación:</strong> Solicitar la eliminación de tus datos personales</li>
+      <li><strong>Portabilidad:</strong> Solicitar tus datos en un formato estructurado y legible</li>
+      <li><strong>Oposición:</strong> Oponerte al procesamiento de tus datos en ciertos casos</li>
+      <li><strong>Retiro de consentimiento:</strong> Retirar cualquier consentimiento previamente otorgado</li>
+    </ul>
+    <p>Para ejercer estos derechos, contáctanos en <a href="mailto:privacy@monarka.tech">privacy@monarka.tech</a>.</p>
+  </section>
+
+  <!-- ══ MENORES ══ -->
+  <section class="privacy-section">
+    <h2>8. Menores de Edad</h2>
+    <p>Nuestros servicios no están dirigidos a menores de 13 años. No recopilamos intencionalmente información de menores de 13 años. Si descubrimos que hemos recopilado datos de un menor sin el consentimiento parental adecuado, los eliminaremos de nuestros sistemas.</p>
+  </section>
+
+  <!-- ══ COOKIES ══ -->
+  <section class="privacy-section">
+    <h2>9. Cookies y Tecnologías Similares</h2>
+    <p>Nuestro sitio web puede utilizar cookies y tecnologías similares para mejorar la experiencia de navegación, analizar el tráfico y personalizar el contenido. Puedes configurar tu navegador para rechazar cookies, aunque esto puede afectar la funcionalidad del sitio.</p>
+  </section>
+
+  <!-- ══ CAMBIOS ══ -->
+  <section class="privacy-section">
+    <h2>10. Cambios a esta Política</h2>
+    <p>Podemos actualizar esta Política de Privacidad periódicamente. Publicaremos cualquier cambio en esta página con la fecha de actualización revisada. Te recomendamos revisar esta política regularmente. El uso continuado de nuestros servicios después de los cambios constituye tu aceptación de la política actualizada.</p>
+  </section>
+
+  <!-- ══ CONTACTO ══ -->
+  <section class="privacy-section">
+    <h2>11. Contacto</h2>
+    <p>Si tienes preguntas o inquietudes sobre esta Política de Privacidad, puedes contactarnos en:</p>
+    <ul>
+      <li><strong>Empresa:</strong> Monarka TECH</li>
+      <li><strong>Ubicación:</strong> El Paso, TX</li>
+      <li><strong>Correo:</strong> <a href="mailto:privacy@monarka.tech">privacy@monarka.tech</a></li>
+      <li><strong>Sitio web:</strong> <a href="https://monarka.tech">monarka.tech</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="f-links-inline">
+    <a href="home.html">Inicio</a>
+    <a href="cata.html">CATA</a>
+    <a href="home.html#contacto">Contacto</a>
+  </div>
+  <span class="f-copy">© 2026 Monarka TECH — El Paso, TX · Todos los derechos reservados.</span>
+</footer>
+
+<script>
+const cd=document.getElementById('cd'),cr=document.getElementById('cr');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cd.style.left=mx+'px';cd.style.top=my+'px';
+});
+(function loop(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cr.style.width='54px';cr.style.height='54px';cr.style.borderColor='var(--neon)';});
+  el.addEventListener('mouseleave',()=>{cr.style.width='38px';cr.style.height='38px';cr.style.borderColor='rgba(91,184,255,.45)';});
+});
+
+(function(){
+  const cv=document.getElementById('bg'),ctx=cv.getContext('2d');
+  let W,H,nodes=[],edges=[];
+  function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;init();}
+  function init(){
+    nodes=[];edges=[];
+    const c=Math.ceil(W/85),r=Math.ceil(H/85);
+    for(let i=0;i<=r;i++)for(let j=0;j<=c;j++){
+      if(Math.random()>.28)nodes.push({x:j*85+(Math.random()-.5)*28,y:i*85+(Math.random()-.5)*28});
+    }
+    for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
+      const d=Math.hypot(nodes[j].x-nodes[i].x,nodes[j].y-nodes[i].y);
+      if(d<125&&Math.random()>.48)edges.push({a:i,b:j});
+    }
+  }
+  let t=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);t+=.004;
+    edges.forEach(e=>{
+      const a=nodes[e.a],b=nodes[e.b],p=(Math.sin(t*1.6+e.a*.4)+1)/2;
+      ctx.globalAlpha=.035+p*.075;ctx.strokeStyle='#5BB8FF';ctx.lineWidth=.5;
+      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+    });
+    nodes.forEach((n,i)=>{
+      const p=(Math.sin(t+i*.35)+1)/2;
+      ctx.globalAlpha=.05+p*.13;ctx.fillStyle='#5BB8FF';
+      ctx.beginPath();ctx.arc(n.x,n.y,1.2,0,Math.PI*2);ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',resize);resize();draw();
+})();
+
+window.addEventListener('scroll',()=>{
+  document.querySelector('nav').classList.toggle('scrolled',window.scrollY>60);
+});
+</script>
+
+</body>
+</html>
