@@ -17,7 +17,7 @@ export function PlaceholderPage({
         <p className="mb-3 text-[10px] uppercase tracking-[0.35em] text-brand-teal">
           {eyebrow}
         </p>
-        <h1 className="mb-6 font-heading text-[clamp(1.6rem,3vw,2.4rem)] font-black text-white">
+        <h1 className="mb-6 font-heading text-[clamp(1.6rem,3vw,2.4rem)] font-semibold text-foreground">
           {title}
         </h1>
         <div className="mb-8 inline-block rounded-full border border-brand-gold/30 bg-brand-gold/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-brand-gold">
@@ -28,7 +28,7 @@ export function PlaceholderPage({
         </p>
         <Link
           href="/contact"
-          className={cn(buttonVariants(), "rounded")}
+          className={cn(buttonVariants(), "rounded-full")}
         >
           Contáctanos mientras tanto
         </Link>

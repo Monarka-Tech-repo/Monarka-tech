@@ -1,7 +1,6 @@
 import { ThemeScope } from "@/components/layout/theme-scope";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
-import { CustomCursor } from "@/components/effects/custom-cursor";
 
 export default function CataLayout({
   children,
@@ -10,10 +9,9 @@ export default function CataLayout({
 }) {
   return (
     <ThemeScope theme="cata">
-      <CustomCursor />
-      <SiteHeader />
+      <SiteHeader theme="cata" />
       <main className="flex-1">{children}</main>
-      <SiteFooter />
+      <SiteFooter theme="cata" />
     </ThemeScope>
   );
 }

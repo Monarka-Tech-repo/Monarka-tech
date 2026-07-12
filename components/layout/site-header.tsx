@@ -14,9 +14,46 @@ import {
 } from "@/components/ui/sheet";
 import { mainNav } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import type { Theme } from "@/components/layout/theme-scope";
 
-export function SiteHeader() {
+const brandByTheme: Record<
+  Theme,
+  {
+    logoSrc: string;
+    logoAlt: string;
+    wordmark: string;
+    wordmarkClassName?: string;
+    ctaLabel: string;
+    ctaHref: string;
+  }
+> = {
+  monarka: {
+    logoSrc: "/assets/monarka-logo-dark.png",
+    logoAlt: "Monarka TECH",
+    wordmark: "Monarka TECH",
+    ctaLabel: "Ver CATA",
+    ctaHref: "/products/cata",
+  },
+  cata: {
+    logoSrc: "/assets/cata/cata-badge.png",
+    logoAlt: "CATA",
+    wordmark: "CATA",
+    wordmarkClassName: "font-heading italic tracking-normal normal-case",
+    ctaLabel: "Monarka TECH ↗",
+    ctaHref: "/",
+  },
+  legal: {
+    logoSrc: "/assets/monarka-logo-dark.png",
+    logoAlt: "Monarka TECH",
+    wordmark: "Monarka TECH",
+    ctaLabel: "Ver CATA",
+    ctaHref: "/products/cata",
+  },
+};
+
+export function SiteHeader({ theme = "monarka" }: { theme?: Theme }) {
   const [scrolled, setScrolled] = useState(false);
+  const brand = brandByTheme[theme];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -36,15 +73,20 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="/assets/monarka-logo-dark.png"
-            alt="Monarka TECH"
+            src={brand.logoSrc}
+            alt={brand.logoAlt}
             width={28}
             height={28}
             className="h-7 w-7 object-contain"
             priority
           />
-          <span className="text-[13px] font-bold uppercase tracking-[0.12em]">
-            Monarka TECH
+          <span
+            className={cn(
+              "text-[13px] font-bold uppercase tracking-[0.12em]",
+              brand.wordmarkClassName
+            )}
+          >
+            {brand.wordmark}
           </span>
         </Link>
 
@@ -61,13 +103,13 @@ export function SiteHeader() {
         </nav>
 
         <Link
-          href="/products/cata"
+          href={brand.ctaHref}
           className={cn(
             buttonVariants({ size: "sm" }),
             "hidden rounded-full md:inline-flex"
           )}
         >
-          Ver CATA
+          {brand.ctaLabel}
         </Link>
 
         <Sheet>
@@ -98,13 +140,13 @@ export function SiteHeader() {
                 </Link>
               ))}
               <Link
-                href="/products/cata"
+                href={brand.ctaHref}
                 className={cn(
                   buttonVariants({ size: "lg" }),
                   "mt-4 rounded-full"
                 )}
               >
-                Ver CATA
+                {brand.ctaLabel}
               </Link>
             </nav>
           </SheetContent>

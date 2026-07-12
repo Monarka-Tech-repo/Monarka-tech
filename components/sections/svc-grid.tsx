@@ -18,14 +18,14 @@ export function SvcGrid({
     >
       {cards.map((card, i) => (
         <RevealOnScroll key={card.name} delay={(i % columns) * 0.06}>
-          <div className="group relative overflow-hidden rounded-xl border border-border bg-background p-7 transition-all hover:-translate-y-1 hover:border-border-2">
-            <div className="mb-3 font-heading text-[9px] tracking-[0.2em] text-brand-dim">
+          <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-7 transition-all hover:-translate-y-1 hover:border-border-2 hover:shadow-[0_16px_40px_rgba(60,40,20,.1)]">
+            <div className="mb-3 font-sans text-[9px] tracking-[0.2em] text-brand-dim">
               {card.num}
             </div>
-            <div className="mb-3.5 flex h-[50px] w-[50px] items-center justify-center rounded-[10px] border border-border text-xl transition-colors group-hover:border-accent/30 group-hover:bg-accent/[0.07]">
+            <div className="mb-3.5 flex h-[50px] w-[50px] items-center justify-center rounded-2xl border border-border text-xl transition-colors group-hover:border-accent/30 group-hover:bg-accent/[0.07]">
               {card.icon}
             </div>
-            <div className="mb-2 font-heading text-[11px] font-bold tracking-[0.1em] text-accent">
+            <div className="mb-2 font-heading text-[15px] font-semibold tracking-tight text-accent">
               {card.name}
             </div>
             <p className="text-[13.5px] leading-relaxed text-muted-foreground">

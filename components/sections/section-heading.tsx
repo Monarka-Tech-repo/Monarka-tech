@@ -19,8 +19,8 @@ export function SectionHeading({
         {eyebrow}
       </p>
       <RevealOnScroll>
-        <h2 className="mb-3.5 font-heading text-[clamp(1.4rem,2.4vw,2.1rem)] font-black leading-tight text-white">
-          {title} <span className="text-accent">{accent}</span>
+        <h2 className="mb-3.5 font-heading text-[clamp(1.5rem,2.6vw,2.3rem)] font-semibold leading-tight text-foreground">
+          {title} <em className="text-accent">{accent}</em>
         </h2>
       </RevealOnScroll>
       <RevealOnScroll delay={0.08}>

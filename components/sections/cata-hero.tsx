@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { CircuitBackground } from "@/components/effects/circuit-background";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -13,33 +12,36 @@ export function CataHero() {
       id="top"
       className="relative z-[1] flex min-h-screen items-center overflow-hidden px-6 pb-16 pt-32 md:px-12"
     >
-      <CircuitBackground accentColor="#e8633e" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse at 20% 0%, rgba(184,68,42,.08) 0%, transparent 55%)",
+        }}
+      />
 
-      <div className="relative z-[1] mx-auto grid w-full max-w-6xl items-center gap-16 md:grid-cols-2">
+      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-16 md:grid-cols-2">
         <div>
-          <p className="mb-5 flex items-center gap-2.5 text-[11px] uppercase tracking-[0.4em] text-brand-teal">
+          <p className="mb-5 flex items-center gap-2.5 text-[11px] uppercase tracking-[0.35em] text-brand-teal">
             <span className="h-px w-6 bg-brand-teal" />
             App Insignia · Monarka TECH
           </p>
-          <div className="mb-5">
+          <div className="mb-6">
             <Image
               src="/assets/cata/cata-logo.png"
               alt="CATA — Dining Journal"
-              width={300}
-              height={96}
-              className="w-full max-w-[300px]"
-              style={{ filter: "drop-shadow(0 0 32px rgba(232,99,62,.4))" }}
+              width={220}
+              height={70}
+              className="w-full max-w-[220px]"
             />
           </div>
-          <h1 className="mb-4 text-[clamp(1.7rem,3.2vw,2.8rem)] font-bold leading-[1.18] text-white">
-            Cada platillo,
-            <br />
-            <span className="font-heading text-[0.88em] text-accent">
-              una historia
-            </span>{" "}
+          <h1 className="mb-4 text-[clamp(1.9rem,3.6vw,3.1rem)] font-semibold leading-[1.15] text-foreground">
+            Cada platillo,{" "}
+            <em className="text-accent not-italic italic">una historia</em>{" "}
             por descubrir.
           </h1>
-          <p className="mb-6 font-mono text-xs uppercase tracking-[0.35em] text-brand-gold">
+          <p className="mb-6 font-hand text-2xl text-brand-gold">
             Taste · Collect · Share
           </p>
           <p className="mb-8 max-w-[480px] text-base leading-[1.85] text-muted-foreground">
@@ -51,18 +53,15 @@ export function CataHero() {
           <div className="flex flex-wrap gap-4">
             <Link
               href="#comensales"
-              className={cn(
-                buttonVariants(),
-                "rounded font-heading text-[10px] font-bold tracking-[0.18em] uppercase shadow-[0_0_30px_rgba(232,99,62,.25)]"
-              )}
+              className={cn(buttonVariants({ size: "lg" }), "rounded-full")}
             >
               Para Comensales
             </Link>
             <Link
               href="#restaurantes"
               className={cn(
-                buttonVariants({ variant: "outline" }),
-                "rounded border-border-2 font-heading text-[10px] font-bold tracking-[0.18em] uppercase text-accent"
+                buttonVariants({ variant: "outline", size: "lg" }),
+                "rounded-full"
               )}
             >
               Para Restaurantes
@@ -74,7 +73,7 @@ export function CataHero() {
           <motion.div
             animate={{ y: [0, -12, 0], rotate: [-0.5, 0.5, -0.5] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute right-0 top-0 z-[3] w-[280px] overflow-hidden rounded-xl border border-border bg-surface-1 shadow-[0_24px_64px_rgba(0,0,0,.55)]"
+            className="absolute right-0 top-0 z-[3] w-[280px] overflow-hidden rounded-2xl border border-border bg-card shadow-[0_24px_50px_rgba(60,40,20,.16)]"
           >
             <div className="relative h-[160px] w-full">
               <Image src="/assets/cata/dish-1.jpg" alt="Platillo" fill sizes="280px" className="object-cover" />
@@ -85,7 +84,7 @@ export function CataHero() {
                   AM
                 </div>
                 <div>
-                  <div className="text-[13px] font-bold text-white">Ana Martínez</div>
+                  <div className="text-[13px] font-bold text-foreground">Ana Martínez</div>
                   <div className="text-[10px] text-muted-foreground">Ciudad de México</div>
                 </div>
               </div>
@@ -101,11 +100,11 @@ export function CataHero() {
           <motion.div
             animate={{ y: [0, -10, 0], rotate: [0.7, -0.7, 0.7] }}
             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-            className="absolute bottom-[35px] left-0 z-[4] w-[225px] overflow-hidden rounded-xl border border-border bg-surface-1 shadow-[0_24px_64px_rgba(0,0,0,.55)]"
+            className="absolute bottom-[35px] left-0 z-[4] w-[225px] overflow-hidden rounded-2xl border border-border bg-card shadow-[0_24px_50px_rgba(60,40,20,.16)]"
           >
             <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
-              <span className="font-heading text-[10px] font-bold tracking-[0.1em] text-accent">
-                LEADERBOARD
+              <span className="font-heading text-[11px] font-semibold tracking-tight text-accent">
+                Leaderboard
               </span>
               <span className="text-[10px] text-muted-foreground">El Paso · Mes</span>
             </div>
@@ -122,7 +121,7 @@ export function CataHero() {
                     row.me && "bg-accent/[0.07]"
                   )}
                 >
-                  <span className={cn("w-4 font-heading text-xs font-black", row.gold ? "text-brand-gold" : "text-muted-foreground")}>
+                  <span className={cn("w-4 font-heading text-xs font-bold", row.gold ? "text-brand-gold" : "text-muted-foreground")}>
                     {row.rank}
                   </span>
                   <div
@@ -131,7 +130,7 @@ export function CataHero() {
                   >
                     {row.initials}
                   </div>
-                  <span className="flex-1 text-xs font-bold text-white">{row.name}</span>
+                  <span className="flex-1 text-xs font-bold text-foreground">{row.name}</span>
                   <span className={cn("font-heading text-xs font-bold", row.gold ? "text-brand-gold" : "text-foreground")}>
                     {row.count}
                   </span>
@@ -143,11 +142,11 @@ export function CataHero() {
           <motion.div
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-            className="absolute left-[35px] top-[55px] z-[5] w-[205px] rounded-xl border border-border bg-surface-1 p-4 shadow-[0_24px_64px_rgba(0,0,0,.55)]"
+            className="absolute left-[35px] top-[55px] z-[5] w-[205px] rounded-2xl border border-border bg-card p-4 shadow-[0_24px_50px_rgba(60,40,20,.16)]"
           >
             <div className="mb-2.5 flex items-center gap-2">
               <span className="rounded-full bg-brand-red px-2.5 py-0.5 font-heading text-[9px] font-bold tracking-[0.1em] text-white">
-                BADGES
+                Badges
               </span>
             </div>
             <div className="mb-1 text-sm leading-snug text-foreground">🏅 Foodie Elite</div>

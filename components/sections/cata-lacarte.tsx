@@ -19,10 +19,10 @@ export function CataLaCarte() {
           <SvcGrid cards={masFuncionesFeatures} columns={2} />
 
           <RevealOnScroll delay={0.1}>
-            <div className="overflow-hidden rounded-xl border border-border bg-surface-1">
-              <div className="border-b border-border bg-surface-2 px-5 py-3.5">
-                <div className="font-heading text-[11px] font-bold tracking-[0.12em] text-accent">
-                  LEADERBOARD
+            <div className="overflow-hidden rounded-2xl border border-border bg-card">
+              <div className="border-b border-border bg-secondary px-5 py-3.5">
+                <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-accent">
+                  Leaderboard
                 </div>
                 <div className="mt-0.5 text-[11px] text-muted-foreground">
                   Más puntos este mes · El Paso TX
@@ -38,7 +38,7 @@ export function CataLaCarte() {
                 >
                   <span
                     className={cn(
-                      "w-[18px] font-heading text-sm font-black",
+                      "w-[18px] font-heading text-sm font-bold",
                       row.gold ? "text-brand-gold" : "text-muted-foreground"
                     )}
                   >
@@ -51,7 +51,7 @@ export function CataLaCarte() {
                     {row.initials}
                   </div>
                   <div className="flex-1">
-                    <div className="text-[13px] font-bold text-white">
+                    <div className="text-[13px] font-bold text-foreground">
                       {row.name}{" "}
                       {row.me && (
                         <span className="text-[11px] text-accent">

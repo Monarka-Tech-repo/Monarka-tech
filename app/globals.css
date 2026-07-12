@@ -17,6 +17,7 @@
   --font-sans: var(--font-body);
   --font-mono: var(--font-jetbrains-mono);
   --font-heading: var(--font-heading);
+  --font-hand: var(--font-hand);
   --color-sidebar-ring: var(--ring);
   --color-sidebar-border: var(--border);
   --color-sidebar-accent-foreground: var(--accent-foreground);
@@ -104,44 +105,48 @@
 
   --font-body: var(--font-inter);
   --font-heading: var(--font-inter);
+  --font-hand: var(--font-caveat);
   --radius: 0.9rem;
 }
 
-/* ---------- CATA theme — neon/void, gamified ---------- */
+/* ---------- CATA theme — warm dining-journal identity, matches the real app
+   (D:\CATA\CATA_App\src\theme\index.js) exactly: terracotta + parchment +
+   Fraunces/Plus Jakarta Sans/Caveat, not the old neon/void placeholder. ---- */
 [data-theme="cata"] {
-  --background: #100d0b;
-  --foreground: #f2ede8;
-  --card: #1c1815;
-  --card-foreground: #f2ede8;
-  --border: #3d332a;
-  --border-2: #5a4b3c;
-  --input: #3d332a;
-  --ring: #e8633e;
-  --primary: #e8633e;
-  --primary-foreground: #100d0b;
-  --secondary: #1c1815;
-  --secondary-foreground: #f2ede8;
-  --muted: #1c1815;
-  --muted-foreground: #a8978a;
-  --accent: #e8633e;
+  --background: #f2ede8;
+  --foreground: #1a1a18;
+  --card: #ffffff;
+  --card-foreground: #1a1a18;
+  --border: #e0d8d0;
+  --border-2: #cbbfb2;
+  --input: #e0d8d0;
+  --ring: #b8442a;
+  --primary: #b8442a;
+  --primary-foreground: #ffffff;
+  --secondary: #f0ebe3;
+  --secondary-foreground: #1a1a18;
+  --muted: #f0ebe3;
+  --muted-foreground: #a09080;
+  --accent: #b8442a;
   --accent-foreground: #ffffff;
-  --destructive: #b8442a;
+  --destructive: #8c3220;
   --destructive-foreground: #ffffff;
 
   --brand-accent-2: #ef9f27;
   --brand-gold: #ef9f27;
-  --brand-teal: #4aabca;
-  --brand-rare: #9b6fde;
-  --brand-red: #b8442a;
-  --brand-green: #3fbf8c;
-  --brand-dim: #4a3f35;
-  --surface-1: #1c1815;
-  --surface-2: #272019;
-  --surface-3: #272019;
+  --brand-teal: #6b8f7a;
+  --brand-rare: #7a6a9a;
+  --brand-red: #8c3220;
+  --brand-green: #6b8f5a;
+  --brand-dim: #cbbfb2;
+  --surface-1: #ffffff;
+  --surface-2: #f0ebe3;
+  --surface-3: #e8e0d6;
 
-  --font-body: var(--font-rajdhani);
-  --font-heading: var(--font-orbitron);
-  --radius: 0.25rem;
+  --font-body: var(--font-plus-jakarta);
+  --font-heading: var(--font-fraunces);
+  --font-hand: var(--font-caveat);
+  --radius: 1.1rem;
 }
 
 /* ---------- Legal theme — blue/void, calmer variant of the CATA system --- */
@@ -169,8 +174,8 @@
   --brand-gold: #c9902a;
   --brand-teal: #1d9e75;
   --brand-rare: #9b6fde;
-  /* CATA-specific callouts inside legal copy (e.g. "this section applies to CATA") */
-  --brand-red: #e8633e;
+  /* CATA-specific callouts inside legal copy (e.g. "this section applies to CATA") — matches the real app's terracotta */
+  --brand-red: #b8442a;
   --brand-green: #3fbf8c;
   --brand-dim: #1e4060;
   --surface-1: #061826;
@@ -179,6 +184,7 @@
 
   --font-body: var(--font-rajdhani);
   --font-heading: var(--font-orbitron);
+  --font-hand: var(--font-caveat);
   --radius: 0.25rem;
 }
 

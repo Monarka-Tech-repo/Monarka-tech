@@ -37,9 +37,9 @@ function WaitlistCard({
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-surface-1 p-9">
+    <div className="rounded-2xl border border-border bg-card p-9">
       <div className="mb-3 text-2xl">{icon}</div>
-      <div className="mb-2.5 font-heading text-xs font-bold tracking-[0.1em] text-accent">
+      <div className="mb-2.5 text-xs font-bold uppercase tracking-[0.14em] text-accent">
         {title}
       </div>
       <p className="mb-6 text-[13.5px] leading-relaxed text-muted-foreground">
@@ -58,10 +58,10 @@ function WaitlistCard({
           type="submit"
           disabled={submitting || done}
           className={cn(
-            "whitespace-nowrap rounded-r px-5 py-3.5 font-heading text-[10px] font-bold tracking-[0.14em] transition-all disabled:opacity-70",
+            "whitespace-nowrap rounded-r px-5 py-3.5 text-[13px] font-semibold transition-colors disabled:opacity-70",
             variant === "diner"
-              ? "bg-accent text-background hover:shadow-[0_0_32px_rgba(232,99,62,.4)]"
-              : "bg-brand-gold text-background hover:shadow-[0_0_32px_rgba(239,159,39,.4)]"
+              ? "bg-accent text-white hover:bg-accent/90"
+              : "bg-brand-gold text-foreground hover:bg-brand-gold/85"
           )}
         >
           {done ? "✓ ¡Listo!" : submitting ? "Enviando…" : buttonLabel}
@@ -86,7 +86,7 @@ export function CataCta() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 0%, rgba(232,99,62,.07) 0%, transparent 65%)",
+            "radial-gradient(ellipse at 50% 0%, rgba(184,68,42,.08) 0%, transparent 65%)",
         }}
       />
       <div className="relative z-[2] mx-auto max-w-5xl px-6 py-28">
@@ -95,9 +95,9 @@ export function CataCta() {
             <p className="mb-3 text-[10px] uppercase tracking-[0.35em] text-brand-teal">
               Contacto CATA
             </p>
-            <h2 className="mb-3.5 font-heading text-[clamp(1.4rem,2.4vw,2.1rem)] font-black leading-tight text-white">
+            <h2 className="mb-3.5 font-heading text-[clamp(1.5rem,2.6vw,2.3rem)] font-semibold leading-tight text-foreground">
               Sé de los primeros en{" "}
-              <span className="text-accent">probar CATA</span>
+              <em className="text-accent">probar CATA</em>
             </h2>
             <p className="text-[15px] leading-[1.78] text-muted-foreground">
               CATA está en desarrollo activo. Únete a la lista de espera o

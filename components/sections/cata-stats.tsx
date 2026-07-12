@@ -10,7 +10,7 @@ export function CataStats() {
             <AnimatedCounter
               value={stat.target}
               suffix={stat.suffix}
-              className="block font-heading text-[2.8rem] font-black leading-none text-accent"
+              className="block font-heading text-[2.8rem] font-bold leading-none text-accent"
             />
             <span className="mt-2 block text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
               {stat.label}

@@ -11,7 +11,7 @@ export default function LegalLayout({
   return (
     <ThemeScope theme="legal">
       <CustomCursor />
-      <SiteHeader />
+      <SiteHeader theme="legal" />
       <main className="flex-1">{children}</main>
       <SiteFooter />
     </ThemeScope>

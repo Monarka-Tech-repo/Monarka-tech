@@ -5,6 +5,7 @@ import { CataComensales } from "@/components/sections/cata-comensales";
 import { CataLaCarte } from "@/components/sections/cata-lacarte";
 import { CataRestaurantes } from "@/components/sections/cata-restaurantes";
 import { CataCta } from "@/components/sections/cata-cta";
+import { CataDemoSection } from "@/components/sections/cata-demo-section";
 import { MarqueeTicker } from "@/components/effects/marquee-ticker";
 import { tickerItems } from "@/content/cata";
 
@@ -28,6 +29,7 @@ export default function CataPage() {
       <CataHero />
       <MarqueeTicker items={tickerItems} className="relative z-[1] bg-surface-1" />
       <CataStats />
+      <CataDemoSection />
       <CataComensales />
       <CataLaCarte />
       <CataRestaurantes />
