@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Compass, Home, Camera, LayoutGrid, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PhoneStatusBar, PhoneHomeIndicator } from "@/components/demo/phone-chrome";
 import { DemoFeed } from "@/components/demo/demo-feed";
@@ -10,16 +9,27 @@ import { DemoExplore } from "@/components/demo/demo-explore";
 import { DemoLog } from "@/components/demo/demo-log";
 import { DemoMyMenu } from "@/components/demo/demo-my-menu";
 import { DemoProfile } from "@/components/demo/demo-profile";
+import {
+  IconSearch,
+  IconHome,
+  IconLogDish,
+  IconMyMenu,
+  IconProfile,
+} from "@/components/demo/cata-icons";
 import { seedMyMenu, cardPalettes, type MenuEntry } from "@/content/demo";
 
 type Tab = "explore" | "feed" | "log" | "mymenu" | "profile";
 
-const tabs: { key: Tab; label: string; icon: typeof Home }[] = [
-  { key: "explore", label: "Explore", icon: Compass },
-  { key: "feed", label: "Feed", icon: Home },
-  { key: "log", label: "Log", icon: Camera },
-  { key: "mymenu", label: "My Menu", icon: LayoutGrid },
-  { key: "profile", label: "Perfil", icon: User },
+// Matches the real app's bottom tab bar exactly (src/navigation):
+// { name: 'Explore', iconName: 'search' }, { name: 'Feed', iconName: 'home' },
+// { name: 'Log', iconName: null }, { name: 'MyMenu', iconName: 'my-menu' },
+// { name: 'Profile', iconName: 'profile' }
+const tabs: { key: Tab; label: string; icon: typeof IconHome }[] = [
+  { key: "explore", label: "Explore", icon: IconSearch },
+  { key: "feed", label: "Feed", icon: IconHome },
+  { key: "log", label: "Log", icon: IconLogDish },
+  { key: "mymenu", label: "My Menu", icon: IconMyMenu },
+  { key: "profile", label: "Perfil", icon: IconProfile },
 ];
 
 export function CataPhoneDemo() {

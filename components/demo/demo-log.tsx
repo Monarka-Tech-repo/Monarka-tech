@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Camera, Star, Check } from "lucide-react";
+import { Check } from "lucide-react";
+import { IconAddPhoto } from "@/components/demo/cata-icons";
 import { cn } from "@/lib/utils";
 
 export function DemoLog({
@@ -47,7 +48,7 @@ export function DemoLog({
       </div>
 
       <div className="mb-4 flex aspect-[4/3] w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border-2 bg-secondary text-muted-foreground">
-        <Camera className="h-7 w-7" />
+        <IconAddPhoto className="h-8 w-8" />
         <span className="text-xs">Toca para tomar foto</span>
       </div>
 
@@ -64,23 +65,19 @@ export function DemoLog({
       <label className="mb-1.5 text-[11px] font-medium text-muted-foreground">
         Calificación
       </label>
-      <div className="mb-6 flex gap-1.5">
+      <div className="mb-6 flex gap-1.5 text-2xl leading-none">
         {[1, 2, 3, 4, 5].map((star) => (
           <button
             key={star}
             type="button"
             onClick={() => setRating(star)}
             aria-label={`${star} estrellas`}
-            className="transition-transform active:scale-90"
+            className={cn(
+              "transition-transform active:scale-90",
+              star <= rating ? "text-brand-gold" : "text-border-2"
+            )}
           >
-            <Star
-              className={cn(
-                "h-6 w-6",
-                star <= rating
-                  ? "fill-brand-gold text-brand-gold"
-                  : "text-border-2"
-              )}
-            />
+            ★
           </button>
         ))}
       </div>
