@@ -43,6 +43,7 @@ export function CataPhoneDemo() {
         id: `logged-${Date.now()}`,
         name,
         rating,
+        category: "Dinner",
         paletteFrom: palette[0],
         paletteTo: palette[1],
       },

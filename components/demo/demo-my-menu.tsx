@@ -1,7 +1,18 @@
-import Image from "next/image";
-import type { MenuEntry } from "@/content/demo";
+"use client";
 
+import { useState } from "react";
+import Image from "next/image";
+import { menuCategories, type MenuEntry } from "@/content/demo";
+import { cn } from "@/lib/utils";
+
+// Category pill: dark noir capsule, active = red — matches MyMenuScreen.js's
+// `pill` StyleSheet exactly (backgroundColor: colors.noir / colors.red,
+// borderRadius: 999, text in the Fraunces italic display font).
 export function DemoMyMenu({ entries }: { entries: MenuEntry[] }) {
+  const [category, setCategory] = useState<(typeof menuCategories)[number]>("Todos");
+  const filtered =
+    category === "Todos" ? entries : entries.filter((e) => e.category === category);
+
   return (
     <div className="flex h-full flex-col overflow-y-auto">
       <div className="sticky top-0 z-10 border-b border-border bg-background/90 px-4 py-3 backdrop-blur">
@@ -10,8 +21,27 @@ export function DemoMyMenu({ entries }: { entries: MenuEntry[] }) {
           {entries.length} platillos
         </span>
       </div>
+
+      <div className="flex gap-2 overflow-x-auto px-3 pb-1 pt-3">
+        {menuCategories.map((cat) => (
+          <button
+            key={cat}
+            type="button"
+            onClick={() => setCategory(cat)}
+            className={cn(
+              "shrink-0 rounded-full px-4 py-1.5 font-heading text-[13px] italic transition-colors",
+              cat === category
+                ? "bg-accent text-white"
+                : "bg-[#1a1a18] text-[#F0EBE3]"
+            )}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-2 gap-2 p-3">
-        {entries.map((entry) => (
+        {filtered.map((entry) => (
           <div
             key={entry.id}
             className="overflow-hidden rounded-xl border border-border bg-card"
@@ -39,11 +69,16 @@ export function DemoMyMenu({ entries }: { entries: MenuEntry[] }) {
                 {entry.name}
               </div>
               <div className="text-[10px] text-brand-gold">
-                {"★".repeat(entry.rating)}
+                {"★".repeat(Math.round(entry.rating))}
               </div>
             </div>
           </div>
         ))}
+        {filtered.length === 0 && (
+          <p className="col-span-2 py-8 text-center text-xs text-muted-foreground">
+            Nada en esta categoría todavía.
+          </p>
+        )}
       </div>
     </div>
   );

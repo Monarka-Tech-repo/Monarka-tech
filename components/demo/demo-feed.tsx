@@ -1,12 +1,51 @@
+// Mirrors the real FeedScreen.js structure exactly: a stack of horizontally
+// scrolling sections under underlined small-caps headers (SectionCaps), not
+// a vertical Instagram-style post feed — see src/screens/FeedScreen.js
+// cases 'friends' / 'restaurants' / 'most_visited' / 'favorites', and the
+// exact storyRing/photoCard dimensions in its StyleSheet (s.storyRing:
+// 84x84, s.storyImg: 74x74, s.photoCard: 120x82).
 import Image from "next/image";
-import { feedPosts } from "@/content/demo";
-import { IconLike, IconComments, IconSave } from "@/components/demo/cata-icons";
+import { feedPosts, restaurantStories, mostVisited, favorites } from "@/content/demo";
 
-const friends = feedPosts.map((p) => ({
-  initials: p.initials,
-  bg: p.avatarBg,
-  color: p.avatarColor,
-}));
+function SectionCaps({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-foreground underline decoration-1 underline-offset-2">
+      {children}
+    </span>
+  );
+}
+
+function StoryBubble({
+  initials,
+  image,
+  ringColor,
+  label,
+}: {
+  initials: string;
+  image?: string;
+  ringColor: string;
+  label: string;
+}) {
+  return (
+    <div className="flex w-[68px] shrink-0 flex-col items-center gap-1">
+      <div
+        className="flex h-[58px] w-[58px] items-center justify-center rounded-full border-[2.5px] p-[2px]"
+        style={{ borderColor: ringColor }}
+      >
+        {image ? (
+          <div className="relative h-full w-full overflow-hidden rounded-full">
+            <Image src={image} alt={label} fill sizes="58px" className="object-cover" />
+          </div>
+        ) : (
+          <div className="flex h-full w-full items-center justify-center rounded-full bg-secondary text-[10px] font-bold text-foreground">
+            {initials}
+          </div>
+        )}
+      </div>
+      <span className="max-w-full truncate text-[9.5px] text-foreground">{label}</span>
+    </div>
+  );
+}
 
 export function DemoFeed() {
   return (
@@ -15,76 +54,89 @@ export function DemoFeed() {
         <span className="font-heading text-lg italic text-accent">CATA</span>
       </div>
 
-      <div className="border-b border-border px-4 py-3">
-        <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-foreground underline decoration-1 underline-offset-2">
-          Amigos
-        </span>
-        <div className="mt-2.5 flex gap-3">
-          {friends.map((f, i) => (
+      {/* case 'friends' */}
+      <div className="pb-1.5 pt-4">
+        <div className="mb-2 px-4">
+          <SectionCaps>Amigos</SectionCaps>
+        </div>
+        <div className="flex gap-3 overflow-x-auto px-4 pb-1">
+          <div className="flex w-[68px] shrink-0 flex-col items-center gap-1">
+            <div className="flex h-[58px] w-[58px] items-center justify-center rounded-full border-[2.5px] border-border">
+              <span className="text-xl leading-none text-muted-foreground">+</span>
+            </div>
+            <span className="text-[9.5px] text-foreground">Tu historia</span>
+          </div>
+          {feedPosts.map((f) => (
+            <StoryBubble
+              key={f.id}
+              initials={f.initials}
+              image={f.image}
+              ringColor="#B8442A"
+              label={f.name.split(" ")[0]}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* case 'restaurants' */}
+      <div className="pb-1.5 pt-3">
+        <div className="mb-2 px-4">
+          <SectionCaps>Restaurantes</SectionCaps>
+        </div>
+        <div className="flex gap-3 overflow-x-auto px-4 pb-1">
+          {restaurantStories.map((r) => (
+            <StoryBubble
+              key={r.id}
+              initials={r.initials}
+              image={r.image}
+              ringColor="#C07D25"
+              label={r.name}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* case 'most_visited' */}
+      <div className="pb-1.5 pt-3">
+        <div className="mb-2 px-4">
+          <SectionCaps>Más Visitados</SectionCaps>
+        </div>
+        <div className="flex gap-2 overflow-x-auto px-4 pb-1">
+          {mostVisited.map((r) => (
             <div
-              key={i}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-accent/40 text-[11px] font-bold"
-              style={{ background: f.bg, color: f.color }}
+              key={r.id}
+              className="relative h-[82px] w-[120px] shrink-0 overflow-hidden rounded-[10px] bg-secondary"
             >
-              {f.initials}
+              <Image src={r.image} alt={r.name} fill sizes="120px" className="object-cover" />
+              <span className="absolute left-1 top-1 rounded-md bg-[#1a1a18] px-1.5 py-0.5 text-[10px] font-extrabold text-white">
+                #{r.rank}
+              </span>
+              <span className="absolute bottom-1 left-1 rounded-md bg-black/60 px-1.5 py-0.5 text-[9px] font-semibold text-white">
+                {r.visits} visitas
+              </span>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="flex flex-col gap-3 p-3">
-        {feedPosts.map((post) => (
-          <div
-            key={post.id}
-            className="overflow-hidden rounded-2xl border border-border bg-card"
-          >
-            <div className="flex items-center gap-2.5 p-3">
-              <div
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[10px] font-bold"
-                style={{ background: post.avatarBg, color: post.avatarColor }}
-              >
-                {post.initials}
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="truncate text-[13px] font-bold text-foreground">
-                  {post.name}
-                </div>
-                <div className="truncate text-[10.5px] text-muted-foreground">
-                  {post.location}
-                </div>
-              </div>
+      {/* case 'favorites' */}
+      <div className="pb-4 pt-3">
+        <div className="mb-2 px-4">
+          <SectionCaps>Favoritos</SectionCaps>
+        </div>
+        <div className="flex gap-2 overflow-x-auto px-4 pb-1">
+          {favorites.map((d) => (
+            <div
+              key={d.id}
+              className="relative h-[82px] w-[120px] shrink-0 overflow-hidden rounded-[10px] bg-secondary"
+            >
+              <Image src={d.image} alt={d.name} fill sizes="120px" className="object-cover" />
+              <span className="absolute bottom-1 left-1 rounded-md bg-black/60 px-1.5 py-0.5 text-[9px] font-semibold text-white">
+                ★ {d.rating}
+              </span>
             </div>
-            <div className="relative aspect-[4/3] w-full">
-              <Image
-                src={post.image}
-                alt={post.dish}
-                fill
-                sizes="320px"
-                className="object-cover"
-              />
-            </div>
-            <div className="p-3">
-              <div className="mb-1 text-[13px] font-semibold text-foreground">
-                {post.dish}
-              </div>
-              <div className="mb-2 text-xs text-brand-gold">
-                {"★".repeat(post.rating)}
-                <span className="text-border-2">
-                  {"★".repeat(5 - post.rating)}
-                </span>
-              </div>
-              <div className="flex items-center gap-4 text-muted-foreground">
-                <span className="flex items-center gap-1 text-[11px]">
-                  <IconLike className="h-4 w-4" /> {post.likes}
-                </span>
-                <span className="flex items-center gap-1 text-[11px]">
-                  <IconComments className="h-4 w-4" /> {post.comments}
-                </span>
-                <IconSave className="ml-auto h-4 w-4" />
-              </div>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

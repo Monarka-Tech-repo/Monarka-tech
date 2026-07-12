@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { IconSearch } from "@/components/demo/cata-icons";
-import { exploreDishes } from "@/content/demo";
+import { IconSearch, IconLike, IconComments, IconSave } from "@/components/demo/cata-icons";
+import { exploreDishes, feedPosts } from "@/content/demo";
 import { cn } from "@/lib/utils";
 
 // Matches the real Explore screen's tabs exactly (es.json explore.tab_*)
@@ -52,7 +52,7 @@ export function DemoExplore() {
         </div>
       </div>
 
-      {tab === "forYou" ? (
+      {tab === "forYou" && (
         <div className="grid grid-cols-2 gap-2 p-3">
           {exploreDishes.map((dish) => (
             <button
@@ -77,7 +77,9 @@ export function DemoExplore() {
             </button>
           ))}
         </div>
-      ) : tab === "leaderboard" ? (
+      )}
+
+      {tab === "leaderboard" && (
         <div className="p-3">
           <div className="overflow-hidden rounded-xl border border-border bg-card">
             {miniLeaderboard.map((row) => (
@@ -104,11 +106,71 @@ export function DemoExplore() {
             ))}
           </div>
         </div>
-      ) : (
+      )}
+
+      {/* Explore's "Feed" tab is the vertical post-with-engagement pattern
+          (feedPostUserName / feedLikeCount / view_comments in
+          ExploreScreen.js) — distinct from the home Feed screen's
+          horizontal dashboard sections. */}
+      {tab === "feed" && (
+        <div className="flex flex-col gap-3 p-3">
+          {feedPosts.map((post) => (
+            <div
+              key={post.id}
+              className="overflow-hidden rounded-2xl border border-border bg-card"
+            >
+              <div className="flex items-center gap-2.5 p-3">
+                <div
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[10px] font-bold"
+                  style={{ background: post.avatarBg, color: post.avatarColor }}
+                >
+                  {post.initials}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-[13px] font-bold text-foreground">
+                    {post.name}
+                  </div>
+                  <div className="truncate text-[10.5px] text-muted-foreground">
+                    {post.location}
+                  </div>
+                </div>
+              </div>
+              <div className="relative aspect-[4/3] w-full">
+                <Image
+                  src={post.image}
+                  alt={post.dish}
+                  fill
+                  sizes="320px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="p-3">
+                <div className="mb-1 text-[13px] font-semibold text-foreground">
+                  {post.dish}
+                </div>
+                <div className="mb-2 text-xs text-brand-gold">
+                  {"★".repeat(post.rating)}
+                  <span className="text-border-2">{"★".repeat(5 - post.rating)}</span>
+                </div>
+                <div className="flex items-center gap-4 text-muted-foreground">
+                  <span className="flex items-center gap-1 text-[11px]">
+                    <IconLike className="h-4 w-4" /> {post.likes}
+                  </span>
+                  <span className="flex items-center gap-1 text-[11px]">
+                    <IconComments className="h-4 w-4" /> {post.comments}
+                  </span>
+                  <IconSave className="ml-auto h-4 w-4" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {(tab === "community" || tab === "friends") && (
         <div className="flex flex-1 flex-col items-center justify-center gap-2 px-8 text-center">
           <p className="text-xs text-muted-foreground">
-            Esta sección se ve completa dentro de la app — la demo web
-            muestra Para ti y Ranking.
+            Esta sección se ve completa dentro de la app.
           </p>
         </div>
       )}

@@ -54,6 +54,24 @@ export const feedPosts: FeedPost[] = [
   },
 ];
 
+export const restaurantStories = [
+  { id: "r1", initials: "IT", name: "Ichiran", image: "/assets/cata/dish-1.jpg" },
+  { id: "r2", initials: "SU", name: "Sushi Bar", image: "/assets/cata/dish-3.jpg" },
+  { id: "r3", initials: "TA", name: "Taquería", image: "/assets/cata/dish-2.jpg" },
+];
+
+export const mostVisited = [
+  { id: "v1", rank: 1, name: "Ichiran Shinjuku", image: "/assets/cata/dish-1.jpg", visits: 6 },
+  { id: "v2", rank: 2, name: "La Taquería", image: "/assets/cata/dish-2.jpg", visits: 4 },
+  { id: "v3", rank: 3, name: "Sushi Omakase", image: "/assets/cata/dish-3.jpg", visits: 3 },
+];
+
+export const favorites = [
+  { id: "f1", name: "Tostada A5", image: "/assets/cata/dish-4.jpg", rating: 5 },
+  { id: "f2", name: "Carbonara", image: "/assets/cata/dish-5.jpg", rating: 5 },
+  { id: "f3", name: "Cochinillo", image: "/assets/cata/dish-6.jpg", rating: 4.5 },
+];
+
 export const exploreDishes = [
   { id: "e1", name: "Cochinillo Asado", image: "/assets/cata/dish-6.jpg" },
   { id: "e2", name: "Carbonara Clásica", image: "/assets/cata/dish-5.jpg" },
@@ -63,20 +81,30 @@ export const exploreDishes = [
   { id: "e6", name: "Tostada A5", image: "/assets/cata/dish-4.jpg" },
 ];
 
+// Real category set from MyMenuScreen.js's FOOD_CATEGORIES (dinner-mode).
+export const menuCategories = [
+  "Todos",
+  "Brunch",
+  "Lunch",
+  "Dinner",
+  "Favorites",
+] as const;
+
 export type MenuEntry = {
   id: string;
   name: string;
   image?: string;
   rating: number;
+  category: (typeof menuCategories)[number];
   paletteFrom?: string;
   paletteTo?: string;
 };
 
 export const seedMyMenu: MenuEntry[] = [
-  { id: "m1", name: "Ramen Tonkotsu", image: "/assets/cata/dish-1.jpg", rating: 5 },
-  { id: "m2", name: "Birria Taco", image: "/assets/cata/dish-2.jpg", rating: 5 },
-  { id: "m3", name: "Wagyu Omakase", image: "/assets/cata/dish-3.jpg", rating: 5 },
-  { id: "m4", name: "Tostada A5", image: "/assets/cata/dish-4.jpg", rating: 5 },
+  { id: "m1", name: "Ramen Tonkotsu", image: "/assets/cata/dish-1.jpg", rating: 5, category: "Dinner" },
+  { id: "m2", name: "Birria Taco", image: "/assets/cata/dish-2.jpg", rating: 5, category: "Lunch" },
+  { id: "m3", name: "Wagyu Omakase", image: "/assets/cata/dish-3.jpg", rating: 5, category: "Dinner" },
+  { id: "m4", name: "Tostada A5", image: "/assets/cata/dish-4.jpg", rating: 5, category: "Favorites" },
 ];
 
 // Placeholder gradient palettes for freshly-logged demo dishes with no photo —
