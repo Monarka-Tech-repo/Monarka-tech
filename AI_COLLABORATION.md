@@ -24,28 +24,33 @@ Monarka TECH es un socio tecnológico para negocios en etapa temprana y en creci
 
 ## 3. Estado actual
 
-### Páginas conocidas
+**El sitio ya NO es HTML estático.** Es una app Next.js 16 (App Router) + TypeScript + Tailwind v4 + shadcn/ui + Framer Motion, desplegada en Cloudflare Pages (proyecto `monarka-tech`) y en vivo en `monarka.tech`. Los archivos `home.html`, `cata.html`, `privacy.html`, `index.html`, `waiting.html`, `assets/` (raíz) y `CNAME` fueron eliminados del repo — ya no existen, ya no son la fuente de verdad.
 
-| Archivo | Propósito | Estado conocido |
+### Rutas conocidas (app/)
+
+| Ruta | Propósito | Estado |
 |---|---|---|
-| `index.html` | Pantalla de entrada/inicialización | Existente |
-| `home.html` | Sitio principal de Monarka TECH | En desarrollo |
-| `cata.html` | Landing page de CATA | En desarrollo |
-| `privacy.html` | Política de privacidad | Existente |
-| `waiting.html` | Página de espera | Existente |
+| `/` | Home Monarka TECH | Terminada |
+| `/about`, `/contact`, `/products`, `/services` | Páginas Monarka | Terminada (Services con placeholder) |
+| `/products/cata` | Landing CATA — ahora con la identidad visual real de la app (terracota/parchment/Fraunces) y una demo interactiva de teléfono | Terminada, en refinamiento activo |
+| `/products/cata/{support,faq,terms,delete-account}` | Placeholders CATA | Pendiente contenido real |
+| `/products/cata/privacy` | Redirige a `/legal/privacy` | Terminada |
+| `/legal`, `/legal/privacy`, `/legal/terms` | Legal (tema azul, sin cambios) | Privacy terminada, Terms placeholder |
 
 ### Infraestructura conocida
 
-- Sitio estático en HTML, CSS y JavaScript.
-- Dominio configurado en `CNAME`: `monarka.tech`.
-- Los recursos visuales están en `assets/` y algunos archivos de imagen en la raíz.
-- Hay cambios locales sin confirmar; deben considerarse propiedad de Rubén hasta saber lo contrario.
+- Next.js 16, `output: 'export'` (sitio 100% estático, sin backend).
+- Cloudflare Pages conectado a GitHub (`Monarka-Tech-repo/Monarka-tech`, rama `main`) — cada push a `main` dispara un deploy automático.
+- Dominio `monarka.tech` en Cloudflare (nameservers movidos, zona activa, dominio personalizado agregado al proyecto Pages).
+- Formularios de contacto vía Formspree — **aún no configurado** (ver Handoff H-002).
+- Assets reales en `public/assets/`, comprimidos.
 
 ### Próximo foco
 
-- [ ] Rubén define la primera tarea prioritaria del sitio o herramienta.
-- [ ] Revisar enlaces, navegación y consistencia entre las páginas existentes.
-- [ ] Definir qué herramienta interna o para clientes se construirá primero.
+- [ ] Formspree: crear cuenta + 2 forms, configurar `NEXT_PUBLIC_FORMSPREE_DINER` / `NEXT_PUBLIC_FORMSPREE_RESTAURANT` en Cloudflare Pages.
+- [ ] Google Places API: crear key restringida y dársela a Claude/Codex para el autocomplete de búsqueda en la demo de Explore.
+- [ ] Seguir refinando la demo interactiva de CATA (`/products/cata`) para que coincida con la estructura real de `D:\CATA\CATA_App\src\screens\*` — ver Handoff H-002.
+- [ ] Contenido real pendiente: Services, CATA FAQ/Terms/Support/Delete-Account, Legal Terms.
 
 ## 4. Tablero de trabajo
 
@@ -54,8 +59,11 @@ Usar una fila por tarea. Una tarea solo puede tener un responsable activo.
 | ID | Prioridad | Tarea | Responsable | Estado | Archivos previstos | Última actualización |
 |---|---|---|---|---|---|---|
 | M-001 | Alta | Definir el siguiente entregable con Rubén | Sin asignar | Terminada | — | 2026-07-11 |
-| M-002 | Alta | Migrar el sitio estático (HTML) a Next.js/React/TypeScript/Tailwind, IA multi-página (Home/Products/Services/About/Contact/Legal), deploy Cloudflare Pages | Claude | En revisión | app/, components/, content/, lib/, public/, next.config.ts, package.json | 2026-07-11 |
-| M-003 | Alta | Cutover de despliegue: crear proyecto Cloudflare Pages, mover dominio monarka.tech, crear cuenta Formspree, luego borrar los .html viejos y assets/ raíz | Sin asignar (requiere a Rubén) | Pendiente | home.html, cata.html, privacy.html, index.html, waiting.html, assets/, CNAME | 2026-07-11 |
+| M-002 | Alta | Migrar el sitio estático (HTML) a Next.js/React/TypeScript/Tailwind, IA multi-página (Home/Products/Services/About/Contact/Legal), deploy Cloudflare Pages | Claude | Terminada | app/, components/, content/, lib/, public/, next.config.ts, package.json | 2026-07-12 |
+| M-003 | Alta | Cutover de despliegue: crear proyecto Cloudflare Pages, mover dominio monarka.tech, borrar los .html viejos y assets/ raíz | Claude + Rubén | Terminada (dominio en vivo; falta Formspree, ver M-005) | — | 2026-07-12 |
+| M-004 | Alta | Rebrand de CATA: reemplazar el tema neon/cyberpunk inventado por la identidad real de la app (terracota/parchment/Fraunces+Plus Jakarta Sans+Caveat) + demo interactiva de teléfono (Explore/Feed/Log/My Menu/Perfil) sin login | Claude | En curso | app/products/cata/**, components/demo/**, components/sections/cata-*.tsx, content/cata.ts, content/demo.ts, app/globals.css | 2026-07-12 |
+| M-005 | Media | Configurar Formspree (cuenta + 2 forms + env vars en Cloudflare Pages) | Sin asignar (requiere a Rubén) | Pendiente | Cloudflare Pages → Settings → Environment variables | 2026-07-12 |
+| M-006 | Media | Google Places API para autocomplete en la búsqueda de Explore (dentro de la demo de CATA) | Sin asignar (requiere key de Rubén, restringida a monarka.tech + Places API únicamente) | Pendiente | components/demo/demo-explore.tsx | 2026-07-12 |
 
 Estados permitidos: `Pendiente`, `En curso`, `Bloqueada`, `En revisión`, `Terminada`.
 
@@ -129,6 +137,8 @@ Registrar aquí decisiones que deban sobrevivir a una sesión. No borrar decisio
 |---|---|---|---|---|
 | D-001 | 2026-07-11 | Usar este archivo como fuente compartida de coordinación entre Codex y Claude. | Evitar contexto perdido, trabajo duplicado y ediciones conflictivas. | Rubén solicitó el documento |
 | D-002 | 2026-07-11 | Migrar el sitio de HTML estático a Next.js/React/TypeScript/Tailwind + shadcn/ui + Framer Motion, reemplazando el repo en su lugar (mismo repo, mismo historial). Deploy en Cloudflare Pages (Git integration, `output: 'export'`, sin backend). IA multi-página según `Monarka_Overnight_AI_Kit/rules/15_WEBSITE_STRUCTURE.txt`: Home / Products / Services / About / Contact / Legal, CATA anidado en `/products/cata` con Support, FAQ, Privacy, Terms, Delete Account. Formularios usan Formspree (o similar) en vez de rutas API propias. Páginas sin contenido real (Services, CATA FAQ/Terms/Support/Delete-Account, Legal Terms) se crean con placeholder visible "contenido pendiente" — no se inventa texto legal ni comercial. | Fase 2 del rediseño ya confirmada por Rubén (ver memoria de Claude); calidad/escala tipo Apple-Linear-Vercel para presentación a inversionistas. | Rubén (confirmó en sesión 2026-07-11) |
+| D-003 | 2026-07-12 | Cutover completo a Cloudflare Pages: nameservers movidos, proyecto `monarka-tech` conectado a GitHub, dominio personalizado `monarka.tech` agregado y activo. Se eliminó el proyecto Pages duplicado `monarkatech` (creado por error en un primer intento). Se borraron del repo los archivos estáticos viejos y `assets/` raíz una vez confirmado que Cloudflare servía el sitio nuevo correctamente. | GitHub Pages ya no es necesario; un solo proyecto Pages evita confusión. | Rubén (en sesión, paso a paso vía dashboard + Claude usando la API de Cloudflare con un token que Rubén generó) |
+| D-004 | 2026-07-12 | Reemplazar el tema "neon/cyberpunk" de `/products/cata` (Orbitron, negro puro, naranja neón) — que era una invención sin relación con la app real — por la identidad visual real de CATA, tomada directamente de `D:\CATA\CATA_App\src\theme\index.js`: terracota (#B8442A) + parchment/crema + Fraunces (serif) + Plus Jakarta Sans + Caveat (manuscrita). Monarka TECH (negro/naranja) y el tema Legal (azul) no cambian. La demo interactiva de teléfono en `/products/cata` (Explore/Feed/Log/My Menu/Perfil) también se reconstruyó para reflejar la estructura real de las pantallas (`FeedScreen.js`, `ExploreScreen.js`, `MyMenuScreen.js`) y el set de íconos real (`assets/icons/modern/*.svg`), no aproximaciones genéricas. | Rubén notó repetidamente que el GUI no coincidía con la app real; la causa raíz era que el tema original del sitio nunca se basó en el diseño real de la app. | Rubén (en sesión 2026-07-12, iterando sobre capturas y código fuente real) |
 
 ## 9. Handoffs
 
@@ -146,6 +156,24 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 - Riesgos/preguntas: decisiones que todavía necesita Rubén
 ```
 
+### H-002 — Cutover terminado, CATA rebrandeado; sesión pausada a media tarea de la demo
+- De: Claude
+- Para: Codex/Claude (quien retome mañana) y Rubén
+- Tarea: M-003 (terminada) / M-004 (en curso) / M-005, M-006 (pendientes, requieren a Rubén)
+- Estado:
+  - **Cutover completo.** `monarka.tech` sirve la app Next.js en vivo desde Cloudflare Pages (proyecto `monarka-tech`). Los archivos estáticos viejos ya no existen en el repo (ver D-003). Confirmado con capturas y checks de HTTP en la sesión.
+  - **CATA rebrandeado.** `/products/cata` y sus subrutas ya no usan el tema neon/cyberpunk inventado — usan la paleta y tipografía reales de la app (ver D-004). `SiteHeader`/`SiteFooter` ahora son theme-aware (`theme="cata"` muestra el badge/wordmark real de CATA en vez del logo de Monarka).
+  - **Demo interactiva construida y en refinamiento.** `/products/cata` tiene un mockup de teléfono completamente interactivo (`components/demo/`) sin login: tabs Explore/Feed/Log/My Menu/Perfil con los íconos SVG reales de la app (`components/demo/cata-icons.tsx`, copiados de `assets/icons/modern/*.svg`, no un ícono genérico). Feed reconstruido como las secciones horizontales reales (Amigos, Restaurantes, Más Visitados, Favoritos) en vez de un feed vertical estilo Instagram. Explore tiene los tabs reales (Para ti/Ranking/Comunidad/Feed/Amigos). My Menu tiene los category pills reales (Fraunces itálica, cápsula noir/roja). El flujo de "Log Dish" es realmente funcional: calificar con estrellas, escribir un nombre, guardar, y el platillo aparece al instante en My Menu — todo con datos de demo, sin backend.
+  - Rubén dio feedback iterativo varias veces ("no coincide") hasta que se comparó directamente contra el código fuente real en `D:\CATA\CATA_App\src\screens\*.js` en vez de aproximar de memoria — ahí fue cuando por fin coincidió.
+- Pendiente para la próxima sesión:
+  1. **Formspree** (M-005): Rubén debe crear la cuenta + 2 forms y darle los IDs a quien continúe, para configurar `NEXT_PUBLIC_FORMSPREE_DINER`/`NEXT_PUBLIC_FORMSPREE_RESTAURANT` en Cloudflare Pages vía API o dashboard.
+  2. **Google Places API** (M-006): Rubén va a crear una API key **separada** de la que ya usa la app móvil (`EXPO_PUBLIC_GOOGLE_MAPS_API_KEY`), restringida a referrer `monarka.tech/*` y solo "Places API (New)". Con esa key, cablear autocomplete (solo autocomplete, no Place Details — decisión ya tomada) en la barra de búsqueda de `components/demo/demo-explore.tsx`.
+  3. Seguir subiendo la fidelidad de la demo si Rubén sigue viendo diferencias — el método que funcionó fue: pedirle captura o señalar la sección exacta, luego leer el archivo real correspondiente en `D:\CATA\CATA_App\src\screens\` (o `src\components\`, `src\theme\index.js`) en vez de adivinar.
+  4. Sigue pendiente: contenido real para Services, CATA FAQ/Terms/Support/Delete-Account, Legal Terms (nadie ha inventado nada, siguen con placeholder).
+- Archivos: `components/demo/**`, `components/sections/cata-*.tsx`, `components/layout/site-header.tsx`, `components/layout/site-footer.tsx`, `content/cata.ts`, `content/demo.ts`, `app/globals.css`, `app/products/cata/**`
+- Verificación: `npm run build` y `npm run lint` limpios en cada paso; cada cambio se verificó visualmente en navegador headless (Playwright) contra `localhost:3000` y luego contra `monarka.tech` en vivo tras cada deploy; el flujo de Log Dish se probó interactuando de verdad (escribir, calificar, guardar, verificar que aparece en My Menu).
+- Riesgos/preguntas: Un token de API de Cloudflare (permisos Pages:Edit + Zone DNS:Edit, sin acceso de cuenta completo) se usó durante la sesión para automatizar el setup — Rubén dijo que lo revocaría/rotaría después de terminar todo el trabajo de Cloudflare. Confirmar si ya lo hizo antes de asumir que sigue válido.
+
 ### H-001 — Migración Next.js lista para revisión; falta cutover de despliegue
 - De: Claude
 - Para: Rubén (y Codex si continúa el trabajo)
@@ -159,6 +187,17 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 ## 10. Bitácora
 
 Añadir entradas nuevas arriba de las anteriores.
+
+### 2026-07-12 — Claude
+
+- Empujó la app Next.js a `origin/main` (a petición de Rubén) y guio el setup de Cloudflare Pages paso a paso (Rubén operando el dashboard).
+- Detectó y corrigió un proyecto Pages duplicado (`monarkatech` vs `monarka-tech`) usando la API de Cloudflare con un token que Rubén generó en la sesión.
+- Confirmó el cutover: `monarka.tech` activo en Cloudflare, dominio personalizado agregado al proyecto `monarka-tech`, zona DNS activa.
+- Borró los archivos estáticos viejos (`home.html`, `cata.html`, `privacy.html`, `index.html`, `waiting.html`, `assets/` raíz, `CNAME`) solo después de confirmar que el sitio nuevo estaba en vivo — ver D-003.
+- A petición de Rubén, investigó el código fuente real de la app (`D:\CATA\CATA_App`) y descubrió que el tema visual de CATA en el sitio (neon/cyberpunk) nunca coincidió con el diseño real de la app (terracota/parchment/editorial) — ver D-004. Rebrandeó `/products/cata` por completo con los tokens de diseño reales.
+- Construyó una demo interactiva de teléfono en `/products/cata` (Explore/Feed/Log/My Menu/Perfil, sin login, sin backend) e iteró varias veces con Rubén hasta que la estructura coincidiera con las pantallas reales (`FeedScreen.js`, `ExploreScreen.js`, `MyMenuScreen.js`) y el set de íconos real (`assets/icons/modern/*.svg`).
+- Verificación: `npm run build`/`npm run lint` limpios en cada iteración; revisión visual + interacción real (Playwright headless) en cada paso, contra local y contra `monarka.tech` en vivo después de cada deploy.
+- Pendiente: ver Handoff H-002 — Formspree y Google Places API key, ambos requieren acción de Rubén antes de continuar esa parte.
 
 ### 2026-07-11 — Claude
 
