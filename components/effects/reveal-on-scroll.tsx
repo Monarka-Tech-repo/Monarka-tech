@@ -3,8 +3,8 @@
 import { motion, type Variants } from "framer-motion";
 
 const variants: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 56, scale: 0.97 },
+  visible: { opacity: 1, y: 0, scale: 1 },
 };
 
 export function RevealOnScroll({
@@ -21,9 +21,9 @@ export function RevealOnScroll({
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: "-120px" }}
       variants={variants}
-      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>

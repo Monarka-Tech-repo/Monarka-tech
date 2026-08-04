@@ -2,12 +2,21 @@ import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { RevealOnScroll } from "@/components/effects/reveal-on-scroll";
 import { MagneticButton } from "@/components/effects/magnetic-button";
+import { CataPhoneShowcase } from "@/components/sections/cata-phone-showcase";
+import { ContactForm } from "@/components/sections/contact-form";
 
 const navLinks = [
-  { label: "Trabajo", href: "#work" },
   { label: "Capacidades", href: "#capabilities" },
+  { label: "Trabajo", href: "#work" },
   { label: "Nosotros", href: "#about" },
 ];
+
+// Official Dream Big seal (same mark used as the site favicon), used as the
+// marquee's separator instead of a generic star glyph.
+function Mark() {
+  // eslint-disable-next-line @next/next/no-img-element -- tiny repeated inline glyph, not worth next/image's fixed-layout overhead
+  return <img src="/icon.png" alt="" aria-hidden className="inline-block h-[1.5em] w-[1.5em] -translate-y-[0.05em] align-middle" />;
+}
 
 const capabilities = [
   ["01", "Productos digitales", "Concepto, estrategia y experiencias que se sienten naturales desde el primer toque."],
@@ -57,8 +66,30 @@ export function MonarkaHomeSections() {
 
       <section aria-label="Manifiesto" className="overflow-hidden border-y border-white/10 py-7">
         <div className="monarka-rail flex w-max items-center whitespace-nowrap text-[clamp(2.5rem,6vw,6rem)] font-medium uppercase leading-none tracking-[-0.05em] text-white/90">
-          <span>Sueña grande&nbsp; <i className="font-normal text-[#3d8bff]">✦</i>&nbsp; Transforma completo&nbsp; <i className="font-normal text-[#3d8bff]">✦</i>&nbsp; Vuela más lejos&nbsp; <i className="font-normal text-[#3d8bff]">✦</i>&nbsp;</span>
-          <span aria-hidden>Sueña grande&nbsp; <i className="font-normal text-[#3d8bff]">✦</i>&nbsp; Transforma completo&nbsp; <i className="font-normal text-[#3d8bff]">✦</i>&nbsp; Vuela más lejos&nbsp; <i className="font-normal text-[#3d8bff]">✦</i>&nbsp;</span>
+          <span>Sueña grande&nbsp; <Mark />&nbsp; Transforma completo&nbsp; <Mark />&nbsp; Vuela más lejos&nbsp; <Mark />&nbsp;</span>
+          <span aria-hidden>Sueña grande&nbsp; <Mark />&nbsp; Transforma completo&nbsp; <Mark />&nbsp; Vuela más lejos&nbsp; <Mark />&nbsp;</span>
+        </div>
+      </section>
+
+      <section id="capabilities" className="px-5 py-24 md:px-10 md:py-36">
+        <div className="mx-auto max-w-[1600px]">
+          <RevealOnScroll className="grid gap-8 pb-20 md:grid-cols-2">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3d8bff]">Lo que hacemos</p>
+            <h2 className="text-[clamp(2.8rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.055em]">De una posibilidad<br />a un producto real.</h2>
+          </RevealOnScroll>
+          <div className="grid gap-5 md:grid-cols-2">
+            {capabilities.map(([num, title, description], i) => (
+              <RevealOnScroll key={num} delay={i * 0.12}>
+                <div className="group flex h-full flex-col justify-between gap-10 rounded-[1.5rem] border border-white/15 bg-white/[0.03] p-8 transition-colors hover:border-[#3d8bff]/50 hover:bg-white/[0.06] md:p-10">
+                  <span className="text-xs font-semibold text-white/35">{num}</span>
+                  <div>
+                    <h3 className="text-3xl font-medium tracking-[-0.04em] transition-colors group-hover:text-[#72aaff] md:text-4xl">{title}</h3>
+                    <p className="mt-4 max-w-md text-sm leading-6 text-white/50 md:text-base">{description}</p>
+                  </div>
+                </div>
+              </RevealOnScroll>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -73,20 +104,29 @@ export function MonarkaHomeSections() {
           </RevealOnScroll>
 
           <div className="grid gap-5 lg:grid-cols-[1.65fr_.7fr]">
-            <RevealOnScroll className="group relative min-h-[62vh] overflow-hidden rounded-[1.5rem] bg-[#b8442a] md:min-h-[760px]">
+            <RevealOnScroll className="group relative flex min-h-[640px] items-center justify-center overflow-hidden rounded-[1.5rem] bg-[#b8442a] py-14 md:min-h-[760px]">
               <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(255,226,173,.5),transparent_32%)]" />
-              <Image
-                src="/assets/cata/CATA SCREENS/WhatsApp Image 2026-07-20 at 11.53.56 PM.jpeg"
-                alt="Pantalla de la aplicación CATA mostrando experiencias gastronómicas"
-                fill sizes="(min-width: 1024px) 68vw, 100vw"
-                className="object-contain object-center p-8 drop-shadow-2xl transition-transform duration-700 group-hover:scale-[1.035] md:p-16"
-              />
-              <span className="absolute left-6 top-6 rounded-full bg-[#f7f0e7] px-4 py-2 text-xs font-bold uppercase tracking-[0.14em]">En desarrollo</span>
+              <span className="absolute left-6 top-6 z-10 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-white backdrop-blur-sm">
+                <span className="h-2 w-2 rounded-full bg-white" />
+                Beta abierta para iPhone
+              </span>
+              <div className="relative z-[1] transition-transform duration-700 group-hover:scale-[1.02]">
+                <CataPhoneShowcase />
+              </div>
             </RevealOnScroll>
             <div className="flex min-h-[440px] flex-col justify-between rounded-[1.5rem] bg-[#171717] p-7 text-white md:p-10">
-              <RevealOnScroll>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#ef9f27]">Producto insignia</p>
-                <h3 className="mt-8 text-4xl font-medium leading-[0.95] tracking-[-0.05em] md:text-6xl">Tu mundo de sabores, lugares y memorias.</h3>
+              <RevealOnScroll delay={0.15}>
+                <div className="flex items-center gap-3">
+                  <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl">
+                    <Image src="/assets/cata/cata-icon.png" alt="" fill sizes="44px" className="object-cover" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold leading-tight">CATA</p>
+                    <p className="text-xs leading-tight text-white/50">Diario gastronómico social</p>
+                  </div>
+                </div>
+                <p className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-[#ef9f27]">Producto insignia</p>
+                <h3 className="mt-3 text-4xl font-medium leading-[0.95] tracking-[-0.05em] md:text-6xl">Tu mundo de sabores, lugares y memorias.</h3>
               </RevealOnScroll>
               <div>
                 <p className="mb-8 max-w-md text-base leading-7 text-white/55">CATA convierte cada comida en una historia. Descubre lugares, registra platillos y comparte experiencias que vale la pena recordar.</p>
@@ -97,33 +137,13 @@ export function MonarkaHomeSections() {
         </div>
       </section>
 
-      <section id="capabilities" className="px-5 py-24 md:px-10 md:py-36">
-        <div className="mx-auto max-w-[1600px]">
-          <RevealOnScroll className="grid gap-8 pb-20 md:grid-cols-2">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3d8bff]">Lo que hacemos</p>
-            <h2 className="text-[clamp(2.8rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.055em]">De una posibilidad<br />a un producto real.</h2>
-          </RevealOnScroll>
-          <div className="border-t border-white/20">
-            {capabilities.map(([num, title, description]) => (
-              <RevealOnScroll key={num}>
-                <div className="group grid gap-4 border-b border-white/20 py-8 transition-colors hover:text-[#72aaff] md:grid-cols-[5rem_1fr_1fr] md:items-center md:py-11">
-                  <span className="text-xs text-white/35">{num}</span>
-                  <h3 className="text-3xl font-medium tracking-[-0.04em] md:text-5xl">{title}</h3>
-                  <p className="max-w-md text-sm leading-6 text-white/50 transition-colors group-hover:text-white/70 md:justify-self-end md:text-base">{description}</p>
-                </div>
-              </RevealOnScroll>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section id="about" className="bg-[#3d8bff] px-5 py-24 text-black md:px-10 md:py-36">
         <div className="mx-auto grid max-w-[1600px] gap-16 lg:grid-cols-[1.15fr_.85fr]">
           <RevealOnScroll>
             <p className="mb-8 text-xs font-bold uppercase tracking-[0.2em]">Monarka TECH · El Paso, Texas</p>
             <h2 className="text-[clamp(3.2rem,7vw,7.5rem)] font-medium leading-[0.86] tracking-[-0.07em]">Construimos para la vida real.</h2>
           </RevealOnScroll>
-          <RevealOnScroll className="flex flex-col justify-end">
+          <RevealOnScroll delay={0.15} className="flex flex-col justify-end">
             <p className="mb-10 max-w-xl text-xl leading-8 md:text-2xl md:leading-9">Somos una compañía de tecnología enfocada en convertir ideas ambiciosas en experiencias digitales intuitivas, útiles y humanas.</p>
             <p className="mb-10 max-w-lg text-base leading-7 text-black/65">Combinamos pensamiento de producto, diseño y desarrollo para crear tecnología con valor práctico—desde aplicaciones propias hasta soluciones para negocios en crecimiento.</p>
             <ArrowLink href="mailto:hello@monarka.tech">Conoce a Monarka</ArrowLink>
@@ -142,6 +162,9 @@ export function MonarkaHomeSections() {
                 <ArrowUpRight aria-hidden className="mb-2 size-12 shrink-0 transition-transform group-hover:rotate-45 md:mb-5 md:size-24" />
               </span>
             </a>
+          </RevealOnScroll>
+          <RevealOnScroll delay={0.15}>
+            <ContactForm />
           </RevealOnScroll>
           <div className="mt-8 flex flex-col gap-4 text-xs uppercase tracking-[0.14em] text-white/45 md:flex-row md:items-center md:justify-between">
             <p>© 2026 Monarka TECH LLC</p>
