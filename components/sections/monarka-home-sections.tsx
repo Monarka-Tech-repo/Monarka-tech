@@ -4,11 +4,20 @@ import { RevealOnScroll } from "@/components/effects/reveal-on-scroll";
 import { MagneticButton } from "@/components/effects/magnetic-button";
 import { CataPhoneShowcase } from "@/components/sections/cata-phone-showcase";
 import { ContactForm } from "@/components/sections/contact-form";
+import { StripeWarp } from "@/components/effects/stripe-warp";
+import { HalftoneTexture } from "@/components/effects/halftone-texture";
+import { DreamBigBurst } from "@/components/effects/dream-big-burst";
+import { NavLogoReveal } from "@/components/effects/nav-logo-reveal";
+import { FaqSection } from "@/components/sections/faq-section";
+import { ServiceFunnelForm } from "@/components/sections/service-funnel-form";
 
-const navLinks = [
+const navLinksLeft = [
   { label: "Capacidades", href: "#capabilities" },
   { label: "Trabajo", href: "#work" },
+];
+const navLinksRight = [
   { label: "Nosotros", href: "#about" },
+  { label: "FAQ", href: "#faq" },
 ];
 
 // Official Dream Big seal (same mark used as the site favicon), used as the
@@ -54,7 +63,9 @@ export function MonarkaHomeSections() {
             <Image src="/assets/monarka-logo-dark.png" alt="" fill priority sizes="144px" className="object-contain object-left" />
           </a>
           <div className="hidden items-center gap-8 text-xs font-semibold uppercase tracking-[0.16em] md:flex">
-            {navLinks.map((link) => <a key={link.href} href={link.href} className="transition-opacity hover:opacity-50">{link.label}</a>)}
+            {navLinksLeft.map((link) => <a key={link.href} href={link.href} className="transition-opacity hover:opacity-50">{link.label}</a>)}
+            <NavLogoReveal size={50} />
+            {navLinksRight.map((link) => <a key={link.href} href={link.href} className="transition-opacity hover:opacity-50">{link.label}</a>)}
           </div>
           <a href="mailto:hello@monarka.tech" className="rounded-full border border-white/40 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition-colors hover:bg-white hover:text-black">
             Hablemos
@@ -71,8 +82,9 @@ export function MonarkaHomeSections() {
         </div>
       </section>
 
-      <section id="capabilities" className="px-5 py-24 md:px-10 md:py-36">
-        <div className="mx-auto max-w-[1600px]">
+      <section id="capabilities" className="relative overflow-hidden px-5 py-24 md:px-10 md:py-36">
+        <StripeWarp />
+        <div className="relative z-[1] mx-auto max-w-[1600px]">
           <RevealOnScroll className="grid gap-8 pb-20 md:grid-cols-2">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3d8bff]">Lo que hacemos</p>
             <h2 className="text-[clamp(2.8rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.055em]">De una posibilidad<br />a un producto real.</h2>
@@ -137,8 +149,9 @@ export function MonarkaHomeSections() {
         </div>
       </section>
 
-      <section id="about" className="bg-[#3d8bff] px-5 py-24 text-black md:px-10 md:py-36">
-        <div className="mx-auto grid max-w-[1600px] gap-16 lg:grid-cols-[1.15fr_.85fr]">
+      <section id="about" className="relative overflow-hidden bg-[#3d8bff] px-5 py-24 text-black md:px-10 md:py-36">
+        <HalftoneTexture />
+        <div className="relative z-[1] mx-auto grid max-w-[1600px] gap-16 lg:grid-cols-[1.15fr_.85fr]">
           <RevealOnScroll>
             <p className="mb-8 text-xs font-bold uppercase tracking-[0.2em]">Monarka TECH · El Paso, Texas</p>
             <h2 className="text-[clamp(3.2rem,7vw,7.5rem)] font-medium leading-[0.86] tracking-[-0.07em]">Construimos para la vida real.</h2>
@@ -147,6 +160,31 @@ export function MonarkaHomeSections() {
             <p className="mb-10 max-w-xl text-xl leading-8 md:text-2xl md:leading-9">Somos una compañía de tecnología enfocada en convertir ideas ambiciosas en experiencias digitales intuitivas, útiles y humanas.</p>
             <p className="mb-10 max-w-lg text-base leading-7 text-black/65">Combinamos pensamiento de producto, diseño y desarrollo para crear tecnología con valor práctico—desde aplicaciones propias hasta soluciones para negocios en crecimiento.</p>
             <ArrowLink href="mailto:hello@monarka.tech">Conoce a Monarka</ArrowLink>
+          </RevealOnScroll>
+        </div>
+      </section>
+
+      <section id="start" className="bg-[#efeee8] px-5 py-24 text-[#090909] md:px-10 md:py-36">
+        <div className="mx-auto max-w-[1600px]">
+          <RevealOnScroll className="mb-4 text-center">
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#176cff]">Empecemos</p>
+            <h2 className="text-[clamp(2.8rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.055em]">¿Quieres construir algo con nosotros?</h2>
+            <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-black/55">Cuéntanos qué necesitas y te respondemos directamente a tu correo.</p>
+          </RevealOnScroll>
+          <RevealOnScroll delay={0.15}>
+            <ServiceFunnelForm />
+          </RevealOnScroll>
+        </div>
+      </section>
+
+      <section id="faq" className="bg-[#050505] px-5 py-24 md:px-10 md:py-36">
+        <div className="mx-auto max-w-[1600px]">
+          <RevealOnScroll className="mb-16 text-center">
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#3d8bff]">Preguntas frecuentes</p>
+            <h2 className="text-[clamp(2.8rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.055em]">Antes de que preguntes.</h2>
+          </RevealOnScroll>
+          <RevealOnScroll delay={0.1}>
+            <FaqSection />
           </RevealOnScroll>
         </div>
       </section>
@@ -166,6 +204,9 @@ export function MonarkaHomeSections() {
           <RevealOnScroll delay={0.15}>
             <ContactForm />
           </RevealOnScroll>
+          <div className="mt-14 flex justify-center">
+            <DreamBigBurst size={96} />
+          </div>
           <div className="mt-8 flex flex-col gap-4 text-xs uppercase tracking-[0.14em] text-white/45 md:flex-row md:items-center md:justify-between">
             <p>© 2026 Monarka TECH LLC</p>
             <p>Sueña grande · Transforma completo · Vuela más lejos</p>
