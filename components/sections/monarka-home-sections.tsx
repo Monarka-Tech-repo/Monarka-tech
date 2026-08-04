@@ -210,7 +210,17 @@ export function MonarkaHomeSections() {
           <div className="mt-8 flex flex-col gap-4 text-xs uppercase tracking-[0.14em] text-white/45 md:flex-row md:items-center md:justify-between">
             <p>© 2026 Monarka TECH LLC</p>
             <p>Sueña grande · Transforma completo · Vuela más lejos</p>
-            <a href="mailto:hello@monarka.tech" className="text-white hover:text-[#3d8bff]">hello@monarka.tech</a>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              <a href="mailto:hello@monarka.tech" className="text-white hover:text-[#3d8bff]">hello@monarka.tech</a>
+              <a
+                href="https://instagram.com/monarka.tech"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-[#3d8bff]"
+              >
+                Instagram · @monarka.tech
+              </a>
+            </div>
           </div>
         </div>
       </footer>
