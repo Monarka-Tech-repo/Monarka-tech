@@ -194,6 +194,12 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 
 Añadir entradas nuevas arriba de las anteriores.
 
+### 2026-10-21 — Claude (2)
+
+- Carrusel de capacidades: se quitaron las 2 tarjetas con capturas de CATA a petición de Rubén (quedan 6 tarjetas, renumeradas 01–06).
+- Mockup de CATA en la home sincronizado con cata.life: mismas 13 capturas, mismo orden y mismos textos (es/en) que `slides` en `D:\MONARKA\CATA Webpage\components\cata-screens-showcase.tsx`. Se borraron las 4 capturas viejas que cata.life ya no usa. Si cambian las capturas en cata.life, repetir esta sincronización.
+- Verificación: lint y build limpios; Playwright: 13 imágenes del mockup cargan sin 404 en `/` y `/en/`, captions en el idioma correcto.
+
 ### 2026-10-21 — Claude
 
 - M-009: versión en inglés del sitio en `/en` y `/en/studio` (ver D-007).

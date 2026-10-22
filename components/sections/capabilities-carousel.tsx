@@ -6,9 +6,8 @@ import type { Dictionary } from "@/lib/i18n";
 
 type TextCard = { kind: "text"; num: string; title: string; description: string };
 type VideoCard = { kind: "video"; num: string; title: string; src: string };
-type ImageCard = { kind: "image"; num: string; title: string; src: string };
 type LinkCard = { kind: "link"; num: string; title: string; description: string; href: string };
-type Card = TextCard | VideoCard | ImageCard | LinkCard;
+type Card = TextCard | VideoCard | LinkCard;
 
 function buildCards(t: Dictionary["capabilities"], studioHref: string): Card[] {
   return [
@@ -16,20 +15,8 @@ function buildCards(t: Dictionary["capabilities"], studioHref: string): Card[] {
     { kind: "text", num: "02", ...t.apps },
     { kind: "video", num: "03", ...t.motion, src: "/assets/Copy of SOFTWARE PROPOSALS .mp4" },
     { kind: "text", num: "04", ...t.automation },
-    {
-      kind: "image",
-      num: "05",
-      ...t.recentWork,
-      src: "/assets/cata/Screens for webpage/WhatsApp Image 2026-07-20 at 11.41.32 PM (1).jpeg",
-    },
-    { kind: "text", num: "06", ...t.support },
-    {
-      kind: "image",
-      num: "07",
-      ...t.recentWork,
-      src: "/assets/cata/Screens for webpage/WhatsApp Image 2026-07-20 at 11.53.57 PM (5).jpeg",
-    },
-    { kind: "link", num: "08", ...t.studio, href: studioHref },
+    { kind: "text", num: "05", ...t.support },
+    { kind: "link", num: "06", ...t.studio, href: studioHref },
   ];
 }
 
@@ -138,15 +125,6 @@ export function CapabilitiesCarousel({
                       playsInline
                       className="h-full w-full object-contain"
                     />
-                  </div>
-                  <p className="px-8 py-6 text-sm font-semibold text-white/70 md:px-10">{card.title}</p>
-                </div>
-              )}
-              {card.kind === "image" && (
-                <div className="flex flex-1 flex-col justify-between">
-                  <div className="relative mt-4 aspect-square overflow-hidden bg-black">
-                    {/* eslint-disable-next-line @next/next/no-img-element -- small carousel thumbnail, not worth next/image's fixed-layout overhead here */}
-                    <img src={card.src} alt={card.title} className="h-full w-full object-cover object-top" />
                   </div>
                   <p className="px-8 py-6 text-sm font-semibold text-white/70 md:px-10">{card.title}</p>
                 </div>

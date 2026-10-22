@@ -8,19 +8,22 @@ import type { Dictionary } from "@/lib/i18n";
 // A real 3D carousel — one phone mockup per real screenshot, arranged
 // around a circle in 3D space and rotating to bring each one to the
 // front — reading from this site's own copy of the same curated
-// screenshot folder used on cata.life.
+// screenshot folder used on cata.life. Order and captions mirror
+// `slides` in the CATA Webpage repo (components/cata-screens-showcase.tsx).
 const screens = [
-  "WhatsApp Image 2026-07-20 at 11.41.32 PM (1).jpeg",
-  "WhatsApp Image 2026-07-20 at 11.41.32 PM (4).jpeg",
-  "WhatsApp Image 2026-07-20 at 11.41.32 PM.jpeg",
-  "WhatsApp Image 2026-07-20 at 11.53.57 PM (3).jpeg",
-  "WhatsApp Image 2026-07-20 at 11.53.57 PM (5).jpeg",
-  "WhatsApp Image 2026-07-20 at 11.53.57 PM (6).jpeg",
-  "WhatsApp Image 2026-07-20 at 11.53.57 PM (8).jpeg",
-  "WhatsApp Image 2026-07-20 at 11.53.58 PM (7).jpeg",
+  "WhatsApp Image 2026-10-21 at 6.09.36 PM.jpeg",
+  "WhatsApp Image 2026-10-21 at 6.48.27 PM.jpeg",
   "WhatsApp Image 2026-07-21 at 1.11.18 AM (2).jpeg",
-  "WhatsApp Image 2026-07-21 at 1.28.34 AM (2).jpeg",
   "WhatsApp Image 2026-07-21 at 1.28.35 AM.jpeg",
+  "WhatsApp Image 2026-10-21 at 6.51.51 PM.jpeg",
+  "WhatsApp Image 2026-10-21 at 6.51.51 PM (1).jpeg",
+  "WhatsApp Image 2026-10-21 at 6.51.51 PM (2).jpeg",
+  "WhatsApp Image 2026-10-21 at 1.02.08 PM.jpeg",
+  "WhatsApp Image 2026-07-20 at 11.53.57 PM (8).jpeg",
+  "WhatsApp Image 2026-07-20 at 11.53.57 PM (6).jpeg",
+  "WhatsApp Image 2026-07-20 at 11.53.57 PM (5).jpeg",
+  "WhatsApp Image 2026-07-20 at 11.41.32 PM (4).jpeg",
+  "WhatsApp Image 2026-07-20 at 11.53.57 PM (3).jpeg",
 ].map((name) => `/assets/cata/Screens for webpage/${encodeURIComponent(name)}`);
 
 const PHONE_WIDTH = 170;
