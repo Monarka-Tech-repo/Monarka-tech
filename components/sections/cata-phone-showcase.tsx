@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
+import type { Dictionary } from "@/lib/i18n";
 
 // A real 3D carousel — one phone mockup per real screenshot, arranged
 // around a circle in 3D space and rotating to bring each one to the
@@ -22,26 +23,14 @@ const screens = [
   "WhatsApp Image 2026-07-21 at 1.28.35 AM.jpeg",
 ].map((name) => `/assets/cata/Screens for webpage/${encodeURIComponent(name)}`);
 
-const captions = [
-  ["Descubre tu perfil de gustos", "Convierte cada registro en una visión clara de lo que te encanta."],
-  ["Guarda lo que vale la pena", "Crea un diario visual de platillos, bebidas y lugares."],
-  ["Recuerda cada experiencia", "Fotos, notas y calificaciones siempre a la mano."],
-  ["Crea y comparte recetas", "Lleva la inspiración de la mesa a tu propia cocina."],
-  ["Explora nuevas ideas", "Encuentra experiencias construidas alrededor de tu gusto."],
-  ["Construye tu historia", "Cada comida se convierte en parte de tu colección."],
-  ["Comparte con tu gente", "Descubre qué están probando las personas en las que confías."],
-  ["Planea tu próxima salida", "Guarda restaurantes, recetas y viajes gastronómicos."],
-  ["Conoce mejor tu paladar", "Tus hábitos se transforman en recomendaciones más personales."],
-  ["Celebra cada hallazgo", "Haz visibles los platillos y lugares que recomendarías."],
-  ["Todo tu mundo gastronómico", "Una sola app para descubrir, guardar y compartir."],
-];
-
 const PHONE_WIDTH = 170;
 const PHONE_HEIGHT = 350;
 const RADIUS = 300;
 const STEP = 360 / screens.length;
 
-export function CataPhoneShowcase() {
+// `t.captions` is ordered to match `screens` one-to-one.
+export function CataPhoneShowcase({ t }: { t: Dictionary["cataShowcase"] }) {
+  const { captions } = t;
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -89,7 +78,7 @@ export function CataPhoneShowcase() {
                   />
                   <Image
                     src={src}
-                    alt="Captura de la app CATA"
+                    alt={t.screenshotAlt}
                     fill
                     sizes="220px"
                     className="object-cover object-top"

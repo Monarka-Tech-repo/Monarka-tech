@@ -8,6 +8,7 @@ import { useEffect, useRef } from "react";
 export function StripeWarp() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouse = useRef<{ x: number; y: number; active: boolean }>({ x: -9999, y: -9999, active: false });
+  const boost = useRef(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -42,9 +43,14 @@ export function StripeWarp() {
       mouse.current.active = false;
     };
 
+    const onBoost = (e: Event) => {
+      boost.current = (e as CustomEvent<{ active: boolean }>).detail.active;
+    };
+
     container.addEventListener("mousemove", onMove);
     container.addEventListener("mouseleave", onLeave);
     window.addEventListener("resize", resize);
+    window.addEventListener("stripe-warp-boost", onBoost);
 
     const spacing = 7;
     let raf = 0;
@@ -56,7 +62,11 @@ export function StripeWarp() {
 
       const { x: mx, y: my, active } = mouse.current;
       const targetIntensity = active ? 1 : 0;
-      const fisheyeRadius = 220;
+      // Hovering a card (or other interactive element) over the effect
+      // dispatches a "stripe-warp-boost" event, amplifying the reaction so
+      // the background visibly responds to that interaction too.
+      const boostAmount = boost.current ? 1.8 : 1;
+      const fisheyeRadius = 220 * boostAmount;
 
       for (let x = 0; x < width; x += spacing) {
         ctx.beginPath();
@@ -69,13 +79,13 @@ export function StripeWarp() {
           const dy = y - my;
           const dist = Math.sqrt(dx * dx + dy * dy);
           const falloff = Math.exp(-dist / 180) * targetIntensity;
-          const ripple = Math.sin(dist * 0.06 - t * 3) * 14 * falloff;
+          const ripple = Math.sin(dist * 0.06 - t * 3) * 14 * falloff * boostAmount;
 
           // Fisheye: a lens-like bulge that pushes the stripe radially away
           // from the cursor, strongest a little outside the very center.
           const fisheyeFalloff = Math.exp(-dist / fisheyeRadius) * targetIntensity;
           const dxNorm = dist > 0.001 ? dx / dist : 0;
-          const fisheye = dxNorm * fisheyeFalloff * 46;
+          const fisheye = dxNorm * fisheyeFalloff * 46 * boostAmount;
 
           // Always-on ambient sway — slow, layered sines at different
           // frequencies per point, like a sea plant swaying in current.
@@ -107,6 +117,7 @@ export function StripeWarp() {
       container.removeEventListener("mousemove", onMove);
       container.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("stripe-warp-boost", onBoost);
     };
   }, []);
 

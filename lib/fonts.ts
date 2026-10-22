@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import {
   Inter,
   JetBrains_Mono,
@@ -8,8 +7,6 @@ import {
   Plus_Jakarta_Sans,
   Caveat,
 } from "next/font/google";
-import "./globals.css";
-import { siteConfig } from "@/lib/site";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -54,26 +51,6 @@ const caveat = Caveat({
   weight: ["400", "600", "700"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
-  title: {
-    default: `${siteConfig.name} — Premium Software. Built to Last.`,
-    template: `%s — ${siteConfig.name}`,
-  },
-  description: siteConfig.description,
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html
-      lang="es"
-      className={`${inter.variable} ${jetbrainsMono.variable} ${orbitron.variable} ${rajdhani.variable} ${fraunces.variable} ${plusJakarta.variable} ${caveat.variable}`}
-    >
-      <body className="antialiased">{children}</body>
-    </html>
-  );
-}
+export const fontVariables = [inter, jetbrainsMono, orbitron, rajdhani, fraunces, plusJakarta, caveat]
+  .map((font) => font.variable)
+  .join(" ");

@@ -66,6 +66,7 @@ Usar una fila por tarea. Una tarea solo puede tener un responsable activo.
 | M-006 | Media | Google Places API para autocomplete en la búsqueda de Explore (dentro de la demo de CATA) | Sin asignar (requiere key de Rubén, restringida a monarka.tech + Places API únicamente) | Pendiente | components/demo/demo-explore.tsx | 2026-07-12 |
 | M-007 | Alta | Reconstruir `/products/cata` como página informativa simple y completar Privacidad, Términos y FAQ de CATA | Codex | Terminada | app/products/cata/**, components/layout/site-header.tsx | 2026-08-01 |
 | M-008 | Alta | Rediseñar la homepage con dirección editorial premium, movimiento accesible y CATA como caso destacado | Codex | Terminada | app/(bare)/page.tsx, app/globals.css, components/sections/monarka-home-sections.tsx, components/effects/** | 2026-08-03 |
+| M-009 | Alta | Versión en inglés del sitio (`/en`, `/en/studio`): diccionarios es/en, hreflang, sitemap bilingüe, selector de idioma | Claude | En revisión (Rubén revisa el tono del copy en inglés) | app/**, lib/i18n/**, lib/fonts.ts, components/sections/**, components/layout/**, components/effects/background-music.tsx | 2026-10-21 |
 
 Estados permitidos: `Pendiente`, `En curso`, `Bloqueada`, `En revisión`, `Terminada`.
 
@@ -142,6 +143,7 @@ Registrar aquí decisiones que deban sobrevivir a una sesión. No borrar decisio
 | D-003 | 2026-07-12 | Cutover completo a Cloudflare Pages: nameservers movidos, proyecto `monarka-tech` conectado a GitHub, dominio personalizado `monarka.tech` agregado y activo. Se eliminó el proyecto Pages duplicado `monarkatech` (creado por error en un primer intento). Se borraron del repo los archivos estáticos viejos y `assets/` raíz una vez confirmado que Cloudflare servía el sitio nuevo correctamente. | GitHub Pages ya no es necesario; un solo proyecto Pages evita confusión. | Rubén (en sesión, paso a paso vía dashboard + Claude usando la API de Cloudflare con un token que Rubén generó) |
 | D-004 | 2026-07-12 | Reemplazar el tema "neon/cyberpunk" de `/products/cata` (Orbitron, negro puro, naranja neón) — que era una invención sin relación con la app real — por la identidad visual real de CATA, tomada directamente de `D:\CATA\CATA_App\src\theme\index.js`: terracota (#B8442A) + parchment/crema + Fraunces (serif) + Plus Jakarta Sans + Caveat (manuscrita). Monarka TECH (negro/naranja) y el tema Legal (azul) no cambian. La demo interactiva de teléfono en `/products/cata` (Explore/Feed/Log/My Menu/Perfil) también se reconstruyó para reflejar la estructura real de las pantallas (`FeedScreen.js`, `ExploreScreen.js`, `MyMenuScreen.js`) y el set de íconos real (`assets/icons/modern/*.svg`), no aproximaciones genéricas. | Rubén notó repetidamente que el GUI no coincidía con la app real; la causa raíz era que el tema original del sitio nunca se basó en el diseño real de la app. | Rubén (en sesión 2026-07-12, iterando sobre capturas y código fuente real) |
 | D-005 | 2026-08-01 | Simplificar `/products/cata` a una página informativa editorial, sin demo interactiva, con estado del producto y acceso directo a privacidad, términos, FAQ, soporte y eliminación de cuenta. | Rubén solicitó limpiar y rehacer la sección CATA desde cero como página de información. | Rubén |
+| D-007 | 2026-10-21 | Sitio bilingüe: español en la raíz (`/`, `/studio`), inglés con prefijo (`/en`, `/en/studio`). Sin librería i18n: diccionarios tipados en `lib/i18n/es.ts` (fuente de la forma) y `lib/i18n/en.ts`; `localePath()` arma URLs por idioma. Dos layouts raíz (`app/(es)/layout.tsx`, `app/(en)/en/layout.tsx`) que comparten `components/layout/root-document.tsx`, para que `<html lang>` sea correcto en el export estático. Cada página declara canonical + hreflang (`localeAlternates`) y el sitemap lista ambos idiomas. Sin redirección automática por idioma del navegador (Google la desaconseja y el export estático no tiene servidor). Texto nuevo de cualquier página va en ambos diccionarios, nunca directo en el componente. | SEO en búsquedas en inglés (mercado bilingüe de El Paso) sin cambiar las URLs en español ya indexadas. | Rubén (pidió la versión en inglés, 2026-10-21) |
 | D-006 | 2026-08-03 | La homepage adopta una dirección editorial oscura y project-first: tipografía de gran escala, manifiesto en movimiento, CATA como caso principal, capacidades en lista y CTA directo; el diagrama anterior deja de formar parte de la ruta pública. | La composición anterior repetía tarjetas informativas y no alcanzaba la calidad ni jerarquía de las referencias aprobadas. | Rubén |
 
 ## 9. Handoffs
@@ -191,6 +193,16 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 ## 10. Bitácora
 
 Añadir entradas nuevas arriba de las anteriores.
+
+### 2026-10-21 — Claude
+
+- M-009: versión en inglés del sitio en `/en` y `/en/studio` (ver D-007).
+- Movió todo el texto visible y de accesibilidad (aria-labels, alt) de los componentes a `lib/i18n/es.ts`; redactó `lib/i18n/en.ts` como copy de marketing natural, no traducción literal. Lema en inglés propuesto: "Dream big · Transform fully · Fly further" — pendiente de aprobación de Rubén.
+- Renombró `app/(bare)` → `app/(es)` y reemplazó `app/layout.tsx` por dos layouts raíz; fuentes movidas a `lib/fonts.ts`.
+- Selector ES/EN en la navegación (visible también en móvil) que lleva a la misma página en el otro idioma.
+- Los formularios (contacto y solicitud de servicio) ahora envían `locale` a Zapier para saber en qué idioma responder; en inglés, las respuestas del funnel llegan en inglés.
+- El sitemap ahora incluye `/studio` (faltaba) y las versiones en inglés, con URLs con barra final que coinciden con los canonical.
+- Verificación: `npm run lint` limpio; `npm run build` exitoso (4 páginas + metadata); HTML exportado revisado (lang, canonical, hreflang, sitemap); Playwright headless sobre `out/` en 1440px y 375px: sin texto en español en `/en/`, el funnel funciona en inglés, el selector cambia de idioma correctamente, sin overflow horizontal en móvil y sin errores de consola.
 
 ### 2026-08-03 — Codex
 

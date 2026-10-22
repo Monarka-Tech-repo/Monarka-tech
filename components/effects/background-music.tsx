@@ -7,7 +7,7 @@ import { Volume2, VolumeX } from "lucide-react";
 // click is itself a valid user gesture, so it can start playing with sound
 // immediately, no separate "unmute" step needed. The choice is remembered
 // across visits via localStorage.
-export function BackgroundMusic() {
+export function BackgroundMusic({ labels }: { labels: { on: string; off: string } }) {
   const audioRef = useRef<HTMLAudioElement>(null);
   // Starts muted (matches server-rendered HTML, avoids a hydration
   // mismatch); synced from localStorage right after mount, client-only.
@@ -44,7 +44,7 @@ export function BackgroundMusic() {
       <button
         type="button"
         onClick={toggle}
-        aria-label={muted ? "Activar música" : "Silenciar música"}
+        aria-label={muted ? labels.on : labels.off}
         aria-pressed={!muted}
         className="fixed bottom-6 right-6 z-50 flex size-11 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white backdrop-blur-md transition-colors hover:border-white/40 hover:bg-black/80"
       >

@@ -2,36 +2,14 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import type { Dictionary } from "@/lib/i18n";
 
-const faqs = [
-  {
-    q: "¿Cuánto tiempo toma un proyecto?",
-    a: "Depende del alcance, pero desde la primera conversación te damos un cronograma claro y realista.",
-  },
-  {
-    q: "¿Qué tecnologías usan?",
-    a: "Elegimos tecnología moderna y escalable según las necesidades específicas de cada proyecto, no una plantilla fija.",
-  },
-  {
-    q: "¿Ofrecen soporte después del lanzamiento?",
-    a: "Sí. Ofrecemos soporte continuo y mantenimiento para que tu producto siga funcionando bien con el tiempo.",
-  },
-  {
-    q: "¿Trabajan con negocios pequeños y grandes?",
-    a: "Sí, trabajamos con negocios en distintas etapas — desde ideas nuevas hasta empresas ya establecidas.",
-  },
-  {
-    q: "¿Cómo empiezo un proyecto con Monarka?",
-    a: "Completa el formulario de solicitud de proyecto en esta misma página, o escríbenos directamente a hello@monarka.tech.",
-  },
-];
-
-export function FaqSection() {
+export function FaqSection({ items }: { items: Dictionary["faq"] }) {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
     <div className="mx-auto max-w-3xl">
-      {faqs.map((item, i) => {
+      {items.map((item, i) => {
         const isOpen = open === i;
         return (
           <div key={item.q} className="border-b border-white/15">

@@ -9,17 +9,9 @@ import { HalftoneTexture } from "@/components/effects/halftone-texture";
 import { DreamBigBurst } from "@/components/effects/dream-big-burst";
 import { FaqSection } from "@/components/sections/faq-section";
 import { ServiceFunnelForm } from "@/components/sections/service-funnel-form";
+import { CapabilitiesCarousel } from "@/components/sections/capabilities-carousel";
 import { SiteNav } from "@/components/layout/site-nav";
-
-const navLinksLeft = [
-  { label: "Capacidades", href: "#capabilities" },
-  { label: "Trabajo", href: "#work" },
-  { label: "Studio", href: "/studio" },
-];
-const navLinksRight = [
-  { label: "Nosotros", href: "#about" },
-  { label: "FAQ", href: "#faq" },
-];
+import { getDictionary, localePath, type Locale } from "@/lib/i18n";
 
 // Official Dream Big seal (same mark used as the site favicon), used as the
 // marquee's separator instead of a generic star glyph.
@@ -28,24 +20,36 @@ function Mark() {
   return <img src="/icon.png" alt="" aria-hidden className="inline-block h-[1.5em] w-[1.5em] -translate-y-[0.05em] align-middle" />;
 }
 
-const capabilities = [
-  ["01", "Productos digitales", "Concepto, estrategia y experiencias que se sienten naturales desde el primer toque."],
-  ["02", "Apps y plataformas", "Aplicaciones móviles y plataformas web construidas para evolucionar, no para caducar."],
-  ["03", "Automatización", "Sistemas inteligentes que eliminan fricción y convierten trabajo repetitivo en impulso."],
-  ["04", "Tecnología y soporte", "Infraestructura, implementación y acompañamiento técnico para negocios en movimiento."],
-];
+function Manifesto({ phrases }: { phrases: string[] }) {
+  return phrases.map((phrase) => (
+    <span key={phrase}>{phrase}&nbsp; <Mark />&nbsp; </span>
+  ));
+}
 
-export function MonarkaHomeSections() {
+export function MonarkaHomeSections({ locale }: { locale: Locale }) {
+  const dict = getDictionary(locale);
+  const t = dict.home;
+
+  const navLinksLeft = [
+    { label: dict.nav.capabilities, href: "#capabilities" },
+    { label: dict.nav.work, href: "#work" },
+    { label: dict.nav.studio, href: localePath(locale, "/studio") },
+  ];
+  const navLinksRight = [
+    { label: dict.nav.about, href: "#about" },
+    { label: dict.nav.faq, href: "#faq" },
+  ];
+
   return (
     <main className="monarka-home bg-[#050505] text-[#f4f4ef]">
-      <SiteNav logoHref="#top" navLinksLeft={navLinksLeft} navLinksRight={navLinksRight} />
+      <SiteNav locale={locale} path="/" logoHref="#top" navLinksLeft={navLinksLeft} navLinksRight={navLinksRight} />
 
       <section id="top" aria-hidden className="h-20" />
 
-      <section aria-label="Manifiesto" className="overflow-hidden border-y border-white/10 py-7">
+      <section aria-label={t.manifestoLabel} className="overflow-hidden border-y border-white/10 py-7">
         <div className="monarka-rail flex w-max items-center whitespace-nowrap text-[clamp(2.5rem,6vw,6rem)] font-medium uppercase leading-none tracking-[-0.05em] text-white/90">
-          <span>Sueña grande&nbsp; <Mark />&nbsp; Transforma completo&nbsp; <Mark />&nbsp; Vuela más lejos&nbsp; <Mark />&nbsp;</span>
-          <span aria-hidden>Sueña grande&nbsp; <Mark />&nbsp; Transforma completo&nbsp; <Mark />&nbsp; Vuela más lejos&nbsp; <Mark />&nbsp;</span>
+          <span><Manifesto phrases={dict.common.taglinePhrases} /></span>
+          <span aria-hidden><Manifesto phrases={dict.common.taglinePhrases} /></span>
         </div>
       </section>
 
@@ -53,35 +57,12 @@ export function MonarkaHomeSections() {
         <StripeWarp />
         <div className="relative z-[1] mx-auto max-w-[1600px]">
           <RevealOnScroll className="grid gap-8 pb-20 md:grid-cols-2">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3d8bff]">Lo que hacemos</p>
-            <h2 className="text-[clamp(2.8rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.055em]">De una posibilidad<br />a un producto real.</h2>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3d8bff]">{t.capabilities.eyebrow}</p>
+            <h2 className="text-[clamp(2.8rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.055em]">{t.capabilities.titleLines[0]}<br />{t.capabilities.titleLines[1]}</h2>
           </RevealOnScroll>
-          <div className="grid gap-5 md:grid-cols-2">
-            {capabilities.map(([num, title, description], i) => (
-              <RevealOnScroll key={num} delay={i * 0.12}>
-                <div className="group flex h-full flex-col justify-between gap-10 rounded-[1.5rem] border border-white/15 bg-white/[0.03] p-8 transition-colors hover:border-[#3d8bff]/50 hover:bg-white/[0.06] md:p-10">
-                  <span className="text-xs font-semibold text-white/35">{num}</span>
-                  <div>
-                    <h3 className="text-3xl font-medium tracking-[-0.04em] transition-colors group-hover:text-[#72aaff] md:text-4xl">{title}</h3>
-                    <p className="mt-4 max-w-md text-sm leading-6 text-white/50 md:text-base">{description}</p>
-                  </div>
-                </div>
-              </RevealOnScroll>
-            ))}
-            <RevealOnScroll delay={capabilities.length * 0.12} className="md:col-span-2">
-              <a
-                href="/studio"
-                className="group flex h-full flex-col justify-between gap-6 rounded-[1.5rem] border border-white/15 bg-white/[0.03] p-8 transition-colors hover:border-[#3d8bff]/50 hover:bg-white/[0.06] md:flex-row md:items-center md:gap-10 md:p-10"
-              >
-                <div>
-                  <span className="text-xs font-semibold text-white/35">05</span>
-                  <h3 className="mt-4 text-3xl font-medium tracking-[-0.04em] transition-colors group-hover:text-[#72aaff] md:text-4xl">Monarka 3D Studio</h3>
-                  <p className="mt-4 max-w-md text-sm leading-6 text-white/50 md:text-base">Medios 3D y sonido — audio espacial para anuncios, y experiencias inmersivas en camino.</p>
-                </div>
-                <ArrowUpRight aria-hidden className="size-8 shrink-0 text-white/50 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#72aaff] md:size-10" />
-              </a>
-            </RevealOnScroll>
-          </div>
+        </div>
+        <div className="relative z-[1]">
+          <CapabilitiesCarousel t={dict.capabilities} studioHref={localePath(locale, "/studio")} />
         </div>
       </section>
 
@@ -89,10 +70,10 @@ export function MonarkaHomeSections() {
         <div className="mx-auto max-w-[1600px]">
           <RevealOnScroll className="mb-12 flex items-end justify-between border-b border-black/20 pb-5 md:mb-20">
             <div>
-              <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#176cff]">Trabajo seleccionado · 01</p>
+              <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#176cff]">{t.work.eyebrow}</p>
               <h2 className="text-[clamp(3.5rem,9vw,9rem)] font-medium leading-[0.82] tracking-[-0.075em]">CATA</h2>
             </div>
-            <p className="hidden max-w-xs text-right text-sm leading-6 text-black/55 md:block">Producto propio<br />Food discovery · Social journal</p>
+            <p className="hidden max-w-xs text-right text-sm leading-6 text-black/55 md:block">{t.work.metaLines[0]}<br />{t.work.metaLines[1]}</p>
           </RevealOnScroll>
 
           <div className="grid gap-5 lg:grid-cols-[1.65fr_.7fr]">
@@ -100,10 +81,10 @@ export function MonarkaHomeSections() {
               <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(255,226,173,.5),transparent_32%)]" />
               <span className="absolute left-6 top-6 z-10 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-white backdrop-blur-sm">
                 <span className="h-2 w-2 rounded-full bg-white" />
-                Beta abierta para iPhone
+                {t.work.badge}
               </span>
               <div className="relative z-[1] transition-transform duration-700 group-hover:scale-[1.02]">
-                <CataPhoneShowcase />
+                <CataPhoneShowcase t={dict.cataShowcase} />
               </div>
             </RevealOnScroll>
             <div className="flex min-h-[440px] flex-col justify-between rounded-[1.5rem] bg-[#171717] p-7 text-white md:p-10">
@@ -114,15 +95,15 @@ export function MonarkaHomeSections() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold leading-tight">CATA</p>
-                    <p className="text-xs leading-tight text-white/50">Diario gastronómico social</p>
+                    <p className="text-xs leading-tight text-white/50">{t.work.cataSubtitle}</p>
                   </div>
                 </div>
-                <p className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-[#ef9f27]">Producto insignia</p>
-                <h3 className="mt-3 text-4xl font-medium leading-[0.95] tracking-[-0.05em] md:text-6xl">Tu mundo de sabores, lugares y memorias.</h3>
+                <p className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-[#ef9f27]">{t.work.cardEyebrow}</p>
+                <h3 className="mt-3 text-4xl font-medium leading-[0.95] tracking-[-0.05em] md:text-6xl">{t.work.cardTitle}</h3>
               </RevealOnScroll>
               <div>
-                <p className="mb-8 max-w-md text-base leading-7 text-white/55">CATA convierte cada comida en una historia. Descubre lugares, registra platillos y comparte experiencias que vale la pena recordar.</p>
-                <ArrowLink href="https://cata.life" light>Descubrir CATA</ArrowLink>
+                <p className="mb-8 max-w-md text-base leading-7 text-white/55">{t.work.cardBody}</p>
+                <ArrowLink href="https://cata.life" light>{t.work.cardCta}</ArrowLink>
               </div>
             </div>
           </div>
@@ -133,13 +114,13 @@ export function MonarkaHomeSections() {
         <HalftoneTexture />
         <div className="relative z-[1] mx-auto grid max-w-[1600px] gap-16 lg:grid-cols-[1.15fr_.85fr]">
           <RevealOnScroll>
-            <p className="mb-8 text-xs font-bold uppercase tracking-[0.2em]">Monarka TECH · El Paso, Texas</p>
-            <h2 className="text-[clamp(3.2rem,7vw,7.5rem)] font-medium leading-[0.86] tracking-[-0.07em]">Construimos para la vida real.</h2>
+            <p className="mb-8 text-xs font-bold uppercase tracking-[0.2em]">{t.about.eyebrow}</p>
+            <h2 className="text-[clamp(3.2rem,7vw,7.5rem)] font-medium leading-[0.86] tracking-[-0.07em]">{t.about.title}</h2>
           </RevealOnScroll>
           <RevealOnScroll delay={0.15} className="flex flex-col justify-end">
-            <p className="mb-10 max-w-xl text-xl leading-8 md:text-2xl md:leading-9">Somos una compañía de tecnología enfocada en convertir ideas ambiciosas en experiencias digitales intuitivas, útiles y humanas.</p>
-            <p className="mb-10 max-w-lg text-base leading-7 text-black/65">Combinamos pensamiento de producto, diseño y desarrollo para crear tecnología con valor práctico—desde aplicaciones propias hasta soluciones para negocios en crecimiento.</p>
-            <ArrowLink href="mailto:hello@monarka.tech">Conoce a Monarka</ArrowLink>
+            <p className="mb-10 max-w-xl text-xl leading-8 md:text-2xl md:leading-9">{t.about.lead}</p>
+            <p className="mb-10 max-w-lg text-base leading-7 text-black/65">{t.about.body}</p>
+            <ArrowLink href="mailto:hello@monarka.tech">{t.about.cta}</ArrowLink>
           </RevealOnScroll>
         </div>
       </section>
@@ -147,12 +128,12 @@ export function MonarkaHomeSections() {
       <section id="start" className="bg-[#efeee8] px-5 py-24 text-[#090909] md:px-10 md:py-36">
         <div className="mx-auto max-w-[1600px]">
           <RevealOnScroll className="mb-4 text-center">
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#176cff]">Empecemos</p>
-            <h2 className="text-[clamp(2.8rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.055em]">¿Quieres construir algo con nosotros?</h2>
-            <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-black/55">Cuéntanos qué necesitas y te respondemos directamente a tu correo.</p>
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#176cff]">{t.start.eyebrow}</p>
+            <h2 className="text-[clamp(2.8rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.055em]">{t.start.title}</h2>
+            <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-black/55">{t.start.body}</p>
           </RevealOnScroll>
           <RevealOnScroll delay={0.15}>
-            <ServiceFunnelForm />
+            <ServiceFunnelForm locale={locale} t={dict.funnel} common={dict.common} />
           </RevealOnScroll>
         </div>
       </section>
@@ -160,11 +141,11 @@ export function MonarkaHomeSections() {
       <section id="faq" className="bg-[#050505] px-5 py-24 md:px-10 md:py-36">
         <div className="mx-auto max-w-[1600px]">
           <RevealOnScroll className="mb-16 text-center">
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#3d8bff]">Preguntas frecuentes</p>
-            <h2 className="text-[clamp(2.8rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.055em]">Antes de que preguntes.</h2>
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#3d8bff]">{t.faq.eyebrow}</p>
+            <h2 className="text-[clamp(2.8rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.055em]">{t.faq.title}</h2>
           </RevealOnScroll>
           <RevealOnScroll delay={0.1}>
-            <FaqSection />
+            <FaqSection items={dict.faq} />
           </RevealOnScroll>
         </div>
       </section>
@@ -173,23 +154,23 @@ export function MonarkaHomeSections() {
         <div aria-hidden className="absolute bottom-[-30rem] left-1/2 size-[60rem] -translate-x-1/2 rounded-full bg-[#176cff]/20 blur-[140px]" />
         <div className="relative mx-auto max-w-[1600px]">
           <RevealOnScroll>
-            <p className="mb-8 text-xs font-bold uppercase tracking-[0.2em] text-[#3d8bff]">¿Tienes una idea?</p>
+            <p className="mb-8 text-xs font-bold uppercase tracking-[0.2em] text-[#3d8bff]">{t.footer.eyebrow}</p>
             <a href="mailto:hello@monarka.tech" className="group block border-b border-white/20 pb-12">
               <span className="flex items-end justify-between gap-6 text-[clamp(3.2rem,9.5vw,10rem)] font-medium leading-[0.82] tracking-[-0.075em]">
-                Hagámosla real.
+                {t.footer.title}
                 <ArrowUpRight aria-hidden className="mb-2 size-12 shrink-0 transition-transform group-hover:rotate-45 md:mb-5 md:size-24" />
               </span>
             </a>
           </RevealOnScroll>
           <RevealOnScroll delay={0.15}>
-            <ContactForm />
+            <ContactForm locale={locale} t={dict.contactForm} common={dict.common} />
           </RevealOnScroll>
           <div className="mt-14 flex justify-center">
             <DreamBigBurst size={96} />
           </div>
           <div className="mt-8 flex flex-col gap-4 text-xs uppercase tracking-[0.14em] text-white/45 md:flex-row md:items-center md:justify-between">
             <p>© 2026 Monarka TECH LLC</p>
-            <p>Sueña grande · Transforma completo · Vuela más lejos</p>
+            <p>{dict.common.taglinePhrases.join(" · ")}</p>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
               <a href="mailto:hello@monarka.tech" className="text-white hover:text-[#3d8bff]">hello@monarka.tech</a>
               <a
