@@ -22,10 +22,10 @@ export function SiteNav({
   const otherLocale: Locale = locale === "es" ? "en" : "es";
 
   return (
-    <nav aria-label={t.navLabel} className="fixed inset-x-0 top-0 z-50 mix-blend-difference">
+    <nav aria-label={t.navLabel} className="fixed inset-x-0 top-0 z-50 border-b border-black/5 bg-white/85 text-[#090909] backdrop-blur-md">
       <div className="mx-auto flex h-20 max-w-[1600px] items-center justify-between px-5 md:px-10">
         <a href={logoHref} aria-label={t.logoLabel} className="relative block h-8 w-36">
-          <Image src="/assets/monarka-logo-dark.png" alt="" fill priority sizes="144px" className="object-contain object-left" />
+          <Image src="/assets/monarka-logo-transparent.png" alt="" fill priority sizes="144px" className="object-contain object-left" />
         </a>
         <div className="hidden items-center gap-8 text-xs font-semibold uppercase tracking-[0.16em] md:flex">
           {navLinksLeft.map((link) => <a key={link.href} href={link.href} className="transition-opacity hover:opacity-50">{link.label}</a>)}
@@ -42,7 +42,7 @@ export function SiteNav({
           >
             {t.switchLanguage.short}
           </a>
-          <a href="mailto:hello@monarka.tech" className="rounded-full border border-white/40 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition-colors hover:bg-white hover:text-black">
+          <a href="mailto:hello@monarka.tech" className="rounded-full border border-black/25 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition-colors hover:bg-black hover:text-white">
             {t.talk}
           </a>
         </div>

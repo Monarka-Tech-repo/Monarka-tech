@@ -13,19 +13,6 @@ import { CapabilitiesCarousel } from "@/components/sections/capabilities-carouse
 import { SiteNav } from "@/components/layout/site-nav";
 import { getDictionary, localePath, type Locale } from "@/lib/i18n";
 
-// Official Dream Big seal (same mark used as the site favicon), used as the
-// marquee's separator instead of a generic star glyph.
-function Mark() {
-  // eslint-disable-next-line @next/next/no-img-element -- tiny repeated inline glyph, not worth next/image's fixed-layout overhead
-  return <img src="/icon.png" alt="" aria-hidden className="inline-block h-[1.5em] w-[1.5em] -translate-y-[0.05em] align-middle" />;
-}
-
-function Manifesto({ phrases }: { phrases: string[] }) {
-  return phrases.map((phrase) => (
-    <span key={phrase}>{phrase}&nbsp; <Mark />&nbsp; </span>
-  ));
-}
-
 export function MonarkaHomeSections({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
   const t = dict.home;
@@ -41,17 +28,10 @@ export function MonarkaHomeSections({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <main className="monarka-home bg-[#050505] text-[#f4f4ef]">
+    <main className="monarka-home bg-white text-[#090909]">
       <SiteNav locale={locale} path="/" logoHref="#top" navLinksLeft={navLinksLeft} navLinksRight={navLinksRight} />
 
       <section id="top" aria-hidden className="h-20" />
-
-      <section aria-label={t.manifestoLabel} className="overflow-hidden border-y border-white/10 py-7">
-        <div className="monarka-rail flex w-max items-center whitespace-nowrap text-[clamp(2.5rem,6vw,6rem)] font-medium uppercase leading-none tracking-[-0.05em] text-white/90">
-          <span><Manifesto phrases={dict.common.taglinePhrases} /></span>
-          <span aria-hidden><Manifesto phrases={dict.common.taglinePhrases} /></span>
-        </div>
-      </section>
 
       <section id="capabilities" className="relative overflow-hidden px-5 py-24 md:px-10 md:py-36">
         <StripeWarp />
@@ -138,7 +118,7 @@ export function MonarkaHomeSections({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section id="faq" className="bg-[#050505] px-5 py-24 md:px-10 md:py-36">
+      <section id="faq" className="bg-white px-5 py-24 md:px-10 md:py-36">
         <div className="mx-auto max-w-[1600px]">
           <RevealOnScroll className="mb-16 text-center">
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#3d8bff]">{t.faq.eyebrow}</p>
@@ -151,11 +131,11 @@ export function MonarkaHomeSections({ locale }: { locale: Locale }) {
       </section>
 
       <footer id="contact" className="relative overflow-hidden px-5 pb-8 pt-28 md:px-10 md:pt-44">
-        <div aria-hidden className="absolute bottom-[-30rem] left-1/2 size-[60rem] -translate-x-1/2 rounded-full bg-[#176cff]/20 blur-[140px]" />
+        <div aria-hidden className="absolute bottom-[-30rem] left-1/2 size-[60rem] -translate-x-1/2 rounded-full bg-[#176cff]/10 blur-[140px]" />
         <div className="relative mx-auto max-w-[1600px]">
           <RevealOnScroll>
             <p className="mb-8 text-xs font-bold uppercase tracking-[0.2em] text-[#3d8bff]">{t.footer.eyebrow}</p>
-            <a href="mailto:hello@monarka.tech" className="group block border-b border-white/20 pb-12">
+            <a href="mailto:hello@monarka.tech" className="group block border-b border-black/15 pb-12">
               <span className="flex items-end justify-between gap-6 text-[clamp(3.2rem,9.5vw,10rem)] font-medium leading-[0.82] tracking-[-0.075em]">
                 {t.footer.title}
                 <ArrowUpRight aria-hidden className="mb-2 size-12 shrink-0 transition-transform group-hover:rotate-45 md:mb-5 md:size-24" />
@@ -168,16 +148,16 @@ export function MonarkaHomeSections({ locale }: { locale: Locale }) {
           <div className="mt-14 flex justify-center">
             <DreamBigBurst size={96} />
           </div>
-          <div className="mt-8 flex flex-col gap-4 text-xs uppercase tracking-[0.14em] text-white/45 md:flex-row md:items-center md:justify-between">
+          <div className="mt-8 flex flex-col gap-4 text-xs uppercase tracking-[0.14em] text-black/45 md:flex-row md:items-center md:justify-between">
             <p>© 2026 Monarka TECH LLC</p>
             <p>{dict.common.taglinePhrases.join(" · ")}</p>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-              <a href="mailto:hello@monarka.tech" className="text-white hover:text-[#3d8bff]">hello@monarka.tech</a>
+              <a href="mailto:hello@monarka.tech" className="text-black hover:text-[#176cff]">hello@monarka.tech</a>
               <a
                 href="https://instagram.com/monarka.tech"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white hover:text-[#3d8bff]"
+                className="text-black hover:text-[#176cff]"
               >
                 Instagram · @monarka.tech
               </a>

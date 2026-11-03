@@ -73,8 +73,10 @@
 /* ---------- Monarka theme (default) — warm black, orange accent ---------- */
 :root,
 [data-theme="monarka"] {
-  --background: #000000;
-  --foreground: #f5f5f7;
+  /* Page background switched to white (2026-11-03); colored sections
+     (blue About, cream Work/Start, CATA terracotta) set their own colors. */
+  --background: #ffffff;
+  --foreground: #090909;
   --card: #0a0a0a;
   --card-foreground: #f5f5f7;
   --border: #1c1c1e;
@@ -222,16 +224,8 @@
   animation: marquee 28s linear infinite;
 }
 
-@keyframes monarka-rail {
-  to { transform: translateX(-50%); }
-}
-
 @keyframes monarka-orbit {
   to { transform: rotate(360deg); }
-}
-
-.monarka-rail {
-  animation: monarka-rail 30s linear infinite;
 }
 
 .monarka-orbit {

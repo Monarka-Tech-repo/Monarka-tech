@@ -144,6 +144,7 @@ Registrar aquí decisiones que deban sobrevivir a una sesión. No borrar decisio
 | D-004 | 2026-07-12 | Reemplazar el tema "neon/cyberpunk" de `/products/cata` (Orbitron, negro puro, naranja neón) — que era una invención sin relación con la app real — por la identidad visual real de CATA, tomada directamente de `D:\CATA\CATA_App\src\theme\index.js`: terracota (#B8442A) + parchment/crema + Fraunces (serif) + Plus Jakarta Sans + Caveat (manuscrita). Monarka TECH (negro/naranja) y el tema Legal (azul) no cambian. La demo interactiva de teléfono en `/products/cata` (Explore/Feed/Log/My Menu/Perfil) también se reconstruyó para reflejar la estructura real de las pantallas (`FeedScreen.js`, `ExploreScreen.js`, `MyMenuScreen.js`) y el set de íconos real (`assets/icons/modern/*.svg`), no aproximaciones genéricas. | Rubén notó repetidamente que el GUI no coincidía con la app real; la causa raíz era que el tema original del sitio nunca se basó en el diseño real de la app. | Rubén (en sesión 2026-07-12, iterando sobre capturas y código fuente real) |
 | D-005 | 2026-08-01 | Simplificar `/products/cata` a una página informativa editorial, sin demo interactiva, con estado del producto y acceso directo a privacidad, términos, FAQ, soporte y eliminación de cuenta. | Rubén solicitó limpiar y rehacer la sección CATA desde cero como página de información. | Rubén |
 | D-007 | 2026-10-21 | Sitio bilingüe: español en la raíz (`/`, `/studio`), inglés con prefijo (`/en`, `/en/studio`). Sin librería i18n: diccionarios tipados en `lib/i18n/es.ts` (fuente de la forma) y `lib/i18n/en.ts`; `localePath()` arma URLs por idioma. Dos layouts raíz (`app/(es)/layout.tsx`, `app/(en)/en/layout.tsx`) que comparten `components/layout/root-document.tsx`, para que `<html lang>` sea correcto en el export estático. Cada página declara canonical + hreflang (`localeAlternates`) y el sitemap lista ambos idiomas. Sin redirección automática por idioma del navegador (Google la desaconseja y el export estático no tiene servidor). Texto nuevo de cualquier página va en ambos diccionarios, nunca directo en el componente. | SEO en búsquedas en inglés (mercado bilingüe de El Paso) sin cambiar las URLs en español ya indexadas. | Rubén (pidió la versión en inglés, 2026-10-21) |
+| D-008 | 2026-11-03 | Fondo del sitio Monarka cambia de negro (#050505) a blanco: home, Studio, FAQ, footer, pantalla de carga y tema `monarka` en globals.css. Las secciones de color (About azul, Work/Start crema, panel terracota de CATA) se mantienen. La navegación deja `mix-blend-difference` y pasa a barra blanca translúcida con el logo de fondo transparente (`monarka-logo-transparent.png`) para que el logo no se invierta a naranja. Reemplaza la parte "oscura" de D-006. | Rubén pidió fondo blanco. | Rubén (2026-11-03) |
 | D-006 | 2026-08-03 | La homepage adopta una dirección editorial oscura y project-first: tipografía de gran escala, manifiesto en movimiento, CATA como caso principal, capacidades en lista y CTA directo; el diagrama anterior deja de formar parte de la ruta pública. | La composición anterior repetía tarjetas informativas y no alcanzaba la calidad ni jerarquía de las referencias aprobadas. | Rubén |
 
 ## 9. Handoffs
@@ -193,6 +194,12 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 ## 10. Bitácora
 
 Añadir entradas nuevas arriba de las anteriores.
+
+### 2026-11-03 — Claude
+
+- Fondo blanco en todo el sitio (ver D-008): textos, bordes, formulario de contacto, FAQ y carrusel pasados a la versión clara; navegación como barra blanca con el logo transparente.
+- Carrusel de capacidades: se quitó la tarjeta de video "Marca en movimiento" a petición de Rubén; quedan 5 tarjetas de texto (01–05). Se borró su texto de los diccionarios es/en.
+- Verificación: lint y build limpios; Playwright en `/` y `/en/studio/`: fondo blanco, 5 tarjetas sin video, sin errores ni 404.
 
 ### 2026-10-21 — Claude (2)
 

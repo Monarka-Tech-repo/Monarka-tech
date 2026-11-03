@@ -31,7 +31,6 @@ export const en: Dictionary = {
     faq: "FAQ",
   },
   home: {
-    manifestoLabel: "Manifesto",
     capabilities: {
       eyebrow: "What we do",
       titleLines: ["From a possibility", "to a real product."],
@@ -113,7 +112,6 @@ export const en: Dictionary = {
       title: "Apps and platforms",
       description: "Mobile apps and web platforms built to evolve, not to expire.",
     },
-    motion: { title: "Brand in motion" },
     automation: {
       title: "Automation",
       description: "Smart systems that remove friction and turn repetitive work into momentum.",

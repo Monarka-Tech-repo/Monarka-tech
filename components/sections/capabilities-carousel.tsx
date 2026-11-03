@@ -5,18 +5,16 @@ import { ArrowUpRight } from "lucide-react";
 import type { Dictionary } from "@/lib/i18n";
 
 type TextCard = { kind: "text"; num: string; title: string; description: string };
-type VideoCard = { kind: "video"; num: string; title: string; src: string };
 type LinkCard = { kind: "link"; num: string; title: string; description: string; href: string };
-type Card = TextCard | VideoCard | LinkCard;
+type Card = TextCard | LinkCard;
 
 function buildCards(t: Dictionary["capabilities"], studioHref: string): Card[] {
   return [
     { kind: "text", num: "01", ...t.digitalProducts },
     { kind: "text", num: "02", ...t.apps },
-    { kind: "video", num: "03", ...t.motion, src: "/assets/Copy of SOFTWARE PROPOSALS .mp4" },
-    { kind: "text", num: "04", ...t.automation },
-    { kind: "text", num: "05", ...t.support },
-    { kind: "link", num: "06", ...t.studio, href: studioHref },
+    { kind: "text", num: "03", ...t.automation },
+    { kind: "text", num: "04", ...t.support },
+    { kind: "link", num: "05", ...t.studio, href: studioHref },
   ];
 }
 
@@ -38,9 +36,9 @@ function CardShell({
       onMouseEnter={() => setBoost(true)}
       onMouseLeave={() => setBoost(false)}
       style={{ animation: "card-float 4.5s ease-in-out infinite", animationDelay: `${i * 0.3}s` }}
-      className="flex w-[320px] shrink-0 flex-col overflow-hidden rounded-[1.5rem] border border-white/15 bg-white/[0.03] transition-colors hover:border-[#3d8bff]/50 hover:bg-white/[0.06] md:w-[380px]"
+      className="flex w-[320px] shrink-0 flex-col overflow-hidden rounded-[1.5rem] border border-black/10 bg-white/70 transition-colors hover:border-[#3d8bff]/50 hover:bg-white md:w-[380px]"
     >
-      <span className="px-8 pt-8 text-xs font-semibold text-white/35 md:px-10 md:pt-10">{num}</span>
+      <span className="px-8 pt-8 text-xs font-semibold text-black/35 md:px-10 md:pt-10">{num}</span>
       {children}
     </div>
   );
@@ -108,25 +106,10 @@ export function CapabilitiesCarousel({
             <CardShell key={card.num} num={card.num} i={i}>
               {card.kind === "text" && (
                 <div className="px-8 pb-8 pt-4 md:px-10 md:pb-10">
-                  <h3 className="text-3xl font-medium tracking-[-0.04em] transition-colors hover:text-[#72aaff] md:text-4xl">
+                  <h3 className="text-3xl font-medium tracking-[-0.04em] transition-colors hover:text-[#176cff] md:text-4xl">
                     {card.title}
                   </h3>
-                  <p className="mt-4 text-sm leading-6 text-white/50 md:text-base">{card.description}</p>
-                </div>
-              )}
-              {card.kind === "video" && (
-                <div className="flex flex-1 flex-col justify-between">
-                  <div className="relative mt-4 aspect-square overflow-hidden bg-black">
-                    <video
-                      src={card.src}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      className="h-full w-full object-contain"
-                    />
-                  </div>
-                  <p className="px-8 py-6 text-sm font-semibold text-white/70 md:px-10">{card.title}</p>
+                  <p className="mt-4 text-sm leading-6 text-black/55 md:text-base">{card.description}</p>
                 </div>
               )}
               {card.kind === "link" && (
@@ -136,7 +119,7 @@ export function CapabilitiesCarousel({
                       {card.title}
                       <ArrowUpRight aria-hidden className="size-6 shrink-0 transition-transform group-hover/link:rotate-45" />
                     </h3>
-                    <p className="mt-4 text-sm leading-6 text-white/50 md:text-base">{card.description}</p>
+                    <p className="mt-4 text-sm leading-6 text-black/55 md:text-base">{card.description}</p>
                   </div>
                 </a>
               )}
@@ -147,7 +130,7 @@ export function CapabilitiesCarousel({
         </div>
       </div>
 
-      <div className="mx-auto mt-6 h-1 w-full max-w-xs overflow-hidden rounded-full bg-white/10">
+      <div className="mx-auto mt-6 h-1 w-full max-w-xs overflow-hidden rounded-full bg-black/10">
         <div
           className="h-full rounded-full bg-[#3d8bff] transition-[width] duration-150 ease-out"
           style={{ width: `${Math.max(8, progress * 100)}%` }}

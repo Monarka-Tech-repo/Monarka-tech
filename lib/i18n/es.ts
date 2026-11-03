@@ -31,7 +31,6 @@ export const es = {
     faq: "FAQ",
   },
   home: {
-    manifestoLabel: "Manifiesto",
     capabilities: {
       eyebrow: "Lo que hacemos",
       titleLines: ["De una posibilidad", "a un producto real."],
@@ -113,7 +112,6 @@ export const es = {
       title: "Apps y plataformas",
       description: "Aplicaciones móviles y plataformas web construidas para evolucionar, no para caducar.",
     },
-    motion: { title: "Marca en movimiento" },
     automation: {
       title: "Automatización",
       description: "Sistemas inteligentes que eliminan fricción y convierten trabajo repetitivo en impulso.",

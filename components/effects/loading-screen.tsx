@@ -32,7 +32,7 @@ export function LoadingScreen() {
       {loading && (
         <motion.div
           key="loader"
-          className="fixed inset-0 z-[999] flex items-center justify-center bg-[#050505]"
+          className="fixed inset-0 z-[999] flex items-center justify-center bg-white"
           initial={{ clipPath: "circle(150% at 50% 50%)" }}
           exit={{ clipPath: "circle(0% at 50% 50%)" }}
           transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}

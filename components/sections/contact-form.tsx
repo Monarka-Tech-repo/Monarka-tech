@@ -39,10 +39,10 @@ export function ContactForm({
 
   if (status === "sent") {
     return (
-      <div className="mx-auto mt-14 flex max-w-2xl flex-col items-center gap-3 rounded-[1.5rem] border border-white/15 bg-white/5 p-10 text-center backdrop-blur-sm">
+      <div className="mx-auto mt-14 flex max-w-2xl flex-col items-center gap-3 rounded-[1.5rem] border border-black/15 bg-black/[0.03] p-10 text-center backdrop-blur-sm">
         <Check aria-hidden className="size-8 text-[#3d8bff]" />
-        <p className="text-lg font-semibold text-white">{t.sentTitle}</p>
-        <p className="text-sm text-white/55">{t.sentBody}</p>
+        <p className="text-lg font-semibold text-black">{t.sentTitle}</p>
+        <p className="text-sm text-black/55">{t.sentBody}</p>
       </div>
     );
   }
@@ -50,50 +50,50 @@ export function ContactForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-auto mt-14 grid max-w-2xl gap-4 rounded-[1.5rem] border border-white/15 bg-white/5 p-6 backdrop-blur-sm md:p-8"
+      className="mx-auto mt-14 grid max-w-2xl gap-4 rounded-[1.5rem] border border-black/15 bg-black/[0.03] p-6 backdrop-blur-sm md:p-8"
     >
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/50">
+        <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-black/50">
           {t.name}
           <input
             required
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="rounded-xl border border-white/15 bg-transparent px-4 py-3 text-base font-normal normal-case tracking-normal text-white placeholder:text-white/30 focus:border-[#3d8bff] focus:outline-none"
+            className="rounded-xl border border-black/15 bg-white px-4 py-3 text-base font-normal normal-case tracking-normal text-black placeholder:text-black/30 focus:border-[#3d8bff] focus:outline-none"
             placeholder={t.namePlaceholder}
           />
         </label>
-        <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/50">
+        <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-black/50">
           {t.email}
           <input
             required
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="rounded-xl border border-white/15 bg-transparent px-4 py-3 text-base font-normal normal-case tracking-normal text-white placeholder:text-white/30 focus:border-[#3d8bff] focus:outline-none"
+            className="rounded-xl border border-black/15 bg-white px-4 py-3 text-base font-normal normal-case tracking-normal text-black placeholder:text-black/30 focus:border-[#3d8bff] focus:outline-none"
             placeholder={t.emailPlaceholder}
           />
         </label>
       </div>
-      <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/50">
+      <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-black/50">
         {t.message}
         <textarea
           required
           rows={4}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="resize-none rounded-xl border border-white/15 bg-transparent px-4 py-3 text-base font-normal normal-case leading-6 tracking-normal text-white placeholder:text-white/30 focus:border-[#3d8bff] focus:outline-none"
+          className="resize-none rounded-xl border border-black/15 bg-white px-4 py-3 text-base font-normal normal-case leading-6 tracking-normal text-black placeholder:text-black/30 focus:border-[#3d8bff] focus:outline-none"
           placeholder={t.messagePlaceholder}
         />
       </label>
       {status === "error" && (
-        <p className="text-sm text-red-400">{common.errorMessage}</p>
+        <p className="text-sm text-red-600">{common.errorMessage}</p>
       )}
       <button
         type="submit"
         disabled={status === "sending"}
-        className="group mt-2 inline-flex w-fit items-center gap-3 rounded-full bg-[#3d8bff] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-black disabled:opacity-60"
+        className="group mt-2 inline-flex w-fit items-center gap-3 rounded-full bg-[#3d8bff] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-black hover:text-white disabled:opacity-60"
       >
         {status === "sending" ? common.sending : t.submit}
         <ArrowUpRight aria-hidden className="size-4 transition-transform group-hover:rotate-45" />
