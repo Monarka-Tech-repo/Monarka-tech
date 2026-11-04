@@ -5,6 +5,8 @@ import { StripeWarp } from "@/components/effects/stripe-warp";
 import { HalftoneTexture } from "@/components/effects/halftone-texture";
 import { DreamBigBurst } from "@/components/effects/dream-big-burst";
 import { SiteNav } from "@/components/layout/site-nav";
+import { WebDesignShowcase } from "@/components/sections/web-design-showcase";
+import { ImmersiveAudioPlayer } from "@/components/sections/immersive-audio-player";
 import { ArrowUpRight } from "lucide-react";
 import { getDictionary, localePath, type Locale } from "@/lib/i18n";
 
@@ -60,6 +62,27 @@ export function MonarkaStudioSections({ locale }: { locale: Locale }) {
               </RevealOnScroll>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section id="listen" className="relative overflow-hidden bg-[#06070b] px-5 py-24 text-white md:px-10 md:py-36">
+        <div aria-hidden className="absolute -left-40 top-1/3 size-[40rem] rounded-full bg-[#3d8bff]/15 blur-[140px]" />
+        <div aria-hidden className="absolute -right-40 bottom-0 size-[34rem] rounded-full bg-[#ec4899]/10 blur-[140px]" />
+        <div className="relative mx-auto max-w-[1600px]">
+          <RevealOnScroll>
+            <ImmersiveAudioPlayer
+              t={t.listen}
+              src={{ m4a: "/assets/audio/welcome-3d-world.m4a", mp3: "/assets/audio/welcome-3d-world.mp3" }}
+            />
+          </RevealOnScroll>
+        </div>
+      </section>
+
+      <section id="web-design" className="overflow-hidden px-5 py-24 md:px-10 md:py-36">
+        <div className="mx-auto max-w-[1600px]">
+          <RevealOnScroll>
+            <WebDesignShowcase t={t.webDesign} ctaHref="mailto:hello@monarka.tech" />
+          </RevealOnScroll>
         </div>
       </section>
 

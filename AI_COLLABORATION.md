@@ -67,6 +67,8 @@ Usar una fila por tarea. Una tarea solo puede tener un responsable activo.
 | M-007 | Alta | Reconstruir `/products/cata` como página informativa simple y completar Privacidad, Términos y FAQ de CATA | Codex | Terminada | app/products/cata/**, components/layout/site-header.tsx | 2026-08-01 |
 | M-008 | Alta | Rediseñar la homepage con dirección editorial premium, movimiento accesible y CATA como caso destacado | Codex | Terminada | app/(bare)/page.tsx, app/globals.css, components/sections/monarka-home-sections.tsx, components/effects/** | 2026-08-03 |
 | M-009 | Alta | Versión en inglés del sitio (`/en`, `/en/studio`): diccionarios es/en, hreflang, sitemap bilingüe, selector de idioma | Claude | En revisión (Rubén revisa el tono del copy en inglés) | app/**, lib/i18n/**, lib/fonts.ts, components/sections/**, components/layout/**, components/effects/background-music.tsx | 2026-10-21 |
+| M-010 | Alta | Bot de WhatsApp que agenda llamadas de descubrimiento en Google Calendar (Cloudflare Worker + Claude) | Claude | En curso (código listo; falta que Rubén cree cuentas Meta/Google/Anthropic y despliegue) | whatsapp-bot/** | 2026-11-03 |
+| M-011 | Alta | Mejorar contenido del sitio: servicios, nosotros/equipo, trabajo/proyectos, contacto/FAQ | Claude | Pendiente (requiere información de Rubén) | lib/i18n/**, components/sections/** | 2026-11-03 |
 
 Estados permitidos: `Pendiente`, `En curso`, `Bloqueada`, `En revisión`, `Terminada`.
 
@@ -194,6 +196,19 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 ## 10. Bitácora
 
 Añadir entradas nuevas arriba de las anteriores.
+
+### 2026-11-03 — Claude (4)
+
+- Studio: sección "Escucha · Audio 3D" (`#listen`) con el audio binaural de Rubén (`D:\MONARKA BRANDINGD AUDIOS\Welcome to the 3d Word audio.wav`, 62 s) convertido a `public/assets/audio/welcome-3d-world.m4a` + `.mp3` (256 kbps, ~2 MB c/u). Reproductor con visualizador radial (Web Audio), indicador izquierda/derecha según balance de canales, barra de progreso accesible. La música de fondo se pausa mientras suena y se reanuda al terminar (evento `monarka-audio-focus`, `lib/audio-focus.ts`); no cambia la preferencia guardada.
+
+### 2026-11-03 — Claude (3)
+
+- Studio: nueva sección "Diseño web" (`#web-design`) con mockup de computadora en CSS y plantilla de sitio que rota entre 3 marcas ficticias (restaurante Olivo, gimnasio PULSE, boutique Atelier Nova), con pestañas accesibles, pausa al pasar el mouse y sin rotación con reduced-motion. Rediseñada después estilo Awwwards a pedido de Rubén: 4 plantillas (se sumó startup Orbit) con tipografía gigante, marquees, badges giratorios, glitch, línea de pulso, orbe con gradiente, parallax e inclinación 3D del monitor con el mouse; keyframes `wd-*` en globals.css (respetan reduced-motion). Componente `components/sections/web-design-showcase.tsx`; copy en `studio.webDesign` (es/en).
+
+### 2026-11-03 — Claude (2)
+
+- Quitado el banner animado del tagline ("Sueña grande · Transforma completo · Vuela más lejos") de la home; el tagline sigue en el footer. Publicado junto con el fondo blanco (commit 55f4fb0).
+- M-010: nuevo `whatsapp-bot/` (Cloudflare Worker independiente, excluido del tsconfig/eslint del sitio). Webhook firmado de Meta, KV para memoria/dedupe/rate limit, Claude `claude-opus-5-5` (effort low, fallbacks default) con herramientas `get_available_slots` y `book_appointment` sobre Google Calendar vía service account. Zona horaria America/Denver (El Paso). 9 tests unitarios pasan. Pasos de cuentas y despliegue en `whatsapp-bot/README.md`.
 
 ### 2026-11-03 — Claude
 

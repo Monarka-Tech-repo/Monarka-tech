@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
+import { AUDIO_FOCUS_EVENT, type AudioFocusDetail } from "@/lib/audio-focus";
 
 // Music starts and stops on a direct click of the toggle button — a mouse
 // click is itself a valid user gesture, so it can start playing with sound
@@ -22,15 +23,25 @@ export function BackgroundMusic({ labels }: { labels: { on: string; off: string 
     if (audioRef.current) audioRef.current.volume = 0.35;
   }, []);
 
+  // True while a foreground player (Studio 3D audio) is playing. Doesn't touch
+  // the visitor's saved preference; music resumes when the other audio stops.
+  const [ducked, setDucked] = useState(false);
+
+  useEffect(() => {
+    const onFocus = (e: Event) => setDucked((e as CustomEvent<AudioFocusDetail>).detail.active);
+    window.addEventListener(AUDIO_FOCUS_EVENT, onFocus);
+    return () => window.removeEventListener(AUDIO_FOCUS_EVENT, onFocus);
+  }, []);
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-    if (muted) {
+    if (muted || ducked) {
       audio.pause();
     } else {
       audio.play().catch(() => {});
     }
-  }, [muted]);
+  }, [muted, ducked]);
 
   const toggle = () => {
     const next = !muted;

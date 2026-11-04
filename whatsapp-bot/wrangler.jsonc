@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "monarka-whatsapp-bot",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  "kv_namespaces": [
+    // Create with: npx wrangler kv namespace create BOT_STATE  — then paste the id here.
+    { "binding": "BOT_STATE", "id": "REPLACE_WITH_KV_NAMESPACE_ID" }
+  ],
+  "vars": {
+    "WHATSAPP_PHONE_NUMBER_ID": "REPLACE_WITH_PHONE_NUMBER_ID",
+    "GOOGLE_CALENDAR_ID": "REPLACE_WITH_CALENDAR_ID",
+    "TIMEZONE": "America/Denver",
+    // Weekday 0 = Sunday … 6 = Saturday. Missing day = closed.
+    "BUSINESS_HOURS": "{\"1\":[\"09:00\",\"17:00\"],\"2\":[\"09:00\",\"17:00\"],\"3\":[\"09:00\",\"17:00\"],\"4\":[\"09:00\",\"17:00\"],\"5\":[\"09:00\",\"17:00\"]}",
+    "SLOT_MINUTES": "30",
+    "MIN_LEAD_MINUTES": "120",
+    "BOOKING_HORIZON_DAYS": "30",
+    "MESSAGES_PER_HOUR": "30"
+  }
+}
