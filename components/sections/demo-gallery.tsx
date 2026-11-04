@@ -205,6 +205,10 @@ export function DemoGallery({ t }: { t: Copy }) {
   const [open, setOpen] = useState<number | null>(null);
   const [hovered, setHovered] = useState<number | null>(null);
   const items = t.items.filter((item) => !sites || sites[item.slug]);
+  // One demo: a single large, centred laptop. Otherwise a wide first laptop only
+  // when it fills the 3-column grid evenly (5, 8…).
+  const single = items.length === 1;
+  const featureFirst = items.length % 3 === 2;
 
   return (
     <div ref={rootRef}>
@@ -231,7 +235,7 @@ export function DemoGallery({ t }: { t: Copy }) {
             onPointerLeave={() => setHovered((h) => (h === i ? null : h))}
             onFocus={() => setHovered(i)}
             onBlur={() => setHovered((h) => (h === i ? null : h))}
-            className={`group block px-[4%] text-left ${i === 0 ? "md:col-span-2" : ""}`}
+            className={`group block px-[4%] text-left ${single ? "mx-auto w-full max-w-[1100px] md:col-span-2 lg:col-span-3" : i === 0 && featureFirst ? "md:col-span-2" : ""}`}
           >
             <div className="transition-transform duration-500 group-hover:-translate-y-2">
               <Laptop>

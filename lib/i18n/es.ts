@@ -106,7 +106,7 @@ export const es = {
     demos: {
       eyebrow: "Demos en vivo",
       title: "Sitios que puedes recorrer.",
-      body: "Demos funcionales que diseñamos y programamos: menús, reservas, horarios, precios y portafolios. Pasa el cursor para recorrerlos o haz clic para explorarlos en grande.",
+      body: "Demos funcionales que diseñamos y programamos, listos para recorrer. Pasa el cursor para ver la página completa o haz clic para explorarla en grande.",
       fictional: "Marcas ficticias creadas para mostrar nuestro trabajo",
       open: "Explorar",
       fictionalShort: "Marca ficticia",
@@ -115,34 +115,10 @@ export const es = {
       next: "Siguiente demo",
       items: [
         {
-          slug: "restaurant",
-          name: "Olea",
-          category: "Restaurante",
-          description: "Cocina mediterránea con menú interactivo por categorías y reservas en línea.",
-        },
-        {
-          slug: "fitness",
-          name: "Ironwood Fitness",
-          category: "Gimnasio",
-          description: "Horario de clases con reservas, calculadora de IMC y planes de membresía.",
-        },
-        {
           slug: "saas",
           name: "Nimbus",
           category: "SaaS",
-          description: "Plataforma de analítica con dashboard animado, precios mensual/anual y preguntas frecuentes.",
-        },
-        {
-          slug: "studio",
-          name: "Verdant",
-          category: "Estudio creativo",
-          description: "Portafolio con cursor personalizado, filtros de proyectos y pantalla de carga.",
-        },
-        {
-          slug: "awards-profile",
-          name: "Verdant · Perfil",
-          category: "Portafolio",
-          description: "Perfil público con galería filtrable, contadores animados y botón de seguir.",
+          description: "Plataforma de analítica para desarrolladores con globo ASCII interactivo, ejemplos de código, precios y preguntas frecuentes.",
         },
       ],
     },

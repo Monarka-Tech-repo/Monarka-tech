@@ -106,7 +106,7 @@ export const en: Dictionary = {
     demos: {
       eyebrow: "Live demos",
       title: "Sites you can explore.",
-      body: "Working demos we designed and built: menus, bookings, schedules, pricing and portfolios. Hover to scroll through them or click to explore them full size.",
+      body: "Working demos we designed and built, ready to explore. Hover to see the whole page or click to explore it full size.",
       fictional: "Fictional brands created to show our work",
       open: "Explore",
       fictionalShort: "Fictional brand",
@@ -115,34 +115,10 @@ export const en: Dictionary = {
       next: "Next demo",
       items: [
         {
-          slug: "restaurant",
-          name: "Olea",
-          category: "Restaurant",
-          description: "Mediterranean kitchen with an interactive menu by category and online reservations.",
-        },
-        {
-          slug: "fitness",
-          name: "Ironwood Fitness",
-          category: "Gym",
-          description: "Class schedule with booking, a BMI calculator and membership plans.",
-        },
-        {
           slug: "saas",
           name: "Nimbus",
           category: "SaaS",
-          description: "Analytics platform with an animated dashboard, monthly/yearly pricing and FAQ.",
-        },
-        {
-          slug: "studio",
-          name: "Verdant",
-          category: "Creative studio",
-          description: "Portfolio with a custom cursor, project filters and a loading screen.",
-        },
-        {
-          slug: "awards-profile",
-          name: "Verdant · Profile",
-          category: "Portfolio",
-          description: "Public profile with a filterable gallery, animated counters and a follow button.",
+          description: "Developer analytics platform with an interactive ASCII globe, code examples, pricing and FAQ.",
         },
       ],
     },
