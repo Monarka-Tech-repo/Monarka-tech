@@ -197,6 +197,11 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 
 Añadir entradas nuevas arriba de las anteriores.
 
+### 2026-11-03 — Claude (5)
+
+- Studio reordenado: hero → Diseño web → Demos → Audio 3D → servicios de sonido → Unity → footer.
+- Nueva sección "Demos en vivo" (`#demos`, `components/sections/demo-gallery.tsx`): cada demo corre dentro de un mockup de laptop (iframe `srcdoc` sandbox, escalado a 1440×900); al pasar el cursor el demo hace scroll real (script inyectado solo en la vista previa, vía postMessage) y al hacer clic se abre en un visor a pantalla completa (dialog con Esc/flechas, anterior/siguiente). Por pedido de Rubén los demos NO tienen páginas ni URLs propias: `node scripts/sync-demos.mjs` lee `D:/MONARKA/Demo Webpage builder/<slug>/index.html` y genera `lib/demo-sites.generated.ts`, que se carga como chunk aparte solo al acercarse a la sección. Revisados antes de publicar (incluido el SaaS actualizado): sin scripts externos ni envío de datos. Copy en `studio.demos` (es/en); los slugs del script deben coincidir con `studio.demos.items`. `loopworks/` existe en el builder pero aún no está incluido.
+
 ### 2026-11-03 — Claude (4)
 
 - Studio: sección "Escucha · Audio 3D" (`#listen`) con el audio binaural de Rubén (`D:\MONARKA BRANDINGD AUDIOS\Welcome to the 3d Word audio.wav`, 62 s) convertido a `public/assets/audio/welcome-3d-world.m4a` + `.mp3` (256 kbps, ~2 MB c/u). Reproductor con visualizador radial (Web Audio), indicador izquierda/derecha según balance de canales, barra de progreso accesible. La música de fondo se pausa mientras suena y se reanuda al terminar (evento `monarka-audio-focus`, `lib/audio-focus.ts`); no cambia la preferencia guardada.
