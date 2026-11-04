@@ -201,6 +201,7 @@ Añadir entradas nuevas arriba de las anteriores.
 
 - Rubén borró los demos viejos del builder. Studio → Demos ahora muestra solo Nimbus (`saas/`), en una laptop grande centrada (layout de un solo demo).
 - `scripts/sync-demos.mjs` ahora usa `studio.demos.items` (es.ts) como lista de permitidos: solo empaqueta demos aprobados; soporta `<slug>/dist/index.html` e incrusta CSS/JS locales.
+- Diseño web: se quitaron las 4 plantillas CSS ficticias (Olivo, PULSE, Atelier Nova, Orbit) y sus keyframes `wd-*`; el monitor ahora muestra los demos reales del builder (mismos `studio.demos.items`, reutiliza `ScaledPreview`/`Viewer` de demo-gallery), con pestañas y rotación solo si hay más de uno.
 - `hotel/` ("Sole — A lakeside retreat") NO se publicó: 3 imágenes se cargan desde media.thelivingcircle.ch (fotos reales del hotel Castello del Sole, Ascona). Se incluye cuando Rubén las reemplace por Unsplash o fotos propias; luego agregar su entrada en `studio.demos.items`.
 
 ### 2026-11-03 — Claude (5)

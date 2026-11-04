@@ -5,9 +5,12 @@ import { createPortal } from "react-dom";
 import { ArrowLeft, ArrowRight, Maximize2, X } from "lucide-react";
 import type { Dictionary } from "@/lib/i18n";
 
-type Copy = Dictionary["studio"]["demos"];
-type Item = Copy["items"][number];
-type Sites = Record<string, string>;
+export type DemoCopy = Dictionary["studio"]["demos"];
+type Copy = DemoCopy;
+export type DemoItem = Copy["items"][number];
+type Item = DemoItem;
+export type DemoSites = Record<string, string>;
+type Sites = DemoSites;
 
 // Previews render the demo at desktop size, then scale it down to the laptop screen.
 const DESKTOP_W = 1440;
@@ -27,7 +30,7 @@ function withPreviewScript(html: string) {
 }
 
 /** The demo HTML lives in a separate JS chunk, fetched once the section is near the viewport. */
-function useDemoSites(target: React.RefObject<HTMLElement | null>) {
+export function useDemoSites(target: React.RefObject<HTMLElement | null>) {
   const [sites, setSites] = useState<Sites | null>(null);
   useEffect(() => {
     const el = target.current;
@@ -71,7 +74,7 @@ function DemoFrame({
   );
 }
 
-function ScaledPreview({ html, title, active }: { html?: string; title: string; active: boolean }) {
+export function ScaledPreview({ html, title, active }: { html?: string; title: string; active: boolean }) {
   const boxRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLIFrameElement>(null);
   const [scale, setScale] = useState(0);
@@ -119,7 +122,7 @@ function Laptop({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Viewer({
+export function Viewer({
   items,
   index,
   sites,

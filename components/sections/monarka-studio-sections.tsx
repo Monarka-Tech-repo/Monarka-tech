@@ -48,7 +48,7 @@ export function MonarkaStudioSections({ locale }: { locale: Locale }) {
       <section id="web-design" className="overflow-hidden px-5 py-24 md:px-10 md:py-36">
         <div className="mx-auto max-w-[1600px]">
           <RevealOnScroll>
-            <WebDesignShowcase t={t.webDesign} ctaHref="mailto:hello@monarka.tech" />
+            <WebDesignShowcase t={t.webDesign} demos={t.demos} ctaHref="mailto:hello@monarka.tech" />
           </RevealOnScroll>
         </div>
       </section>
