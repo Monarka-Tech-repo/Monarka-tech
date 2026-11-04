@@ -197,6 +197,11 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 
 Añadir entradas nuevas arriba de las anteriores.
 
+### 2026-11-03 — Claude (8)
+
+- Carrusel de iPhones de CATA: más espacio entre teléfonos (radio calculado con `GAP` 44px; el anillo se desplaza hacia atrás para que el teléfono frontal conserve su tamaño).
+- Nuevos demos revisados y agregados: `construction/` (Meridian) y `construction-timelapse/` (Strata Build Co.), en la nueva industria "Construcción y arquitectura" (`construction`). Villa Orso actualizado (más imágenes Unsplash) y re-sincronizado. `hotel/` sigue fuera (sin cambios en sus fotos).
+
 ### 2026-11-03 — Claude (7)
 
 - Nueva página "Nuestros diseños" (`/disenos/`, `/en/disenos/`): filtros por industria (Hotelería, Empresa, Diseño de interiores, Restaurantes, Tiendas y e-commerce, Salud y bienestar, Bienes raíces, Educación, Eventos y bodas, Portafolios y creativos), una sección por industria con sus laptops (reutiliza `DemoCard`/`Viewer`), industrias sin demos agrupadas como "Próximamente" con CTA. Enlaces `/disenos/#<id>` abren una industria. Copy en `designs` (es/en) + `meta.designs*` + `nav.designs`; cada demo en `studio.demos.items` tiene `type` = id de industria. En sitemap con hreflang; enlazada desde el nav de Home y Studio y con botón "Ver todos nuestros diseños" en Studio → Demos.

@@ -28,8 +28,14 @@ const screens = [
 
 const PHONE_WIDTH = 170;
 const PHONE_HEIGHT = 350;
-const RADIUS = 300;
 const STEP = 360 / screens.length;
+// Gap between neighbouring phones along the ring.
+const GAP = 44;
+// Ring radius that leaves GAP between phones: circumference = n × (phone + gap).
+const RADIUS = Math.round((screens.length * (PHONE_WIDTH + GAP)) / (2 * Math.PI));
+// The ring is pushed back so the front phone stays the same size as with the
+// original 300px ring.
+const RING_OFFSET = RADIUS - 300;
 
 // `t.captions` is ordered to match `screens` one-to-one.
 export function CataPhoneShowcase({ t }: { t: Dictionary["cataShowcase"] }) {
@@ -49,7 +55,10 @@ export function CataPhoneShowcase({ t }: { t: Dictionary["cataShowcase"] }) {
         className="relative flex items-center justify-center"
         style={{ perspective: 1400, height: PHONE_HEIGHT + 40, width: "100%" }}
       >
-        <div className="relative" style={{ transformStyle: "preserve-3d", width: PHONE_WIDTH, height: PHONE_HEIGHT }}>
+        <div
+          className="relative"
+          style={{ transformStyle: "preserve-3d", width: PHONE_WIDTH, height: PHONE_HEIGHT, transform: `translateZ(${-RING_OFFSET}px)` }}
+        >
           {screens.map((src, i) => {
             let delta = i - index;
             if (delta > screens.length / 2) delta -= screens.length;

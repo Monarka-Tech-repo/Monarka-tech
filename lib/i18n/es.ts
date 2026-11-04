@@ -120,6 +120,20 @@ export const es = {
       viewAll: "Ver todos nuestros diseños",
       items: [
         {
+          slug: "construction-timelapse",
+          type: "construction",
+          name: "Strata Build Co.",
+          category: "Construcción",
+          description: "Constructora con un timelapse animado al hacer scroll: del terreno vacío al edificio terminado, piso por piso.",
+        },
+        {
+          slug: "construction",
+          type: "construction",
+          name: "Meridian",
+          category: "Construcción",
+          description: "Alianza nacional de constructoras con red de firmas, casos de estudio, socios principales y contacto.",
+        },
+        {
           slug: "villa-orso",
           type: "hospitality",
           name: "Villa Orso",
@@ -173,6 +187,7 @@ export const es = {
     categories: [
       { id: "hospitality", title: "Hotelería", description: "Hoteles, apartamentos boutique y hospedajes con reservas, galerías y reseñas." },
       { id: "business", title: "Empresa", description: "Software, startups y empresas de servicios con precios, demos de producto y formularios de contacto." },
+      { id: "construction", title: "Construcción y arquitectura", description: "Constructoras, desarrolladoras y despachos con proyectos, procesos, equipos y contacto para cotizar." },
       { id: "interiors", title: "Diseño de interiores", description: "Estudios de interiorismo y arquitectura con portafolios visuales y casos de proyecto." },
       { id: "restaurants", title: "Restaurantes", description: "Menús interactivos, reservas en línea y pedidos para restaurantes, cafés y bares." },
       { id: "retail", title: "Tiendas y e-commerce", description: "Catálogos, colecciones y tiendas en línea para marcas de moda, productos y boutiques." },

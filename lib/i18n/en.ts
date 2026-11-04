@@ -120,6 +120,20 @@ export const en: Dictionary = {
       viewAll: "See all our designs",
       items: [
         {
+          slug: "construction-timelapse",
+          type: "construction",
+          name: "Strata Build Co.",
+          category: "Construction",
+          description: "Construction company with a scroll-driven timelapse: from an empty lot to a finished building, floor by floor.",
+        },
+        {
+          slug: "construction",
+          type: "construction",
+          name: "Meridian",
+          category: "Construction",
+          description: "National construction alliance with a network of firms, case studies, principals and contact.",
+        },
+        {
           slug: "villa-orso",
           type: "hospitality",
           name: "Villa Orso",
@@ -173,6 +187,7 @@ export const en: Dictionary = {
     categories: [
       { id: "hospitality", title: "Hospitality", description: "Hotels, boutique apartments and stays with booking, galleries and reviews." },
       { id: "business", title: "Business", description: "Software, startups and service companies with pricing, product demos and contact forms." },
+      { id: "construction", title: "Construction & architecture", description: "Builders, developers and firms with projects, process, teams and quote requests." },
       { id: "interiors", title: "Interior design", description: "Interior design and architecture studios with visual portfolios and project case studies." },
       { id: "restaurants", title: "Restaurants", description: "Interactive menus, online reservations and ordering for restaurants, cafés and bars." },
       { id: "retail", title: "Shops & e-commerce", description: "Catalogs, collections and online stores for fashion, product brands and boutiques." },
