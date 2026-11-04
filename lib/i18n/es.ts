@@ -10,6 +10,9 @@ export const es = {
     studioTitle: "Monarka Studio — Medios 3D y Sonido",
     studioDescription:
       "Monarka Studio: audio espacial y diseño sonoro para anuncios, y el desarrollo en curso de experiencias inmersivas en 3D con Unity.",
+    designsTitle: "Nuestros diseños",
+    designsDescription:
+      "Diseños web de Monarka TECH por industria: hotelería, empresas, diseño de interiores, restaurantes, tiendas y más. Demos reales que puedes recorrer.",
   },
   common: {
     navLabel: "Navegación principal",
@@ -29,6 +32,7 @@ export const es = {
     studio: "Studio",
     about: "Nosotros",
     faq: "FAQ",
+    designs: "Nuestros diseños",
   },
   home: {
     capabilities: {
@@ -113,9 +117,18 @@ export const es = {
       close: "Cerrar demo",
       prev: "Demo anterior",
       next: "Siguiente demo",
+      viewAll: "Ver todos nuestros diseños",
       items: [
         {
+          slug: "villa-orso",
+          type: "hospitality",
+          name: "Villa Orso",
+          category: "Hospedaje boutique",
+          description: "Apartamentos boutique en Trieste con galería de departamentos, anfitriona, reseñas, ubicación y reservas.",
+        },
+        {
           slug: "saas",
+          type: "business",
           name: "Nimbus",
           category: "SaaS",
           description: "Plataforma de analítica para desarrolladores con globo ASCII interactivo, ejemplos de código, precios y preguntas frecuentes.",
@@ -145,6 +158,41 @@ export const es = {
     footer: {
       eyebrow: "¿Tienes un proyecto en mente?",
       title: "Hagámoslo sonar.",
+    },
+  },
+  designs: {
+    hero: {
+      eyebrow: "Nuestros diseños",
+      title: "Un diseño para cada tipo de negocio.",
+      body: "Sitios reales que diseñamos y programamos, organizados por industria. Recórrelos, ábrelos en grande y encuentra el estilo que va con tu marca.",
+    },
+    sectionsLabel: "Industrias",
+    all: "Todas",
+    countOne: "1 diseño",
+    countMany: "{n} diseños",
+    categories: [
+      { id: "hospitality", title: "Hotelería", description: "Hoteles, apartamentos boutique y hospedajes con reservas, galerías y reseñas." },
+      { id: "business", title: "Empresa", description: "Software, startups y empresas de servicios con precios, demos de producto y formularios de contacto." },
+      { id: "interiors", title: "Diseño de interiores", description: "Estudios de interiorismo y arquitectura con portafolios visuales y casos de proyecto." },
+      { id: "restaurants", title: "Restaurantes", description: "Menús interactivos, reservas en línea y pedidos para restaurantes, cafés y bares." },
+      { id: "retail", title: "Tiendas y e-commerce", description: "Catálogos, colecciones y tiendas en línea para marcas de moda, productos y boutiques." },
+      { id: "wellness", title: "Salud y bienestar", description: "Gimnasios, clínicas, spas y estudios con horarios, planes y citas." },
+      { id: "realestate", title: "Bienes raíces", description: "Inmobiliarias y desarrollos con listados de propiedades, mapas y visitas." },
+      { id: "education", title: "Educación", description: "Escuelas, academias y cursos con programas, inscripciones y calendarios." },
+      { id: "events", title: "Eventos y bodas", description: "Bodas, conferencias y experiencias con agenda, RSVP y venta de boletos." },
+      { id: "portfolio", title: "Portafolios y creativos", description: "Fotógrafos, artistas, agencias y marcas personales con galerías y proyectos." },
+    ],
+    comingSoon: {
+      label: "Próximamente",
+      title: "Tu sitio podría ser el primero aquí.",
+      body: "Estamos preparando diseños para esta industria. Si tienes un negocio así, lo diseñamos a la medida.",
+      cta: "Quiero mi diseño",
+    },
+    cta: {
+      eyebrow: "¿No ves tu industria?",
+      title: "Diseñamos para cualquier tipo de marca.",
+      body: "Cuéntanos de tu negocio y te mostramos cómo se vería tu sitio.",
+      button: "Hablemos de tu sitio",
     },
   },
   capabilities: {

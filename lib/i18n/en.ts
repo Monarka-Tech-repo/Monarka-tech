@@ -10,6 +10,9 @@ export const en: Dictionary = {
     studioTitle: "Monarka Studio — 3D Media and Sound",
     studioDescription:
       "Monarka Studio: spatial audio and sound design for ads, plus immersive 3D experiences in development with Unity.",
+    designsTitle: "Our designs",
+    designsDescription:
+      "Monarka TECH web designs by industry: hospitality, business, interior design, restaurants, shops and more. Real demos you can explore.",
   },
   common: {
     navLabel: "Main navigation",
@@ -29,6 +32,7 @@ export const en: Dictionary = {
     studio: "Studio",
     about: "About",
     faq: "FAQ",
+    designs: "Our designs",
   },
   home: {
     capabilities: {
@@ -113,9 +117,18 @@ export const en: Dictionary = {
       close: "Close demo",
       prev: "Previous demo",
       next: "Next demo",
+      viewAll: "See all our designs",
       items: [
         {
+          slug: "villa-orso",
+          type: "hospitality",
+          name: "Villa Orso",
+          category: "Boutique stay",
+          description: "Boutique apartments in Trieste with an apartment gallery, host story, reviews, location and booking.",
+        },
+        {
           slug: "saas",
+          type: "business",
           name: "Nimbus",
           category: "SaaS",
           description: "Developer analytics platform with an interactive ASCII globe, code examples, pricing and FAQ.",
@@ -145,6 +158,41 @@ export const en: Dictionary = {
     footer: {
       eyebrow: "Have a project in mind?",
       title: "Let's make it sound.",
+    },
+  },
+  designs: {
+    hero: {
+      eyebrow: "Our designs",
+      title: "A design for every kind of business.",
+      body: "Real sites we designed and built, organized by industry. Scroll through them, open them full size and find the style that fits your brand.",
+    },
+    sectionsLabel: "Industries",
+    all: "All",
+    countOne: "1 design",
+    countMany: "{n} designs",
+    categories: [
+      { id: "hospitality", title: "Hospitality", description: "Hotels, boutique apartments and stays with booking, galleries and reviews." },
+      { id: "business", title: "Business", description: "Software, startups and service companies with pricing, product demos and contact forms." },
+      { id: "interiors", title: "Interior design", description: "Interior design and architecture studios with visual portfolios and project case studies." },
+      { id: "restaurants", title: "Restaurants", description: "Interactive menus, online reservations and ordering for restaurants, cafés and bars." },
+      { id: "retail", title: "Shops & e-commerce", description: "Catalogs, collections and online stores for fashion, product brands and boutiques." },
+      { id: "wellness", title: "Health & wellness", description: "Gyms, clinics, spas and studios with schedules, plans and appointments." },
+      { id: "realestate", title: "Real estate", description: "Agencies and developments with property listings, maps and viewings." },
+      { id: "education", title: "Education", description: "Schools, academies and courses with programs, enrollment and calendars." },
+      { id: "events", title: "Events & weddings", description: "Weddings, conferences and experiences with schedules, RSVP and ticketing." },
+      { id: "portfolio", title: "Portfolios & creatives", description: "Photographers, artists, agencies and personal brands with galleries and projects." },
+    ],
+    comingSoon: {
+      label: "Coming soon",
+      title: "Your site could be the first one here.",
+      body: "We're preparing designs for this industry. If you run a business like this, we'll design yours to measure.",
+      cta: "I want my design",
+    },
+    cta: {
+      eyebrow: "Don't see your industry?",
+      title: "We design for every kind of brand.",
+      body: "Tell us about your business and we'll show you how your site could look.",
+      button: "Let's talk about your site",
     },
   },
   capabilities: {

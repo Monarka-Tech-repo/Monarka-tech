@@ -23,6 +23,7 @@ export function MonarkaHomeSections({ locale }: { locale: Locale }) {
     { label: dict.nav.studio, href: localePath(locale, "/studio") },
   ];
   const navLinksRight = [
+    { label: dict.nav.designs, href: localePath(locale, "/disenos") },
     { label: dict.nav.about, href: "#about" },
     { label: dict.nav.faq, href: "#faq" },
   ];

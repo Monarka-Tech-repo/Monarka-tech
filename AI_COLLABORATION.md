@@ -197,11 +197,16 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 
 Añadir entradas nuevas arriba de las anteriores.
 
+### 2026-11-03 — Claude (7)
+
+- Nueva página "Nuestros diseños" (`/disenos/`, `/en/disenos/`): filtros por industria (Hotelería, Empresa, Diseño de interiores, Restaurantes, Tiendas y e-commerce, Salud y bienestar, Bienes raíces, Educación, Eventos y bodas, Portafolios y creativos), una sección por industria con sus laptops (reutiliza `DemoCard`/`Viewer`), industrias sin demos agrupadas como "Próximamente" con CTA. Enlaces `/disenos/#<id>` abren una industria. Copy en `designs` (es/en) + `meta.designs*` + `nav.designs`; cada demo en `studio.demos.items` tiene `type` = id de industria. En sitemap con hreflang; enlazada desde el nav de Home y Studio y con botón "Ver todos nuestros diseños" en Studio → Demos.
+
 ### 2026-11-03 — Claude (6)
 
 - Rubén borró los demos viejos del builder. Studio → Demos ahora muestra solo Nimbus (`saas/`), en una laptop grande centrada (layout de un solo demo).
 - `scripts/sync-demos.mjs` ahora usa `studio.demos.items` (es.ts) como lista de permitidos: solo empaqueta demos aprobados; soporta `<slug>/dist/index.html` e incrusta CSS/JS locales.
 - Diseño web: se quitaron las 4 plantillas CSS ficticias (Olivo, PULSE, Atelier Nova, Orbit) y sus keyframes `wd-*`; el monitor ahora muestra los demos reales del builder (mismos `studio.demos.items`, reutiliza `ScaledPreview`/`Viewer` de demo-gallery), con pestañas y rotación solo si hay más de uno.
+- Agregado `villa-orso/` (Villa Orso, Trieste): revisado — imágenes Unsplash, contactos de ejemplo (.example / 000), Lenis 1.1.13 desde jsDelivr, formulario sin envío.
 - `hotel/` ("Sole — A lakeside retreat") NO se publicó: 3 imágenes se cargan desde media.thelivingcircle.ch (fotos reales del hotel Castello del Sole, Ascona). Se incluye cuando Rubén las reemplace por Unsplash o fotos propias; luego agregar su entrada en `studio.demos.items`.
 
 ### 2026-11-03 — Claude (5)

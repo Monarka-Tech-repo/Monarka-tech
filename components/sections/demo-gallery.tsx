@@ -202,11 +202,66 @@ export function Viewer({
   );
 }
 
-export function DemoGallery({ t }: { t: Copy }) {
+/** One demo inside a laptop: hover scrolls it, click opens the viewer. */
+export function DemoCard({
+  item,
+  index,
+  html,
+  ready,
+  openLabel,
+  onOpen,
+  className = "",
+}: {
+  item: Item;
+  index: number;
+  html?: string;
+  ready: boolean;
+  openLabel: string;
+  onOpen: () => void;
+  className?: string;
+}) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      disabled={!ready}
+      aria-haspopup="dialog"
+      onPointerEnter={() => setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
+      className={`group block px-[4%] text-left ${className}`}
+    >
+      <div className="transition-transform duration-500 group-hover:-translate-y-2">
+        <Laptop>
+          <ScaledPreview html={html} title={item.name} active={hovered} />
+        </Laptop>
+      </div>
+      <div className="mt-7 flex items-start justify-between gap-6">
+        <div>
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-xs font-semibold text-black/35">{String(index + 1).padStart(2, "0")}</span>
+            <h3 className="text-2xl font-medium tracking-[-0.03em] transition-colors group-hover:text-[#176cff] md:text-3xl">{item.name}</h3>
+            <span className="rounded-full border border-black/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-black/55">
+              {item.category}
+            </span>
+          </div>
+          <p className="mt-2 max-w-xl text-sm leading-6 text-black/55 md:text-base">{item.description}</p>
+        </div>
+        <span className="mt-1 inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold">
+          {openLabel}
+          <Maximize2 aria-hidden className="size-4 transition-transform group-hover:scale-110" />
+        </span>
+      </div>
+    </button>
+  );
+}
+
+export function DemoGallery({ t, viewAll }: { t: Copy; viewAll?: { href: string; label: string } }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const sites = useDemoSites(rootRef);
   const [open, setOpen] = useState<number | null>(null);
-  const [hovered, setHovered] = useState<number | null>(null);
   const items = t.items.filter((item) => !sites || sites[item.slug]);
   // One demo: a single large, centred laptop. Otherwise a wide first laptop only
   // when it fills the 3-column grid evenly (5, 8…).
@@ -223,45 +278,30 @@ export function DemoGallery({ t }: { t: Copy }) {
         <div>
           <p className="text-lg leading-8 text-black/60">{t.body}</p>
           <p className="mt-3 text-xs uppercase tracking-[0.14em] text-black/40">{t.fictional}</p>
+          {viewAll && (
+            <a
+              href={viewAll.href}
+              className="group mt-6 inline-flex items-center gap-3 rounded-full bg-[#090909] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#3d8bff]"
+            >
+              {viewAll.label}
+              <ArrowRight aria-hidden className="size-4 transition-transform group-hover:translate-x-1" />
+            </a>
+          )}
         </div>
       </div>
 
       <div className="grid gap-x-10 gap-y-20 md:grid-cols-2 lg:grid-cols-3">
         {items.map((item, i) => (
-          <button
+          <DemoCard
             key={item.slug}
-            type="button"
-            onClick={() => setOpen(i)}
-            disabled={!sites}
-            aria-haspopup="dialog"
-            onPointerEnter={() => setHovered(i)}
-            onPointerLeave={() => setHovered((h) => (h === i ? null : h))}
-            onFocus={() => setHovered(i)}
-            onBlur={() => setHovered((h) => (h === i ? null : h))}
-            className={`group block px-[4%] text-left ${single ? "mx-auto w-full max-w-[1100px] md:col-span-2 lg:col-span-3" : i === 0 && featureFirst ? "md:col-span-2" : ""}`}
-          >
-            <div className="transition-transform duration-500 group-hover:-translate-y-2">
-              <Laptop>
-                <ScaledPreview html={sites?.[item.slug]} title={item.name} active={hovered === i} />
-              </Laptop>
-            </div>
-            <div className="mt-7 flex items-start justify-between gap-6">
-              <div>
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="text-xs font-semibold text-black/35">{String(i + 1).padStart(2, "0")}</span>
-                  <h3 className="text-2xl font-medium tracking-[-0.03em] transition-colors group-hover:text-[#176cff] md:text-3xl">{item.name}</h3>
-                  <span className="rounded-full border border-black/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-black/55">
-                    {item.category}
-                  </span>
-                </div>
-                <p className="mt-2 max-w-xl text-sm leading-6 text-black/55 md:text-base">{item.description}</p>
-              </div>
-              <span className="mt-1 inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold">
-                {t.open}
-                <Maximize2 aria-hidden className="size-4 transition-transform group-hover:scale-110" />
-              </span>
-            </div>
-          </button>
+            item={item}
+            index={i}
+            html={sites?.[item.slug]}
+            ready={!!sites}
+            openLabel={t.open}
+            onOpen={() => setOpen(i)}
+            className={single ? "mx-auto w-full max-w-[1100px] md:col-span-2 lg:col-span-3" : i === 0 && featureFirst ? "md:col-span-2" : ""}
+          />
         ))}
       </div>
 

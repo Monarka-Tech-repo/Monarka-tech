@@ -20,7 +20,7 @@ export function MonarkaStudioSections({ locale }: { locale: Locale }) {
     { label: dict.nav.capabilities, href: localePath(locale, "/#capabilities") },
   ];
   const navLinksRight = [
-    { label: dict.nav.work, href: localePath(locale, "/#work") },
+    { label: dict.nav.designs, href: localePath(locale, "/disenos") },
     { label: dict.nav.faq, href: localePath(locale, "/#faq") },
   ];
 
@@ -56,7 +56,7 @@ export function MonarkaStudioSections({ locale }: { locale: Locale }) {
       <section id="demos" className="bg-[#efeee8] px-5 py-24 text-[#090909] md:px-10 md:py-36">
         <div className="mx-auto max-w-[1600px]">
           <RevealOnScroll>
-            <DemoGallery t={t.demos} />
+            <DemoGallery t={t.demos} viewAll={{ href: localePath(locale, "/disenos"), label: t.demos.viewAll }} />
           </RevealOnScroll>
         </div>
       </section>
