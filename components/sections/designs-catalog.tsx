@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import type { Dictionary } from "@/lib/i18n";
 import { DemoCard, useDemoSites, Viewer, type DemoCopy, type DemoItem } from "@/components/sections/demo-gallery";
@@ -34,57 +34,17 @@ function ComingSoonCard({ category, t, contactHref, compact }: { category: Categ
 export function DesignsCatalog({ t, demos, contactHref }: { t: Copy; demos: DemoCopy; contactHref: string }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const sites = useDemoSites(rootRef);
-  const [filter, setFilter] = useState<string>("all");
   const [open, setOpen] = useState<number | null>(null);
-
-  // Allow links like /disenos/#hospitality to open on one industry.
-  useEffect(() => {
-    const id = window.location.hash.slice(1);
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time sync from the URL hash after mount
-    if (t.categories.some((c) => c.id === id)) setFilter(id);
-  }, [t.categories]);
 
   const items = demos.items.filter((item) => !sites || sites[item.slug]);
   const byType = (id: string) => items.filter((item) => item.type === id);
-  const withDemos = t.categories.filter((c) => byType(c.id).length > 0);
+  const visible = t.categories.filter((c) => byType(c.id).length > 0);
   const empty = t.categories.filter((c) => byType(c.id).length === 0);
-  const visible = filter === "all" ? withDemos : t.categories.filter((c) => c.id === filter);
-  // Viewer arrows move through the demos currently on screen.
+  // Viewer arrows move through every demo on the page, in order.
   const viewerItems: DemoItem[] = visible.flatMap((c) => byType(c.id));
-
-  const choose = (id: string) => {
-    setFilter(id);
-    history.replaceState(null, "", id === "all" ? window.location.pathname : `#${id}`);
-    rootRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const chip = (id: string, label: string, n?: number) => (
-    <button
-      key={id}
-      type="button"
-      onClick={() => choose(id)}
-      aria-pressed={filter === id}
-      className={`inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.1em] transition-colors ${
-        filter === id ? "border-black bg-black text-white" : "border-black/15 bg-white text-black/65 hover:border-black/40 hover:text-black"
-      }`}
-    >
-      {label}
-      {n !== undefined && n > 0 && (
-        <span className={`rounded-full px-1.5 text-[10px] ${filter === id ? "bg-white/20" : "bg-black/5"}`}>{n}</span>
-      )}
-    </button>
-  );
 
   return (
     <div ref={rootRef} className="scroll-mt-24">
-      {/* industry filter */}
-      <nav aria-label={t.sectionsLabel} className="sticky top-20 z-20 -mx-5 border-y border-black/5 bg-[#f6f5f1]/90 px-5 py-4 backdrop-blur-md md:-mx-10 md:px-10">
-        <div className="mx-auto flex max-w-[1600px] gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {chip("all", t.all, items.length)}
-          {t.categories.map((c) => chip(c.id, c.title, byType(c.id).length))}
-        </div>
-      </nav>
-
       <div className="mx-auto max-w-[1600px]">
         {visible.map((category, ci) => {
           const list = byType(category.id);
@@ -124,7 +84,7 @@ export function DesignsCatalog({ t, demos, contactHref }: { t: Copy; demos: Demo
         })}
 
         {/* Industries without a design yet, grouped so the page stays short */}
-        {filter === "all" && empty.length > 0 && (
+        {empty.length > 0 && (
           <section aria-labelledby="coming-soon-title" className="py-20 md:py-28">
             <div className="mb-12">
               <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#176cff]">{t.comingSoon.label}</p>

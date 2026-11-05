@@ -197,6 +197,11 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 
 Añadir entradas nuevas arriba de las anteriores.
 
+### 2026-11-05 — Claude
+
+- Nuevos demos del builder publicados (revisados: imágenes Unsplash, CDNs con versión fija, formularios sin envío — el sandbox del iframe bloquea formularios): Fornello (restaurants), Lindehof (hospitality), Alex Moreno `portfolio/` y Elio Varenne `interactive-dev/` (portfolio). `hotel/` sigue fuera (fotos de Castello del Sole).
+- /disenos: quitadas las pastillas de filtro por categoría a pedido de Rubén; la página muestra todas las industrias con demos y luego "Próximamente". Los enlaces `#<id>` siguen llevando a la sección.
+
 ### 2026-11-03 — Claude (8)
 
 - Carrusel de iPhones de CATA: más espacio entre teléfonos (radio calculado con `GAP` 44px; el anillo se desplaza hacia atrás para que el teléfono frontal conserve su tamaño).
