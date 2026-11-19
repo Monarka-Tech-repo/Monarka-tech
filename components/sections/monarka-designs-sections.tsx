@@ -3,6 +3,7 @@ import { RevealOnScroll } from "@/components/effects/reveal-on-scroll";
 import { StripeWarp } from "@/components/effects/stripe-warp";
 import { SiteNav } from "@/components/layout/site-nav";
 import { DesignsCatalog } from "@/components/sections/designs-catalog";
+import { DesignsWheel } from "@/components/sections/designs-wheel";
 import { getDictionary, localePath, type Locale } from "@/lib/i18n";
 
 const CONTACT_HREF = "mailto:hello@monarka.tech";
@@ -38,6 +39,12 @@ export function MonarkaDesignsSections({ locale }: { locale: Locale }) {
           </RevealOnScroll>
         </div>
       </section>
+
+      <DesignsWheel
+        t={t.index}
+        items={dict.studio.demos.items}
+        industries={Object.fromEntries(t.categories.map((c) => [c.id, c.title]))}
+      />
 
       <section className="px-5 md:px-10">
         <DesignsCatalog t={t} demos={dict.studio.demos} contactHref={CONTACT_HREF} />

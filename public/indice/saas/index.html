@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nimbus — Analytics your codebase already understands</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --off:#f1eee7; --white:#fff; --black:#232323; --deep:#000;
+  --dg:#5b5a56; --mg:#cbcbcb; --gg:#dedede; --acc:#ff9100;
+  --on-dark-dim:rgba(241,238,231,.56); --on-dark-line:rgba(241,238,231,.14);
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:Geist,ui-sans-serif,system-ui,sans-serif;
+  --gx:16px;
+  --t-cap:clamp(12px,calc(12px + 2 * (100vw - 375px) / 1225),14px);
+  --t-b10:clamp(14px,calc(14px + 2 * (100vw - 375px) / 1225),16px);
+  --t-b20:clamp(15px,calc(15px + 3 * (100vw - 375px) / 1225),18px);
+  --t-h10:clamp(32px,calc(32px + 16 * (100vw - 375px) / 1225),48px);
+  --t-h20:clamp(40px,calc(40px + 36 * (100vw - 375px) / 1225),76px);
+  --t-disp:clamp(150px,calc(150px + 130 * (100vw - 375px) / 1225),280px);
+  --seam:150px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+@media (min-width:1024px){:root{--gx:80px;--seam:240px}}
+*{box-sizing:border-box;margin:0;padding:0}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+html,body{background:var(--off);overflow-x:clip}
+body{font-family:var(--sans);color:var(--black);font-size:var(--t-b10);line-height:1.4;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit;background:none;border:0}
+button{cursor:pointer}
+::selection{background:var(--acc);color:var(--black)}
+.mono{font-family:var(--mono)}
+.cap{font-family:var(--mono);font-size:var(--t-cap);text-transform:uppercase;line-height:1.25}
+.h10{font-size:var(--t-h10);font-weight:500;line-height:1.1;text-wrap:balance}
+.h20{font-size:var(--t-h20);font-weight:500;line-height:1;text-wrap:balance;letter-spacing:-.01em}
+.b20{font-size:var(--t-b20);line-height:1.4}
+.dim{color:var(--dg)}
+.dark{background:var(--black);color:var(--off)}
+.dark .dim{color:var(--on-dark-dim)}
+.g12{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:16px;padding:0 var(--gx)}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:4px;padding:4px 6px;font-family:var(--mono);font-size:12px;text-transform:uppercase;line-height:1;letter-spacing:.025em;background:rgba(35,35,35,.08)}
+.dark .chip{background:rgba(241,238,231,.1)}
+
+/* ---------- odometer text + buttons ---------- */
+.oc{position:relative;display:inline-block;overflow:hidden;height:1em;line-height:1em;vertical-align:baseline}
+.oc .gh{visibility:hidden}
+.oc .st{position:absolute;inset:0 0 auto 0;display:flex;flex-direction:column;align-items:center;transition:transform .6s cubic-bezier(.65,0,.25,1)}
+.oc .st span{display:block;height:1em;line-height:1em}
+[data-odo]:hover .st,[data-odo].roll .st{transform:translateY(-83.3333%)}
+.sbtn{display:inline-flex;align-items:center;font-family:var(--mono);font-size:var(--t-b10);text-transform:uppercase;white-space:nowrap}
+.sbtn .seg{height:48px;display:inline-flex;align-items:center;padding:0 22px;border-radius:8px;background:var(--black);color:var(--off);transition:background .2s}
+.sbtn .conn{width:6px;height:26px;margin:0 -1px;background:var(--black);transition:background .2s}
+.sbtn:hover .seg,.sbtn:hover .conn{background:var(--deep)}
+.sbtn.inv .seg,.sbtn.inv .conn{background:var(--off);color:var(--black)}
+.sbtn.inv:hover .seg,.sbtn.inv:hover .conn{background:var(--white)}
+.sbtn.ghost .seg{background:transparent;color:inherit;box-shadow:inset 0 0 0 1px currentColor}
+.sbtn.ghost:hover .seg{background:rgba(35,35,35,.06)}
+.dark .sbtn.ghost:hover .seg{background:rgba(241,238,231,.08)}
+.ctas{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* ---------- reveals ---------- */
+[data-reveal=words] .wm{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
+[data-reveal=words] .wi{display:inline-block;transform:translateY(108%);transition:transform 1s var(--ease)}
+[data-reveal=words].in .wi{transform:none}
+[data-reveal=fade]{opacity:0;transform:translateY(14px);transition:opacity 1s ease,transform 1s var(--ease)}
+[data-reveal=fade].in{opacity:1;transform:none}
+.mask{overflow:hidden;padding:2px}
+[data-reveal=up]{transform:translateY(105%);transition:transform .9s var(--ease)}
+[data-reveal=up].in{transform:none}
+[data-reveal=scramble]{opacity:0}
+[data-reveal=scramble].in{opacity:1}
+
+/* ---------- header ---------- */
+header{position:fixed;inset:0 0 auto 0;z-index:80;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px;pointer-events:none}
+@media (min-width:1024px){header{padding:16px}}
+header > *{pointer-events:auto}
+.hchip{height:40px;display:inline-flex;align-items:center;gap:10px;padding:0 14px;border-radius:8px;background:var(--off);color:var(--black);font-family:var(--mono);font-size:var(--t-cap);text-transform:uppercase;box-shadow:0 0 0 1px rgba(35,35,35,.08)}
+.logo{font-weight:500;letter-spacing:.02em}
+.logo svg{width:16px;height:16px}
+.hnav{display:none;gap:2px;padding:0 4px}
+.hnav a{padding:7px 10px;border-radius:5px;transition:background .2s}
+.hnav a:hover{background:rgba(35,35,35,.08)}
+.ping{position:relative;width:6px;height:6px;border-radius:50%;background:var(--acc)}
+.ping::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--acc);animation:ping 1.8s cubic-bezier(0,0,.2,1) infinite}
+@keyframes ping{0%{opacity:.5;transform:scale(1)}75%,to{opacity:0;transform:scale(2.6)}}
+.hr{display:flex;gap:8px;align-items:center}
+.hr .sbtn .seg{height:40px;padding:0 16px;font-size:var(--t-cap);background:var(--acc);color:var(--black)}
+.hr .sbtn .conn{height:22px;background:var(--acc)}
+.hr .sbtn:hover .seg,.hr .sbtn:hover .conn{background:var(--black);color:var(--off)}
+.menu-btn{display:inline-flex}
+.mpanel{position:fixed;top:60px;left:12px;right:12px;z-index:79;background:var(--off);border-radius:8px;box-shadow:0 0 0 1px rgba(35,35,35,.1);padding:8px;display:flex;flex-direction:column;opacity:0;transform:translateY(-6px);pointer-events:none;transition:.25s}
+.mpanel a{font-family:var(--mono);text-transform:uppercase;font-size:14px;padding:14px 10px;border-bottom:1px solid var(--gg)}
+.mpanel a:last-child{border:0}
+body.menu .mpanel{opacity:1;transform:none;pointer-events:auto}
+@media (min-width:1024px){.hnav{display:inline-flex}.menu-btn,.mpanel{display:none}.hstatus{display:inline-flex}}
+.hstatus{display:none}
+
+/* ---------- hero ---------- */
+.hero-track{position:relative}
+.stage{position:relative;background:var(--off)}
+.hero-copy{position:relative;padding:128px 16px 48px;display:flex;flex-direction:column}
+.hero-copy .cap{margin-bottom:20px}
+.hero-copy h1{margin-bottom:32px}
+.hero-copy .b20{max-width:30em}
+.hero-copy .mask{margin-top:32px}
+.cue{display:none;align-items:center;gap:10px;color:var(--dg);font-family:var(--mono);font-size:12px;text-transform:uppercase;padding:12px 0;margin:-12px 0}
+.cue:hover{color:var(--black)}
+.rings{position:relative;width:20px;height:20px;color:var(--black)}
+.rings i{position:absolute;border-radius:50%;border:1px dotted currentColor;animation:cue 1.44s steps(8,end) infinite}
+.rings i:nth-child(1){--f:8px;--t:4.5px;--fo:0;--to:.8}
+.rings i:nth-child(2){--f:4.5px;--t:1px;--fo:.8;--to:.8}
+.rings i:nth-child(3){--f:1px;--t:-2.5px;--fo:.8;--to:0}
+.rings b{position:absolute;left:50%;top:50%;width:2px;height:2px;margin:-1px;background:currentColor}
+@keyframes cue{0%{inset:var(--f);opacity:var(--fo)}to{inset:var(--t);opacity:var(--to)}}
+.hero-art{position:relative;height:80svh;background:var(--black);overflow:hidden;color:var(--off)}
+#globe{position:absolute;inset:0;width:100%;height:100%;display:block}
+.fig{position:absolute;font-family:var(--mono);font-size:11px;text-transform:uppercase;color:var(--on-dark-dim);line-height:1.5;pointer-events:none;z-index:2;white-space:nowrap}
+.fig b{color:var(--off);font-weight:400}
+.fig.tl{top:72px;left:16px}.fig.tr{top:72px;right:16px;text-align:right}
+.fig.bl{bottom:16px;left:16px}.fig.br{bottom:16px;right:16px;text-align:right}
+@media (min-width:1024px){
+  .hero-track{height:calc(100svh + 180svh)}
+  .stage{position:sticky;top:0;height:100svh;overflow:hidden}
+  .hero-copy{position:absolute;top:0;bottom:0;left:0;width:calc(41.666% + 40px);padding:64px 0 64px var(--gx);justify-content:center;
+    opacity:calc(1 - var(--t,0) * 1.6);transform:translateX(calc(var(--t,0) * -96px))}
+  .hero-copy > .inner{margin:auto 0}
+  .cue{display:inline-flex;position:absolute;left:var(--gx);bottom:40px}
+  .hero-art{position:absolute;inset:0;height:auto;clip-path:inset(0 0 0 calc((1 - var(--t,0)) * 50%))}
+  .fig.tl{top:84px;left:calc((1 - var(--t,0)) * 50% + 24px)}
+  .fig.tr{top:84px;right:24px}.fig.bl{left:calc((1 - var(--t,0)) * 50% + 24px);bottom:24px}.fig.br{right:96px;bottom:24px}
+}
+
+/* ---------- glyph seams ---------- */
+.seam{position:relative;height:var(--seam);overflow:hidden}
+.seam canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.seam[data-to=light]{background:var(--off)}.seam[data-to=dark]{background:var(--black)}
+
+/* ---------- cost (ASCII ledger) ---------- */
+.cost{padding:120px 0 40px}
+.cost-stage{row-gap:56px}
+.cost-l{grid-column:1/-1;display:flex;flex-direction:column;gap:24px}
+.cost-l .cap{color:var(--acc)}
+.disp{display:flex;font-size:var(--t-disp);font-weight:500;line-height:.82;letter-spacing:-.045em;margin-left:-.05em;margin-top:12px}
+.dcol{position:relative;display:block;height:.9em;overflow:hidden;line-height:.9}
+.dcol .gh{visibility:hidden}
+.dcol .st{position:absolute;inset:0 0 auto 0;display:flex;flex-direction:column;align-items:center;transition:transform .7s cubic-bezier(.65,0,.25,1)}
+.dcol .st span{height:.9em;display:block}
+.cost-tags{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.cost-r{grid-column:1/-1;font-family:var(--mono);font-size:var(--t-b10);line-height:1.6;min-width:0}
+.ledger{max-width:58ch;text-transform:uppercase}
+.ln{display:flex;white-space:nowrap}
+.ln .f{color:rgba(241,238,231,.35);overflow:hidden}
+.ln .f::before{content:attr(data-f)}
+.ln .fx{flex:1;min-width:0}
+.ln .c{flex:1;min-width:0;display:flex;justify-content:space-between;gap:1ch;padding:0 1ch;overflow:hidden}
+@media (min-width:1024px){.ln .c{padding:0 2ch}}
+.ln .c span:first-child{overflow:hidden;text-overflow:ellipsis}
+.ln .bars{color:var(--acc);letter-spacing:-.05em}
+.row-l{transition:opacity .35s,color .6s}
+.row-l.off{opacity:0}
+.row-l.hot .c{color:var(--acc)}
+.ledger .tot .c{font-weight:500;color:var(--off)}
+@media (min-width:1024px){
+  .cost{padding:0}
+  .cost-track{height:260svh;position:relative}
+  .cost-stage{position:sticky;top:0;height:100svh;align-items:center;row-gap:0}
+  .cost-l{grid-column:1/span 5}
+  .cost-r{grid-column:7/span 6}
+}
+
+/* ---------- features ---------- */
+.sec{padding:120px 0}
+.feat-l{grid-column:1/-1;display:flex;flex-direction:column;gap:24px;margin-bottom:56px}
+.feat-l .h10{max-width:13em}
+.feat-l .b20{max-width:26em}
+.art{position:relative;aspect-ratio:4/3;background:var(--black);border-radius:8px;overflow:hidden;cursor:crosshair;margin-top:16px}
+.art canvas{position:absolute;inset:0;width:100%;height:100%}
+.art .fig{top:12px;left:14px}
+.art .fig.br2{top:auto;left:auto;right:14px;bottom:12px}
+.feat-r{grid-column:1/-1}
+.feat{border-top:1px solid var(--mg);padding:28px 0 40px;display:grid;gap:14px}
+.feat:last-child{border-bottom:1px solid var(--mg)}
+.feat h3{font-family:var(--mono);font-size:var(--t-cap);font-weight:400;text-transform:uppercase;display:flex;gap:1ch}
+.feat h3 .n{color:var(--dg);transition:color .3s}
+.feat:hover h3 .n{color:var(--acc)}
+.feat p{font-size:var(--t-b20);color:var(--dg);max-width:30em}
+.feat p b{color:var(--black);font-weight:500}
+@media (min-width:1024px){
+  .sec{padding:160px 0}
+  .feat-l{grid-column:1/span 5;position:sticky;top:120px;align-self:start;margin:0}
+  .feat-r{grid-column:7/span 6}
+}
+
+/* ---------- code / repo ---------- */
+.code-head{row-gap:32px;margin-bottom:56px}
+.code-head > div:first-child{grid-column:1/-1;display:flex;flex-direction:column;gap:24px}
+.code-head > div:last-child{grid-column:1/-1;align-self:end}
+@media (min-width:1024px){.code-head > div:first-child{grid-column:1/span 6}.code-head > div:last-child{grid-column:9/span 4;justify-self:end}}
+.ide-wrap{padding:0 var(--gx)}
+.ide{background:var(--deep);border-radius:8px;box-shadow:0 0 0 1px var(--on-dark-line);overflow:hidden;font-family:var(--mono);font-size:13px}
+.ide-bar{height:40px;display:flex;align-items:center;gap:12px;padding:0 14px;border-bottom:1px solid var(--on-dark-line);color:var(--on-dark-dim);font-size:12px;text-transform:uppercase}
+.sq{display:flex;gap:6px}.sq i{width:9px;height:9px;border:1px solid var(--on-dark-dim);border-radius:2px}
+.ide-bar .path{margin-left:auto}
+.ide-body{display:grid;grid-template-columns:1fr;min-height:420px}
+.tree{display:none;border-right:1px solid var(--on-dark-line);padding:14px 8px;color:var(--on-dark-dim);font-size:12.5px}
+.tree .dir{padding:5px 10px;text-transform:uppercase;font-size:11px;letter-spacing:.04em;margin-top:8px}
+.tree button{display:flex;width:100%;text-align:left;padding:6px 10px 6px 22px;border-radius:5px;transition:background .2s,color .2s;gap:8px;align-items:center}
+.tree button:hover{color:var(--off);background:rgba(241,238,231,.05)}
+.tree button.on{color:var(--off);background:rgba(241,238,231,.08)}
+.tree button.on::before{content:"";width:5px;height:5px;background:var(--acc);margin-left:-13px}
+.ftabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--on-dark-line);scrollbar-width:none}
+.ftabs button{padding:10px 14px;font-size:12px;color:var(--on-dark-dim);white-space:nowrap;border-right:1px solid var(--on-dark-line)}
+.ftabs button.on{color:var(--off);box-shadow:inset 0 -1px 0 var(--acc)}
+.editor{position:relative;min-width:0;display:flex;flex-direction:column}
+.src{padding:16px 0 24px;line-height:1.75;counter-reset:ln;overflow-x:auto;flex:1;color:#d7d3ca}
+.src div{white-space:pre;padding:0 18px 0 0;opacity:0;transform:translateX(-6px);animation:lin .45s var(--ease) forwards}
+.src div::before{counter-increment:ln;content:counter(ln);display:inline-block;width:3.2em;padding-right:1.2em;text-align:right;color:#4a4945}
+@keyframes lin{to{opacity:1;transform:none}}
+.tk{color:#ff9e64}.ts{color:#b5d68b}.tf{color:#8fb8ff}.tc{color:#6a6964}.tn{color:#ffcf70}.tp{color:#e8c4ff}
+.term{border-top:1px solid var(--on-dark-line);color:var(--on-dark-dim);font-size:12.5px}
+.term-h{display:flex;align-items:center;height:36px;padding:0 6px 0 14px;text-transform:uppercase;font-size:11px;letter-spacing:.04em;gap:10px}
+.term-h .x{margin-left:auto;width:28px;height:28px;display:grid;place-items:center;border-radius:5px}
+.term-h .x:hover{background:rgba(241,238,231,.08);color:var(--off)}
+.term-b{height:190px;overflow-y:auto;padding:4px 14px 14px;line-height:1.7;white-space:pre-wrap;transition:height .4s var(--ease),padding .4s}
+.term.closed .term-b{height:0;padding-top:0;padding-bottom:0}
+.term.closed .x{transform:rotate(180deg)}
+.term-b .p{color:var(--acc)}.term-b .ok{color:#9ad48a}.term-b .w{color:var(--off)}
+.tin{display:flex;gap:1ch;position:relative}
+.term-b .c{color:#6a6964}
+.tin input{flex:1;min-width:0;outline:none;caret-color:transparent;color:var(--off)}
+.blk{display:inline-block;width:.6em;height:1.1em;background:var(--off);vertical-align:-3px;animation:blink .9s steps(1,end) infinite}
+@keyframes blink{0%,49.9%{opacity:1}50%,to{opacity:0}}
+@media (min-width:860px){.ide-body{grid-template-columns:230px minmax(0,1fr)}.tree{display:block}.ftabs{display:none}}
+
+/* ---------- customers ---------- */
+.cust-head{margin-bottom:56px;row-gap:24px}
+.cust-head > *{grid-column:1/-1}
+@media (min-width:1024px){.cust-head .h10{grid-column:1/span 6}.cust-head .b20{grid-column:8/span 5;align-self:end}}
+.clist{padding:0 var(--gx)}
+.crow{display:grid;grid-template-columns:1fr auto;gap:6px 16px;padding:18px 8px;border-top:1px solid var(--mg);font-family:var(--mono);font-size:var(--t-cap);text-transform:uppercase;transition:background .25s,color .25s;cursor:default;position:relative}
+.crow:last-child{border-bottom:1px solid var(--mg)}
+.crow .nm{font-family:var(--sans);text-transform:none;font-size:var(--t-b20);font-weight:500}
+.crow .yr,.crow .stk,.crow .vol{color:var(--dg)}
+.crow .stk,.crow .vol{display:none}
+.crow .res{grid-column:1/-1;color:var(--dg)}
+.crow.th{color:var(--dg);padding-top:0;border-top:0;font-size:11px}
+.crow.th .nm{font-family:var(--mono);font-size:11px;text-transform:uppercase;font-weight:400}
+@media (min-width:860px){
+  .crow{grid-template-columns:2.2fr .7fr 2fr 1.4fr 2.4fr;align-items:center}
+  .crow .stk,.crow .vol{display:block}
+  .crow .res{grid-column:auto;text-align:right}
+  .crow:not(.th):hover{background:var(--black);color:var(--off)}
+  .crow:not(.th):hover *{color:var(--off)}
+}
+.peek{position:fixed;left:0;top:0;width:280px;height:186px;border-radius:6px;background:var(--black);pointer-events:none;z-index:60;opacity:0;transform:scale(.9);transition:opacity .25s,transform .35s var(--ease)}
+.peek.on{opacity:1;transform:scale(1)}
+.peek canvas{width:100%;height:100%;display:block}
+.quotes{margin-top:96px;row-gap:48px}
+.quotes figure{grid-column:1/-1;display:flex;flex-direction:column;gap:20px;border-top:1px solid var(--black);padding-top:20px}
+.quotes blockquote{font-size:var(--t-b20);line-height:1.4}
+.quotes figcaption{color:var(--dg)}
+@media (min-width:860px){.quotes figure{grid-column:span 4}}
+
+/* ---------- pricing ---------- */
+.price-head{margin-bottom:56px;row-gap:24px}
+.price-head > *{grid-column:1/-1}
+@media (min-width:1024px){.price-head .h10{grid-column:1/span 7}}
+.plans{row-gap:16px}
+.plan{grid-column:1/-1;border-radius:8px;box-shadow:inset 0 0 0 1px var(--mg);padding:28px;display:flex;flex-direction:column;gap:22px;background:var(--off)}
+.plan.dark{box-shadow:none;background:var(--black)}
+.plan-top{display:flex;justify-content:space-between;font-family:var(--mono);font-size:var(--t-cap);text-transform:uppercase}
+.plan-top span:first-child{color:var(--dg)}
+.plan.dark .plan-top span:first-child{color:var(--on-dark-dim)}
+.amt{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.amt strong{font-size:var(--t-h20);font-weight:500;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.amt span{font-family:var(--mono);font-size:var(--t-cap);text-transform:uppercase;color:var(--dg)}
+.plan.dark .amt span{color:var(--on-dark-dim)}
+.slider{font-family:var(--mono);font-size:var(--t-cap);text-transform:uppercase}
+.slider .lab{display:flex;justify-content:space-between;margin-bottom:12px}
+.slider input{-webkit-appearance:none;appearance:none;width:100%;height:2px;background:linear-gradient(90deg,var(--acc) var(--p,50%),rgba(241,238,231,.2) var(--p,50%));outline:none;cursor:pointer}
+.slider input::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:22px;border-radius:2px;background:var(--off);border:0}
+.slider input::-moz-range-thumb{width:14px;height:22px;border-radius:2px;background:var(--off);border:0}
+.slider .ticks{display:flex;justify-content:space-between;margin-top:10px;color:var(--on-dark-dim);font-size:11px}
+.plan ul{list-style:none;display:grid;gap:10px;font-size:var(--t-b10)}
+.plan li{display:flex;gap:1ch}
+.plan li::before{content:"+";font-family:var(--mono);color:var(--acc)}
+.plan .sbtn{margin-top:auto}
+@media (min-width:1024px){.plan{grid-column:span 6;padding:36px}}
+.shared{margin-top:16px;padding:0 var(--gx);font-family:var(--mono);font-size:var(--t-cap);text-transform:uppercase;line-height:1.6}
+.shared .ln .f{color:rgba(35,35,35,.35)}
+.shared .ln .c{color:var(--dg)}
+
+/* ---------- faq ---------- */
+.faq-l{grid-column:1/-1;margin-bottom:40px;display:flex;flex-direction:column;gap:24px;align-items:flex-start}
+.faq-r{grid-column:1/-1}
+@media (min-width:1024px){.faq-l{grid-column:1/span 5;position:sticky;top:120px;align-self:start;margin:0}.faq-r{grid-column:7/span 6}}
+.q{border-top:1px solid var(--mg)}
+.q:last-child{border-bottom:1px solid var(--mg)}
+.q button{width:100%;display:grid;grid-template-columns:auto 1fr 16px;gap:16px;align-items:baseline;text-align:left;padding:22px 0}
+.q .qn{font-family:var(--mono);font-size:var(--t-cap);color:var(--dg)}
+.q .qt{font-size:var(--t-b20);font-weight:500}
+.q .pl{position:relative;width:12px;height:12px;align-self:center}
+.q .pl::before,.q .pl::after{content:"";position:absolute;left:0;top:50%;width:12px;height:1px;background:currentColor;transition:transform .35s var(--ease)}
+.q .pl::after{transform:rotate(90deg)}
+.q.open .pl::after{transform:rotate(0)}
+.q .a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
+.q.open .a{grid-template-rows:1fr}
+.q .a > div{overflow:hidden}
+.q .a p{color:var(--dg);font-size:var(--t-b10);line-height:1.6;padding:0 32px 26px 0;max-width:36em}
+.q .a code{font-family:var(--mono);font-size:.9em;background:rgba(35,35,35,.07);padding:1px 5px;border-radius:3px;color:var(--black)}
+@media (min-width:600px){.q .a p{padding-left:calc(6ch + 16px)}}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--mg);padding-top:96px;overflow:hidden}
+.foot{row-gap:56px}
+.foot-l{grid-column:1/-1;display:flex;flex-direction:column;gap:32px;align-items:flex-start}
+.fnav{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:40px 16px;font-family:var(--mono);font-size:var(--t-cap);text-transform:uppercase}
+.fnav h4{font-weight:400;color:var(--dg);margin-bottom:14px}
+.fnav a{display:flex;gap:6px;padding:4px 0;width:fit-content}
+.fnav a span{opacity:0;transform:translate(-4px,4px);transition:.25s}
+.fnav a:hover span{opacity:1;transform:none}
+@media (min-width:640px){.fnav{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:1024px){.foot-l{grid-column:1/span 6}.fnav{grid-column:8/span 5}}
+.giant{font-size:26vw;font-weight:500;line-height:.82;letter-spacing:-.06em;padding:0 var(--gx);margin-top:96px;white-space:nowrap;display:flex;justify-content:flex-start;overflow:hidden}
+.giant .oc{height:.86em;line-height:.86em}
+.giant .oc .st span{height:.86em;line-height:.86em}
+.legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;padding:20px var(--gx) 24px;font-family:var(--mono);font-size:12px;text-transform:uppercase;color:var(--dg);border-top:1px solid var(--mg);margin-top:20px}
+
+/* ---------- minimap ---------- */
+.minimap{display:none}
+@media (min-width:1200px) and (hover:hover){
+  .minimap{display:block;position:fixed;right:10px;bottom:16px;width:60px;height:110px;z-index:70;border-radius:6px;overflow:hidden;background:var(--off);box-shadow:0 0 0 1px rgba(35,35,35,.14);cursor:pointer}
+}
+.mm-world{position:absolute;top:0;left:0;will-change:transform}
+.mm-world canvas{display:block}
+.mm-view{position:absolute;left:0;right:0;box-shadow:inset 0 0 0 1px var(--acc);background:rgba(255,145,0,.08)}
+.mm-scan{position:absolute;inset:0;overflow:hidden;animation:mmScan 5s ease-in-out infinite;pointer-events:none}
+.mm-scan i{position:absolute;inset:0;background:linear-gradient(to top,rgba(255,145,0,.28),transparent 60%);border-bottom:1px solid var(--acc);animation:mmScanC 5s ease-in-out infinite}
+@keyframes mmScan{0%{opacity:1;transform:translateY(-101%)}30%{opacity:1;transform:translateY(0)}38%,to{opacity:0;transform:translateY(0)}}
+@keyframes mmScanC{0%{transform:translateY(101%)}30%,to{transform:translateY(0)}}
+.mm-label{position:absolute;left:4px;bottom:4px;font-family:var(--mono);font-size:8px;text-transform:uppercase;background:var(--off);color:var(--black);padding:1px 4px;border-radius:2px;box-shadow:0 0 0 1px rgba(35,35,35,.12)}
+
+/* ---------- ASCII curtain ---------- */
+#curtain{position:fixed;inset:0;width:100%;height:100%;z-index:9990;pointer-events:none}
+html.cover #curtain{pointer-events:auto}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<canvas id="curtain" aria-hidden="true"></canvas>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <a href="#top" class="hchip logo" aria-label="Nimbus home">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="3" stroke="currentColor" stroke-width="2.2"/><path d="M7.5 16.5v-9l9 9v-9" stroke="#ff9100" stroke-width="2.4" stroke-linecap="square"/></svg>
+    <span data-odo>Nimbus</span>
+  </a>
+  <nav class="hchip hnav" aria-label="Main">
+    <a href="#features" data-odo>Product</a><a href="#code" data-odo>Code</a><a href="#customers" data-odo>Customers</a><a href="#pricing" data-odo>Pricing</a><a href="#faq" data-odo>FAQ</a>
+  </nav>
+  <div class="hr">
+    <span class="hchip hstatus"><span class="ping"></span>SDK v3.2</span>
+    <a href="#pricing" class="sbtn"><span class="seg" data-odo>Start</span><i class="conn"></i><span class="seg" data-odo>Free</span></a>
+    <button class="hchip menu-btn" id="menuBtn" aria-expanded="false">Menu</button>
+  </div>
+</header>
+<div class="mpanel" id="mpanel">
+  <a href="#features">Product</a><a href="#code">Code</a><a href="#customers">Customers</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a>
+</div>
+
+<main id="top">
+<!-- ============ HERO ============ -->
+<div class="hero-track" id="heroTrack" data-mm="Hero">
+  <div class="stage" id="stage">
+    <div class="hero-copy" id="heroCopy">
+      <div class="inner">
+        <p class="cap" data-reveal="scramble">Product analytics for engineers.</p>
+        <h1 class="h20" data-reveal="words">Analytics your codebase already understands.</h1>
+        <p class="b20 dim" data-reveal="fade">Typed events, plain SQL and alerts that know what normal looks like, wired into your repo in four minutes. Your editor autocompletes the tracking plan, CI enforces it, and nobody rebuilds a dashboard after a rename again.</p>
+        <div class="mask"><div class="ctas" data-reveal="up">
+          <a href="#pricing" class="sbtn"><span class="seg" data-odo>Start</span><i class="conn"></i><span class="seg" data-odo>Free</span></a>
+          <a href="#code" class="sbtn ghost"><span class="seg" data-odo>Read the code</span></a>
+        </div></div>
+      </div>
+      <button class="cue" id="cue"><span class="rings"><i></i><i></i><i></i><b></b></span><span>Scroll to dive in</span></button>
+    </div>
+    <figure class="hero-art" id="heroArt" aria-label="Animated ASCII globe of live events">
+      <canvas id="globe"></canvas>
+      <div class="fig tl">Fig. 01 / Live event globe<br><b id="lonlat">Lon 000.0° · Lat 18.0°</b></div>
+      <div class="fig tr"><b id="eps">18,204</b> events/s<br>across 31 regions</div>
+      <div class="fig bl">Sample 1:1<br>No sampling, ever</div>
+      <div class="fig br">Move cursor<br>to steer light</div>
+    </figure>
+  </div>
+</div>
+
+<!-- ============ COST ============ -->
+<section class="cost dark" id="cost" data-mm="Cost">
+  <div class="cost-track" id="costTrack">
+    <div class="cost-stage g12">
+      <div class="cost-l">
+        <p class="cap" data-reveal="scramble">The cost / 01</p>
+        <h2 class="h10" data-reveal="words">Hand-rolled analytics eats a sprint. Every quarter.</h2>
+        <p class="b20 dim" data-reveal="fade" style="max-width:26em">Nobody budgets for it, and every team rebuilds it anyway. Here is where the hours go before anyone answers a real product question.</p>
+        <div class="disp" id="disp" role="img" aria-label="about 62 hours"><span>~</span></div>
+        <div class="cost-tags"><span class="cap">hours per engineer / quarter</span><span class="chip">≈ 1.5 sprints</span></div>
+      </div>
+      <div class="cost-r"><div class="ledger" id="ledger"></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="seam" data-from="dark" data-to="light"><canvas></canvas></div>
+
+<!-- ============ FEATURES ============ -->
+<section class="sec" id="features" data-mm="Product">
+  <div class="g12">
+    <div class="feat-l">
+      <p class="cap" data-reveal="scramble">What you get / 02</p>
+      <h2 class="h10" data-reveal="words">Opinionated defaults. You keep every escape hatch.</h2>
+      <p class="b20 dim" data-reveal="fade">Eight years of analytics mistakes, made by other people and fixed in the SDK, so the first query you write is about your product rather than your pipeline.</p>
+      <div class="art" id="art">
+        <canvas></canvas>
+        <div class="fig">Fig. 02 / Activation funnel</div>
+        <div class="fig br2">Hover to resolve</div>
+      </div>
+    </div>
+    <div class="feat-r" id="featList"></div>
+  </div>
+</section>
+
+<div class="seam" data-from="light" data-to="dark"><canvas></canvas></div>
+
+<!-- ============ CODE ============ -->
+<section class="dark" id="code" data-mm="Code" style="padding:80px 0 120px">
+  <div class="g12 code-head">
+    <div>
+      <p class="cap" data-reveal="scramble" style="color:var(--acc)">The repo / 03</p>
+      <h2 class="h10" data-reveal="words">It's just code. Read every line of it.</h2>
+      <p class="b20 dim" data-reveal="fade" style="max-width:28em">Events, funnels, queries and alerts live in your repository as files. Review them in pull requests, version them with git, and roll them back like anything else.</p>
+    </div>
+    <div class="mask"><div data-reveal="up"><a href="#pricing" class="sbtn inv"><span class="seg" data-odo>Install</span><i class="conn"></i><span class="seg" data-odo>4 min</span></a></div></div>
+  </div>
+  <div class="ide-wrap" data-reveal="fade">
+    <div class="ide">
+      <div class="ide-bar"><span class="sq"><i></i><i></i><i></i></span><span>acme-web</span><span class="path" id="idePath">nimbus.config.ts</span></div>
+      <div class="ide-body">
+        <nav class="tree" id="tree" aria-label="Files"></nav>
+        <div class="editor">
+          <div class="ftabs" id="ftabs"></div>
+          <div class="src" id="src"></div>
+          <div class="term" id="term">
+            <div class="term-h"><span>Terminal</span><span style="color:#9ad48a">● zsh</span><button class="x" id="termX" aria-label="Toggle terminal">▾</button></div>
+            <div class="term-b" id="termB"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="seam" data-from="dark" data-to="light"><canvas></canvas></div>
+
+<!-- ============ CUSTOMERS ============ -->
+<section class="sec" id="customers" data-mm="Customers" style="padding-top:100px">
+  <div class="g12 cust-head">
+    <p class="cap" data-reveal="scramble">In production / 04</p>
+    <h2 class="h10" data-reveal="words">Teams that measure before they guess.</h2>
+    <p class="b20 dim" data-reveal="fade">From two-person startups to platforms pushing two hundred million events a day. Same SDK, same price logic.</p>
+  </div>
+  <div class="clist" id="clist">
+    <div class="crow th"><span class="nm">Team</span><span class="yr">Since</span><span class="stk">Stack</span><span class="vol">Volume</span><span class="res">Result</span></div>
+  </div>
+  <div class="g12 quotes">
+    <figure data-reveal="fade"><blockquote>“We deleted three analytics tools and a homegrown Kafka pipeline in one week. Product questions now get answered in the PR thread.”</blockquote><figcaption class="cap">Dana Kowalski / Staff Eng, Fieldnote</figcaption></figure>
+    <figure data-reveal="fade" style="transition-delay:.1s"><blockquote>“The typed tracking plan is the feature. Our iOS and web events finally have the same names, because the compiler won't let them drift.”</blockquote><figcaption class="cap">Ines Moreau / Mobile Lead, Orbital Health</figcaption></figure>
+    <figure data-reveal="fade" style="transition-delay:.2s"><blockquote>“An alert caught a broken checkout at 2am, with the query already attached. That one night paid for the year.”</blockquote><figcaption class="cap">Sam Okafor / CTO, Tessel &amp; Co</figcaption></figure>
+  </div>
+</section>
+<div class="peek" id="peek"><canvas></canvas></div>
+
+<!-- ============ PRICING ============ -->
+<section class="sec" id="pricing" data-mm="Pricing" style="padding-top:40px">
+  <div class="g12 price-head">
+    <p class="cap" data-reveal="scramble">Pricing / 05</p>
+    <h2 class="h10" data-reveal="words">Our cloud or yours. Same SDK either way.</h2>
+  </div>
+  <div class="g12 plans">
+    <div class="plan dark" data-reveal="fade">
+      <div class="plan-top"><span>Edition 01</span><span>Cloud</span></div>
+      <div class="amt"><strong id="priceAmt">$180</strong><span>/ month, estimated</span></div>
+      <div class="slider">
+        <div class="lab"><span>Events / month</span><span id="evs">10M</span></div>
+        <input type="range" id="range" min="0" max="100" value="50" aria-label="Events per month">
+        <div class="ticks"><span>100K</span><span>1M</span><span>10M</span><span>100M</span><span>1B</span></div>
+      </div>
+      <ul><li>First 1M events every month, free</li><li>$0.02 per 1K after, cheaper past 50M</li><li>12-month retention, 31 regions</li></ul>
+      <a href="#" class="sbtn inv"><span class="seg" data-odo>Start</span><i class="conn"></i><span class="seg" data-odo>Free</span></a>
+    </div>
+    <div class="plan" data-reveal="fade" style="transition-delay:.1s">
+      <div class="plan-top"><span>Edition 02</span><span>Self-hosted</span></div>
+      <div class="amt"><strong>$9,000</strong><span>/ year, flat</span></div>
+      <p class="dim" style="font-size:var(--t-b20);max-width:24em">The same binary we run in production, packaged as one Helm chart for your VPC. Unlimited events, your keys, your auditors.</p>
+      <ul><li>Unlimited events and retention</li><li>Air-gapped install supported</li><li>Shared Slack channel with our engineers</li></ul>
+      <a href="#" class="sbtn"><span class="seg" data-odo>Talk to</span><i class="conn"></i><span class="seg" data-odo>An engineer</span></a>
+    </div>
+  </div>
+  <div class="shared" id="shared" data-reveal="fade"></div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec" id="faq" data-mm="FAQ" style="padding-top:40px">
+  <div class="g12">
+    <div class="faq-l">
+      <p class="cap" data-reveal="scramble">FAQ / 06</p>
+      <h2 class="h10" data-reveal="words">Before you install</h2>
+      <a href="#" class="sbtn ghost"><span class="seg" data-odo>Ask on Discord</span></a>
+    </div>
+    <div class="faq-r" id="faqList"></div>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer data-mm="Footer">
+  <div class="g12 foot">
+    <div class="foot-l">
+      <h2 class="h10" data-reveal="words">Your next release could be measured.</h2>
+      <a href="#pricing" class="sbtn"><span class="seg" data-odo>Start</span><i class="conn"></i><span class="seg" data-odo>Free</span></a>
+    </div>
+    <nav class="fnav" aria-label="Footer">
+      <div><h4>Product</h4><a href="#features">Events<span>↗</span></a><a href="#code">Notebooks<span>↗</span></a><a href="#features">Alerts<span>↗</span></a><a href="#pricing">Pricing<span>↗</span></a></div>
+      <div><h4>Developers</h4><a href="#">Docs<span>↗</span></a><a href="#">API<span>↗</span></a><a href="#">Changelog<span>↗</span></a><a href="#">Status<span>↗</span></a></div>
+      <div><h4>Company</h4><a href="#">About<span>↗</span></a><a href="#">Blog<span>↗</span></a><a href="#">Careers<span>↗</span></a><a href="#">Security<span>↗</span></a></div>
+    </nav>
+  </div>
+  <div class="giant" id="giant" aria-hidden="true" data-odo>nimbus</div>
+  <div class="legal"><span>© 2026 Nimbus Labs, Inc.</span><span>Built in Lisbon &amp; Toronto</span><span><a href="#">Privacy</a> · <a href="#">Terms</a></span></div>
+</footer>
+
+<div class="minimap" id="minimap" aria-hidden="true">
+  <div class="mm-world" id="mmWorld"><canvas id="mmCanvas"></canvas></div>
+  <div class="mm-view" id="mmView"></div>
+  <div class="mm-scan"><i></i></div>
+  <span class="mm-label" id="mmLabel">Hero</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(() => {
+'use strict';
+const $ = (s, c = document) => c.querySelector(s);
+const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const sstep = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const desk = matchMedia('(min-width: 1024px)');
+const RAMP = ' .:-=+*#%@';
+const GLYPHS = '.:-=+*#%@/\\|<>[]{}01';
+const OFF = '#f1eee7', BLACK = '#232323', ACC = '#ff9100';
+const rnd = a => a[Math.random() * a.length | 0];
+const DPR = () => Math.min(devicePixelRatio || 1, 2);
+const MONO = '"Geist Mono", ui-monospace, monospace';
+
+/* ================= smooth scroll ================= */
+let lenis = null;
+if (!reduce && window.Lenis) {
+  lenis = new Lenis({ lerp: .1, smoothWheel: true });
+  const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
+  requestAnimationFrame(raf);
+}
+const jumpTo = (target) => {
+  const y = target === '#top' ? 0 : ($(target)?.getBoundingClientRect().top ?? 0) + scrollY;
+  lenis ? lenis.scrollTo(y, { immediate: true, force: true }) : scrollTo(0, y);
+};
+
+/* ================= data ================= */
+const LEDGER = [
+  ['Hand-write the tracking plan', 10],
+  ['Chase event names across iOS/web', 6],
+  ['Debug a missing property', 12],
+  ['Click a funnel together in a UI', 8],
+  ['Export to the warehouse', 12],
+  ['Rebuild dashboards after a rename', 9],
+  ['Explain the numbers in standup', 5],
+];
+const FEATURES = [
+  ['Typed tracking plan', 'Define events once in <b>nimbus.config.ts</b>. Your editor autocompletes names and properties, and CI fails on a missing field.'],
+  ['SQL over everything', 'Every event lands in a columnar store you query with plain SQL. <b>p95 under 100 ms</b> at a billion rows.'],
+  ['Alerts that know normal', 'Nimbus learns each metric\'s seasonal range and pings the right channel, with the query already attached.'],
+  ['Funnels as files', 'Funnels and cohorts live in your repo. Review them in a pull request like any other change.'],
+  ['Renames without rebuilds', 'Rename an event and every chart, alert and notebook follows. <b>No orphaned dashboards.</b>'],
+  ['PII scrubbed at ingest', 'Scrubbing rules run before anything touches disk. EU data never leaves the EU.'],
+  ['Your warehouse, joined in place', 'Query Snowflake or BigQuery tables next to events without copying them. Export is one command.'],
+  ['Self-host in one chart', 'The same binary as our cloud. One Helm chart, your VPC, your keys.'],
+];
+const CUSTOMERS = [
+  ['Fieldnote', '2026', 'Next.js · Postgres', '41M / day', 'Replaced 3 tools'],
+  ['Paperplane', '2026', 'Remix · BigQuery', '12M / day', '−42% analytics spend'],
+  ['Orbital Health', '2025', 'Swift · Kotlin', '6M / day', 'HIPAA, self-hosted'],
+  ['Kitebase', '2026', 'Astro · Snowflake', '88M / day', 'Funnels in PR review'],
+  ['Northbeam', '2025', 'Go · ClickHouse', '210M / day', 'p95 at 63 ms'],
+  ['Halcyon', '2026', 'Rails · Postgres', '3M / day', 'Live in one afternoon'],
+  ['Tessel & Co', '2025', 'Hydrogen · Shopify', '18M / day', '+11% checkout conversion'],
+];
+const FAQ = [
+  ['Does the SDK slow my app down?', 'The browser SDK is 3.1kb gzipped, batches events and sends them with <code>sendBeacon</code> off the main thread. Server SDKs flush asynchronously and never block a request.'],
+  ['Can I migrate from Segment, Mixpanel or Amplitude?', 'Yes. Run <code>nimbus import</code> with an export or API key. We backfill history and map your existing event names, so old dashboards keep working.'],
+  ['Why not just use my warehouse?', 'Your warehouse is great for batch work. Nimbus adds sub-second queries on fresh events, anomaly alerts and typed instrumentation, and it still reads your warehouse tables when you need a join.'],
+  ['What happens if I blow past my estimate?', 'Nothing breaks and we never drop events. You get an email at 80% and 100% of budget, and you can set a hard cap per project.'],
+  ['Which frameworks are supported?', 'TypeScript, Python, Go, Swift and Kotlin SDKs are generated from the same schema. Next.js, Remix, Astro, Rails and Django have first-party adapters.'],
+  ['Is it SOC 2 and GDPR compliant?', 'We are SOC 2 Type II audited and GDPR compliant, with EU-only hosting. PII rules run at ingest, before anything is written to disk.'],
+  ['Can I leave?', '<code>nimbus export</code> writes every event to Parquet in your bucket. No lock-in, no exit fee, no sales call.'],
+];
+const FILES = {
+  'nimbus.config.ts': [
+    '<span class="tk">import</span> { defineEvents, z } <span class="tk">from</span> <span class="ts">\'@nimbus/sdk\'</span>',
+    '',
+    '<span class="tc">// One source of truth. Types are generated for every SDK.</span>',
+    '<span class="tk">export default</span> <span class="tf">defineEvents</span>({',
+    '  <span class="tp">signup_completed</span>: {',
+    '    plan: z.<span class="tf">enum</span>([<span class="ts">\'starter\'</span>, <span class="ts">\'team\'</span>, <span class="ts">\'pro\'</span>]),',
+    '    referrer: z.<span class="tf">string</span>().<span class="tf">optional</span>(),',
+    '  },',
+    '  <span class="tp">order_completed</span>: {',
+    '    total: z.<span class="tf">number</span>().<span class="tf">positive</span>(),',
+    '    currency: z.<span class="tf">string</span>().<span class="tf">length</span>(<span class="tn">3</span>),',
+    '  },',
+    '  <span class="tp">checkout_failed</span>: {',
+    '    reason: z.<span class="tf">enum</span>([<span class="ts">\'card_declined\'</span>, <span class="ts">\'timeout\'</span>]),',
+    '  },',
+    '}, { pii: [<span class="ts">\'email\'</span>, <span class="ts">\'ip\'</span>], region: <span class="ts">\'eu-central-1\'</span> })',
+  ],
+  'src/checkout.ts': [
+    '<span class="tk">import</span> { track } <span class="tk">from</span> <span class="ts">\'@nimbus/sdk\'</span>',
+    '',
+    '<span class="tk">export async function</span> <span class="tf">completeOrder</span>(cart: Cart) {',
+    '  <span class="tk">const</span> order = <span class="tk">await</span> db.orders.<span class="tf">create</span>(cart)',
+    '',
+    '  <span class="tc">// typo-proof: "order_complete" fails to compile</span>',
+    '  <span class="tf">track</span>(<span class="ts">\'order_completed\'</span>, {',
+    '    total: order.total,',
+    '    currency: order.currency,',
+    '  })',
+    '',
+    '  <span class="tk">return</span> order',
+    '}',
+  ],
+  'funnels/activation.ts': [
+    '<span class="tk">import</span> { funnel } <span class="tk">from</span> <span class="ts">\'@nimbus/sdk\'</span>',
+    '',
+    '<span class="tk">export const</span> activation = <span class="tf">funnel</span>(<span class="ts">\'activation\'</span>, {',
+    '  steps: [',
+    '    <span class="ts">\'page_viewed\'</span>,',
+    '    <span class="ts">\'signup_completed\'</span>,',
+    '    <span class="ts">\'project_created\'</span>,',
+    '    <span class="ts">\'invite_sent\'</span>,',
+    '    <span class="ts">\'order_completed\'</span>,',
+    '  ],',
+    '  window: <span class="ts">\'7d\'</span>,',
+    '  breakdown: <span class="ts">\'plan\'</span>,',
+    '})',
+  ],
+  'queries/revenue.sql': [
+    '<span class="tc">-- weekly revenue by plan, 84 ms over 41.2M rows</span>',
+    '<span class="tk">select</span>',
+    '  <span class="tf">date_trunc</span>(<span class="ts">\'week\'</span>, ts) <span class="tk">as</span> week,',
+    '  props.plan,',
+    '  <span class="tf">sum</span>(props.total) <span class="tk">as</span> revenue',
+    '<span class="tk">from</span> events',
+    '<span class="tk">where</span> name = <span class="ts">\'order_completed\'</span>',
+    '  <span class="tk">and</span> ts &gt; <span class="tf">now</span>() - <span class="tk">interval</span> <span class="ts">\'90 days\'</span>',
+    '<span class="tk">group by</span> <span class="tn">1</span>, <span class="tn">2</span>',
+    '<span class="tk">order by</span> week <span class="tk">desc</span>',
+  ],
+  'alerts/checkout.yaml': [
+    '<span class="tp">alert</span>: checkout-failures',
+    '<span class="tp">metric</span>: <span class="tf">count</span>(checkout_failed)',
+    '<span class="tp">detect</span>: seasonal          <span class="tc"># learns the normal range</span>',
+    '<span class="tp">sensitivity</span>: <span class="tn">0.9</span>',
+    '<span class="tp">window</span>: <span class="ts">10m</span>',
+    '<span class="tp">notify</span>:',
+    '  - <span class="tp">slack</span>: <span class="ts">"#eng-oncall"</span>',
+    '  - <span class="tp">pagerduty</span>: <span class="ts">checkout</span>',
+    '<span class="tp">attach</span>: query           <span class="tc"># responders get the SQL</span>',
+  ],
+};
+const TREE = [['', ['nimbus.config.ts']], ['src', ['src/checkout.ts']], ['funnels', ['funnels/activation.ts']], ['queries', ['queries/revenue.sql']], ['alerts', ['alerts/checkout.yaml']]];
+
+/* ================= build DOM from data ================= */
+$('#featList').innerHTML = FEATURES.map((f, i) =>
+  `<div class="feat" data-reveal="fade"><h3><span class="n">${String(i + 1).padStart(3, '0')} /</span><span data-reveal="scramble">${f[0]}</span></h3><p>${f[1]}</p></div>`).join('');
+$('#clist').insertAdjacentHTML('beforeend', CUSTOMERS.map((c, i) =>
+  `<div class="crow" data-i="${i}" data-reveal="fade"><span class="nm">${c[0].replace('&', '&amp;')}</span><span class="yr">${c[1]}</span><span class="stk">${c[2]}</span><span class="vol">${c[3]}</span><span class="res">${c[4]}</span></div>`).join(''));
+$('#faqList').innerHTML = FAQ.map((q, i) =>
+  `<div class="q" data-reveal="fade"><button aria-expanded="false"><span class="qn">Q.${String(i + 1).padStart(3, '0')} /</span><span class="qt">${q[0]}</span><span class="pl"></span></button><div class="a"><div><p>${q[1]}</p></div></div></div>`).join('');
+
+/* ASCII box helpers */
+const DASH = '-'.repeat(200);
+const lnBorder = () => `<div class="ln"><span class="f" data-f="+"></span><span class="f fx" data-f="${DASH}"></span><span class="f" data-f="+"></span></div>`;
+const lnRow = (a, b, cls = '') => `<div class="ln ${cls}"><span class="f" data-f="|"></span><p class="c"><span>${a}</span><span>${b}</span></p><span class="f" data-f="|"></span></div>`;
+
+const totalHrs = LEDGER.reduce((s, r) => s + r[1], 0);
+$('#ledger').innerHTML =
+  lnBorder() + lnRow('', '') + lnRow('<b style="font-weight:500;color:#f1eee7">Task</b>', '<b style="font-weight:500;color:#f1eee7">Hours</b>') + lnRow('', '') + lnBorder() +
+  LEDGER.map((r, i) => `<div class="row-l off" data-h="${r[1]}">${lnRow(`Wk ${String(i + 1).padStart(2, '0')}&nbsp;&nbsp;${r[0]}`, `<span class="bars">${'#'.repeat(r[1])}</span> ~${r[1]}h`)}</div>`).join('') +
+  lnRow('', '') + lnBorder() +
+  `<div class="row-l off tot" data-h="0">${lnRow('Total, per engineer', `~${totalHrs} hrs`, 'tot')}</div>` + lnBorder();
+
+$('#shared').innerHTML = lnBorder() +
+  lnRow('Both editions include', '') + lnRow('', '') +
+  ['Unlimited seats, dashboards and queries', 'Typed SDKs for TS, Python, Go, Swift, Kotlin', 'SSO and SAML on every plan, not just enterprise', 'Lifetime access to the open schema format'].map(t => lnRow('+ ' + t, '')).join('') +
+  lnBorder();
+
+/* ================= odometer text ================= */
+const ODO_POOL = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+const odoify = el => {
+  const txt = el.textContent;
+  el.setAttribute('aria-label', txt.trim());
+  el.innerHTML = [...txt].map((ch, i) => {
+    if (ch === ' ') return '<span aria-hidden="true">&nbsp;</span>';
+    const up = ch === ch.toUpperCase();
+    const pool = up ? ODO_POOL : ODO_POOL.toLowerCase();
+    const stack = [ch, rnd(pool), rnd(pool), rnd(pool), rnd(pool), ch].map(c => `<span>${c}</span>`).join('');
+    return `<span class="oc" aria-hidden="true"><span class="gh">${ch}</span><span class="st" style="transition-delay:${i * 22}ms">${stack}</span></span>`;
+  }).join('');
+};
+$$('[data-odo]').forEach(odoify);
+// buttons: hovering the whole button rolls every segment
+$$('.sbtn').forEach(b => {
+  b.addEventListener('pointerenter', () => $$('[data-odo]', b).forEach(s => s.classList.add('roll')));
+  b.addEventListener('pointerleave', () => $$('[data-odo]', b).forEach(s => s.classList.remove('roll')));
+});
+
+/* ================= reveals ================= */
+$$('[data-reveal=words]').forEach(el => {
+  let i = 0;
+  const walk = node => [...node.childNodes].forEach(n => {
+    if (n.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach(part => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) return frag.append(' ');
+        const m = document.createElement('span'); m.className = 'wm';
+        const w = document.createElement('span'); w.className = 'wi'; w.textContent = part;
+        w.style.transitionDelay = (i++ * 45) + 'ms';
+        m.append(w); frag.append(m);
+      });
+      n.replaceWith(frag);
+    } else if (n.nodeType === 1) walk(n);
+  });
+  walk(el);
+});
+const scramble = el => {
+  const final = el.dataset.text || (el.dataset.text = el.textContent);
+  if (reduce) { el.textContent = final; return; }
+  let f = 0; const total = 18 + final.length * .4;
+  const tick = () => {
+    const p = f / total;
+    el.textContent = [...final].map((ch, i) => ch === ' ' ? ' ' : (p > i / final.length ? ch : rnd(GLYPHS))).join('');
+    if (++f <= total) requestAnimationFrame(tick); else el.textContent = final;
+  };
+  tick();
+};
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  const t = e.target;
+  t.classList.add('in');
+  if (t.dataset.reveal === 'scramble') scramble(t);
+  $$('[data-reveal=scramble]', t).forEach(s => { if (!s.classList.contains('in')) { s.classList.add('in'); scramble(s); } });
+  $$('[data-reveal=up]', t).forEach(u => u.classList.add('in'));
+  io.unobserve(t);
+}), { threshold: .15, rootMargin: '0px 0px -6% 0px' });
+// elements that slide up inside a mask are clipped, so observe their mask instead
+const armReveals = () => $$('[data-reveal]').forEach(el => io.observe(el.dataset.reveal === 'up' && el.parentElement.classList.contains('mask') ? el.parentElement : el));
+
+/* ================= ASCII curtain ================= */
+const cur = $('#curtain'), cctx = cur.getContext('2d');
+let curState = null;
+const curSize = () => {
+  const d = DPR(); cur.width = innerWidth * d; cur.height = innerHeight * d; cctx.setTransform(d, 0, 0, d, 0, 0);
+  const cols = Math.max(1, Math.round(innerWidth / 14)), rows = Math.max(1, Math.round(innerHeight / 20));
+  return { cols, rows, cw: innerWidth / cols, ch: innerHeight / rows };
+};
+const curtain = (mode, done) => {
+  if (reduce) { if (mode === 'cover') { cctx.clearRect(0, 0, cur.width, cur.height); } done && done(); return; }
+  const g = curSize(), n = g.cols * g.rows;
+  const delay = new Float32Array(n), dur = new Float32Array(n);
+  for (let i = 0; i < n; i++) { delay[i] = Math.random() * 260; dur[i] = 70 + Math.random() * 120; }
+  const t0 = performance.now();
+  document.documentElement.classList.add('cover');
+  cctx.font = `500 ${Math.round(g.ch * .62)}px ${MONO}`; cctx.textAlign = 'center'; cctx.textBaseline = 'middle';
+  const frame = now => {
+    const e = now - t0; let pending = false;
+    cctx.clearRect(0, 0, innerWidth, innerHeight);
+    for (let r = 0; r < g.rows; r++) for (let c = 0; c < g.cols; c++) {
+      const i = r * g.cols + c, k = (e - delay[i]) / dur[i];
+      const x = c * g.cw, y = r * g.ch;
+      if (k < 1) pending = true;
+      if (mode === 'cover') {
+        if (k >= 1) { cctx.fillStyle = BLACK; cctx.fillRect(x, y, g.cw + .5, g.ch + .5); }
+        else if (k > 0) { cctx.fillStyle = k > .5 ? OFF : ACC; cctx.fillText(rnd(GLYPHS), x + g.cw / 2, y + g.ch / 2); }
+      } else {
+        if (k <= 0) { cctx.fillStyle = BLACK; cctx.fillRect(x, y, g.cw + .5, g.ch + .5); }
+        else if (k < 1) { cctx.fillStyle = BLACK; cctx.fillRect(x, y, g.cw + .5, g.ch + .5); cctx.fillStyle = k < .5 ? OFF : ACC; cctx.fillText(rnd(GLYPHS), x + g.cw / 2, y + g.ch / 2); }
+      }
+    }
+    if (pending) requestAnimationFrame(frame);
+    else { if (mode === 'reveal') { cctx.clearRect(0, 0, innerWidth, innerHeight); document.documentElement.classList.remove('cover'); } done && done(); }
+  };
+  requestAnimationFrame(frame);
+};
+// start covered, reveal once fonts are in
+if (!reduce) { const g = curSize(); cctx.fillStyle = BLACK; cctx.fillRect(0, 0, innerWidth, innerHeight); }
+const boot = () => { curtain('reveal'); armReveals(); };
+(document.fonts ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]) : Promise.resolve()).then(() => setTimeout(boot, 120));
+
+// in-page links go through the curtain
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a) return;
+  const href = a.getAttribute('href');
+  if (href === '#') { e.preventDefault(); return; }
+  if (href !== '#top' && !$(href)) return;
+  e.preventDefault();
+  document.body.classList.remove('menu');
+  curtain('cover', () => { jumpTo(href); setTimeout(() => curtain('reveal'), 60); });
+});
+$('#menuBtn').onclick = () => { const o = document.body.classList.toggle('menu'); $('#menuBtn').setAttribute('aria-expanded', o); };
+$('#cue').onclick = () => {
+  const tr = $('#heroTrack'), y = tr.offsetTop + tr.offsetHeight - innerHeight * .2;
+  lenis ? lenis.scrollTo(y, { duration: 2.4 }) : scrollTo({ top: y, behavior: 'smooth' });
+};
+
+/* ================= hero globe ================= */
+const gcv = $('#globe'), gx = gcv.getContext('2d');
+const heroArt = $('#heroArt'), stage = $('#stage'), heroTrack = $('#heroTrack');
+let GW = 0, GH = 0, CW = 11, CH = 16, FS = 12;
+let mx = 0, my = 0, tmx = 0, tmy = 0, T = 0, D = 0;
+const pings = [];
+const sizeGlobe = () => {
+  const r = heroArt.getBoundingClientRect(), d = DPR();
+  GW = r.width; GH = r.height;
+  gcv.width = GW * d; gcv.height = GH * d; gx.setTransform(d, 0, 0, d, 0, 0);
+  if (GW < 700) { CW = 9; CH = 13; FS = 10; } else { CW = 11; CH = 16; FS = 12; }
+};
+const hash = (a, b) => { const s = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return s - Math.floor(s); };
+const land = (lat, lon) => (Math.sin(lon * 2 + .8) * Math.cos(lat * 2.6) + .55 * Math.sin(lon * 4.3 - lat * 3.1 + 1.7) + .35 * Math.cos(lat * 7.2 + lon * 2.9)) > .42;
+heroArt.addEventListener('pointermove', e => {
+  const r = heroArt.getBoundingClientRect();
+  tmx = (e.clientX - r.left) / r.width * 2 - 1; tmy = (e.clientY - r.top) / r.height * 2 - 1;
+});
+heroArt.addEventListener('pointerleave', () => { tmx = 0; tmy = 0; });
+let heroVis = true, lastG = 0, rot = 0;
+new IntersectionObserver(([e]) => heroVis = e.isIntersecting).observe(heroArt);
+const B0 = [], B1 = [], B2 = [], B3 = [], BA = [];
+const drawGlobe = now => {
+  mx += (tmx - mx) * .06; my += (tmy - my) * .06;
+  rot = now * .00011 + mx * .7;
+  const tilt = .38 + my * .2, ct = Math.cos(tilt), st = Math.sin(tilt), cr = Math.cos(rot), sr = Math.sin(rot);
+  let lx = -.5 + mx * .8, ly = -.45 + my * .6, lz = .75; const ll = Math.hypot(lx, ly, lz); lx /= ll; ly /= ll; lz /= ll;
+  const isDesk = desk.matches;
+  const cx = isDesk ? GW * lerp(.75, .5, T) : GW / 2, cy = GH / 2;
+  const R0 = isDesk ? lerp(Math.min(GW * .19, GH * .34), GH * .38, T) : Math.min(GW * .4, GH * .34);
+  const R = R0 * (1 + D * D * 9);
+  const cols = Math.ceil(GW / CW), rows = Math.ceil(GH / CH);
+  B0.length = B1.length = B2.length = B3.length = BA.length = 0;
+  for (let r = 0; r < rows; r++) {
+    const y = (r + .5) * CH, ny = (y - cy) / R;
+    for (let c = 0; c < cols; c++) {
+      const x = (c + .5) * CW, nx = (x - cx) / R, d2 = nx * nx + ny * ny;
+      if (d2 < 1) {
+        const nz = Math.sqrt(1 - d2);
+        const y1 = ny * ct + nz * st, z1 = -ny * st + nz * ct;
+        const ox = nx * cr - z1 * sr, oz = nx * sr + z1 * cr;
+        const lat = Math.asin(clamp(y1, -1, 1)), lon = Math.atan2(ox, oz);
+        const L = land(lat, lon);
+        const lam = Math.max(0, nx * lx + ny * ly + nz * lz);
+        const grat = Math.abs(Math.sin(lat * 6)) < .07 || Math.abs(Math.sin(lon * 6)) < .06;
+        let b = .05 + lam * (L ? .95 : .4) + (grat ? .16 : 0);
+        if (d2 > .94) b = Math.max(b, .3);
+        const idx = Math.min(9, b * 9.99 | 0), ch = RAMP[idx];
+        if (ch === ' ') continue;
+        (b > .62 ? B0 : b > .34 ? B1 : B2).push(x, y, ch);
+      } else if (D < .05 && hash(c, r) < .014) {
+        B3.push(x, y, (now * .001 + hash(r, c) * 6) % 6 < .3 ? '+' : '.');
+      }
+    }
+  }
+  // orbit ring
+  const ra = tilt + .55, rz = .3, cra = Math.cos(ra), sra = Math.sin(ra), crz = Math.cos(rz), srz = Math.sin(rz);
+  for (let i = 0; i < 150; i++) {
+    const th = i / 150 * Math.PI * 2 + now * .00035;
+    let px = Math.cos(th) * 1.45, py = 0, pz = Math.sin(th) * 1.45;
+    let qy = py * cra - pz * sra, qz = py * sra + pz * cra; py = qy; pz = qz;
+    const qx = px * crz - py * srz; qy = px * srz + py * crz; px = qx; py = qy;
+    if (pz < 0 && px * px + py * py < 1) continue;
+    const sx = Math.floor((cx + px * R) / CW) * CW + CW / 2, sy = Math.floor((cy + py * R) / CH) * CH + CH / 2;
+    if (i % 37 === 0) BA.push(sx, sy, '#', 1); else (pz > 0 ? B1 : B2).push(sx, sy, pz > 0 ? '-' : '.');
+  }
+  // event pings on the surface
+  if (now - (drawGlobe.lp || 0) > 110 && D < .6) { drawGlobe.lp = now; pings.push({ lat: (Math.random() - .5) * 2.4, lon: Math.random() * Math.PI * 2, t0: now }); }
+  for (let i = pings.length - 1; i >= 0; i--) {
+    const p = pings[i], a = (now - p.t0) / 1700;
+    if (a >= 1) { pings.splice(i, 1); continue; }
+    const ox = Math.cos(p.lat) * Math.sin(p.lon), oy = Math.sin(p.lat), oz = Math.cos(p.lat) * Math.cos(p.lon);
+    const x1 = ox * cr + oz * sr, z1 = -ox * sr + oz * cr;
+    const ny = oy * ct - z1 * st, nz = oy * st + z1 * ct;
+    if (nz < .1) continue;
+    const sx = Math.floor((cx + x1 * R) / CW), sy = Math.floor((cy + ny * R) / CH);
+    BA.push(sx * CW + CW / 2, sy * CH + CH / 2, '@', 1 - a);
+    const rr = Math.round(a * 3);
+    if (rr > 0) for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [1, -1], [-1, 1]])
+      BA.push((sx + dx * rr) * CW + CW / 2, (sy + dy * Math.max(1, rr * .6 | 0)) * CH + CH / 2, '+', (1 - a) * .7);
+  }
+  gx.clearRect(0, 0, GW, GH);
+  gx.globalAlpha = 1 - sstep(.7, 1, D);
+  gx.font = `500 ${FS}px ${MONO}`; gx.textAlign = 'center'; gx.textBaseline = 'middle';
+  const paint = (arr, col) => { gx.fillStyle = col; for (let i = 0; i < arr.length; i += 3) gx.fillText(arr[i + 2], arr[i], arr[i + 1]); };
+  paint(B3, 'rgba(241,238,231,.2)'); paint(B2, 'rgba(241,238,231,.34)'); paint(B1, 'rgba(241,238,231,.66)'); paint(B0, OFF);
+  gx.fillStyle = ACC;
+  const ga = gx.globalAlpha;
+  for (let i = 0; i < BA.length; i += 4) { gx.globalAlpha = ga * BA[i + 3]; gx.fillText(BA[i + 2], BA[i], BA[i + 1]); }
+  gx.globalAlpha = 1;
+};
+const lonlat = $('#lonlat'), epsEl = $('#eps');
+let eps = 18204;
+setInterval(() => {
+  eps = Math.round(clamp(eps + (Math.random() - .45) * 900, 14000, 26000));
+  epsEl.textContent = eps.toLocaleString('en-US');
+  const lon = ((rot * 180 / Math.PI) % 360 + 360) % 360;
+  lonlat.textContent = `Lon ${lon.toFixed(1).padStart(5, '0')}° · Lat ${(18 + my * 12).toFixed(1)}°`;
+}, 420);
+
+/* ================= seams ================= */
+const seams = $$('.seam').map(el => {
+  const cv = $('canvas', el), ctx = cv.getContext('2d');
+  const s = { el, cv, ctx, from: el.dataset.from === 'dark' ? BLACK : OFF, to: el.dataset.to === 'dark' ? BLACK : OFF, vis: false, u: null, cn: null, gl: null };
+  s.size = () => {
+    const r = el.getBoundingClientRect(), d = DPR();
+    s.w = r.width; s.h = r.height; cv.width = s.w * d; cv.height = s.h * d; ctx.setTransform(d, 0, 0, d, 0, 0);
+    s.cols = Math.ceil(s.w / 12); s.rows = Math.ceil(s.h / 17); s.cw = s.w / s.cols; s.chh = s.h / s.rows;
+    const n = s.cols * s.rows; s.u = new Float32Array(n); s.gl = new Array(n);
+    for (let i = 0; i < n; i++) { s.u[i] = Math.random(); s.gl[i] = rnd(RAMP.slice(1)); }
+    s.cn = new Float32Array(s.cols); for (let c = 0; c < s.cols; c++) s.cn[c] = (Math.sin(c * .21) + Math.sin(c * .057 + 1.3)) * .07 + (Math.random() - .5) * .05;
+  };
+  s.draw = () => {
+    const r = el.getBoundingClientRect();
+    const prog = clamp(1 - (r.top + r.height) / (innerHeight + r.height)); // 0 entering → 1 leaving
+    const shift = (prog - .5) * .55;
+    ctx.fillStyle = s.to; ctx.fillRect(0, 0, s.w, s.h);
+    ctx.font = `500 ${Math.round(s.chh * .72)}px ${MONO}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    for (let rr = 0; rr < s.rows; rr++) {
+      const v = (rr + .5) / s.rows;
+      for (let c = 0; c < s.cols; c++) {
+        const i = rr * s.cols + c;
+        const prob = 1 - sstep(0, 1, v + s.cn[c] + shift);
+        const u = s.u[i], x = c * s.cw, y = rr * s.chh;
+        if (u < prob - .1) { ctx.fillStyle = s.from; ctx.fillRect(x, y, s.cw + .6, s.chh + .6); }
+        else if (u < prob + .12) { ctx.fillStyle = s.from; ctx.fillText(s.gl[i], x + s.cw / 2, y + s.chh / 2); }
+      }
+    }
+  };
+  new IntersectionObserver(([e]) => s.vis = e.isIntersecting, { rootMargin: '100px' }).observe(el);
+  s.size();
+  return s;
+});
+setInterval(() => seams.forEach(s => { if (!s.vis || reduce) return; for (let k = 0; k < s.gl.length * .04; k++) s.gl[Math.random() * s.gl.length | 0] = rnd(RAMP.slice(1)); }), 90);
+
+/* ================= cost ledger + display odometer ================= */
+const disp = $('#disp');
+const mkDigit = () => {
+  const d = document.createElement('span'); d.className = 'dcol';
+  d.innerHTML = `<span class="gh">0</span><span class="st">${Array.from({ length: 10 }, (_, k) => `<span>${k}</span>`).join('')}</span>`;
+  disp.append(d); return $('.st', d);
+};
+const dTens = mkDigit(), dOnes = mkDigit();
+const setDisp = n => {
+  n = Math.max(0, Math.min(99, n));
+  dTens.style.transform = `translateY(-${(n / 10 | 0) * 10}%)`;
+  dOnes.style.transform = `translateY(-${(n % 10) * 10}%)`;
+};
+setDisp(0);
+const rowsL = $$('#ledger .row-l');
+let shownRows = -1;
+const showRows = n => {
+  if (n === shownRows) return;
+  rowsL.forEach((r, i) => {
+    const on = i < n;
+    if (on && r.classList.contains('off')) { r.classList.add('hot'); setTimeout(() => r.classList.remove('hot'), 650); }
+    r.classList.toggle('off', !on);
+  });
+  shownRows = n;
+  setDisp(rowsL.slice(0, n).reduce((s, r) => s + +r.dataset.h, 0));
+};
+const costTrack = $('#costTrack');
+// on small screens: play when visible
+new IntersectionObserver(([e]) => {
+  if (!e.isIntersecting || desk.matches) return;
+  let n = 0; const iv = setInterval(() => { showRows(++n); if (n >= rowsL.length) clearInterval(iv); }, reduce ? 0 : 260);
+}, { threshold: .3 }).observe($('#ledger'));
+
+/* ================= feature art (ASCII, resolves on hover) ================= */
+const art = $('#art'), acv = $('canvas', art), actx = acv.getContext('2d');
+let aw, ah, amx = -9, amy = -9, aVis = false, aHover = 0;
+const sizeArt = () => { const r = art.getBoundingClientRect(), d = DPR(); aw = r.width; ah = r.height; acv.width = aw * d; acv.height = ah * d; actx.setTransform(d, 0, 0, d, 0, 0); };
+art.addEventListener('pointermove', e => { const r = art.getBoundingClientRect(); amx = (e.clientX - r.left) / r.width; amy = (e.clientY - r.top) / r.height; });
+art.addEventListener('pointerenter', () => aHover = 1);
+art.addEventListener('pointerleave', () => { aHover = 0; amx = amy = -9; });
+new IntersectionObserver(([e]) => aVis = e.isIntersecting).observe(art);
+const FUN = [1, .68, .41, .23, .14];
+let aRes = 0;
+const drawArt = now => {
+  aRes += (aHover - aRes) * .06;
+  const cw = 9, ch = 13, cols = Math.ceil(aw / cw), rows = Math.ceil(ah / ch);
+  actx.clearRect(0, 0, aw, ah);
+  actx.font = `500 11px ${MONO}`; actx.textAlign = 'center'; actx.textBaseline = 'middle';
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    const u = (c + .5) / cols, v = (r + .5) / rows;
+    // funnel bars
+    const left = .1, right = .92, base = .84, top = .2;
+    let val = 0;
+    if (u > left && u < right && v < base) {
+      const bi = Math.floor((u - left) / (right - left) * 5), bu = ((u - left) / (right - left) * 5) % 1;
+      if (bu > .12 && bu < .88) {
+        const hgt = top + (1 - FUN[bi]) * (base - top);
+        if (v > hgt) val = .45 + .55 * (1 - (v - hgt) / (base - hgt + .001)) * (1 - bi * .08);
+      }
+    }
+    if (Math.abs(v - base - .02) < .012 && u > left - .02 && u < right + .02) val = .5;
+    const wave = .5 + .5 * Math.sin(u * 9 - now * .0012 + v * 4);
+    const dist = Math.hypot((u - amx) * aw / ah, v - amy);
+    const near = dist < .2;
+    let b = val ? val * (.75 + .25 * wave) : (hash(c, r) < .03 ? .12 : 0);
+    if (b <= 0) continue;
+    const res = clamp(aRes * 1.2 - dist * .8);
+    let chr = RAMP[Math.min(9, b * 9.99 | 0)];
+    if (near && val) { actx.fillStyle = ACC; chr = Math.random() < .25 ? rnd(GLYPHS) : RAMP[Math.min(9, (b + .3) * 9.99 | 0)]; }
+    else actx.fillStyle = `rgba(241,238,231,${.25 + b * .75 * (1 - res * .3)})`;
+    if (val && res > .5 && !near) chr = '#';
+    actx.fillText(chr, c * cw + cw / 2, r * ch + ch / 2);
+  }
+};
+
+/* ================= IDE ================= */
+const tree = $('#tree'), ftabs = $('#ftabs'), src = $('#src'), idePath = $('#idePath');
+tree.innerHTML = TREE.map(([dir, files]) => (dir ? `<div class="dir">${dir}/</div>` : '') +
+  files.map(f => `<button data-file="${f}">${f.split('/').pop()}</button>`).join('')).join('');
+ftabs.innerHTML = Object.keys(FILES).map(f => `<button data-file="${f}">${f.split('/').pop()}</button>`).join('');
+const openFile = f => {
+  src.innerHTML = FILES[f].map((l, i) => `<div style="animation-delay:${i * 28}ms">${l || ' '}</div>`).join('');
+  idePath.textContent = f;
+  $$('[data-file]').forEach(b => b.classList.toggle('on', b.dataset.file === f));
+};
+$$('[data-file]').forEach(b => b.addEventListener('click', () => openFile(b.dataset.file)));
+openFile('nimbus.config.ts');
+
+const termB = $('#termB'), term = $('#term');
+$('#termX').onclick = () => term.classList.toggle('closed');
+const ESC = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
+const tPrint = html => { const d = document.createElement('div'); d.innerHTML = html; termB.insertBefore(d, $('.tin', termB)); termB.scrollTop = termB.scrollHeight; };
+const CMDS = {
+  help: () => 'commands: <span class="w">init</span> · <span class="w">check</span> · <span class="w">tail</span> · <span class="w">query</span> · <span class="w">whoami</span> · <span class="w">clear</span>',
+  init: () => '<span class="ok">✓</span> detected Next.js 15 (app router)\n<span class="ok">✓</span> generated 14 event types → .nimbus/types.d.ts\n<span class="ok">✓</span> project <span class="w">acme-web</span> linked',
+  check: () => '<span class="ok">✓</span> 14 events · 0 missing properties · 0 drift\n<span class="ok">✓</span> tracking plan matches production',
+  tail: () => ['signup_completed  plan=team', 'order_completed   total=$249', 'page_viewed       /pricing', 'invite_sent       seats=3'].map(l => `<span class="c">${new Date().toTimeString().slice(0, 8)}</span>  ${l}`).join('\n'),
+  query: () => 'plan        revenue\n<span class="w">team        $182,400</span>\npro         $116,720\nstarter      $37,155\n<span class="ok">84 ms</span> · 41.2M rows scanned',
+  whoami: () => 'you@acme.dev · role: engineer · region: eu-central-1',
+};
+const runCmd = (cmd) => {
+  cmd = cmd.trim();
+  tPrint(`<span class="p">❯</span> <span class="w">${ESC(cmd)}</span>`);
+  if (!cmd) return;
+  if (cmd === 'clear') { $$('div', termB).forEach(d => { if (!d.classList.contains('tin')) d.remove(); }); return; }
+  const key = cmd.replace(/^(npx\s+)?nimbus\s+/, '');
+  tPrint(CMDS[key] ? CMDS[key]() : `nimbus: unknown command "${ESC(key)}". try <span class="w">help</span>`);
+};
+termB.innerHTML = '<div class="tin"><span class="p">❯</span><span id="typed" class="w"></span><span class="blk"></span><input id="tinput" aria-label="Terminal input" autocomplete="off" spellcheck="false" style="position:absolute;opacity:0;width:1px"></div>';
+const tinput = $('#tinput'), typed = $('#typed');
+termB.addEventListener('click', () => tinput.focus({ preventScroll: true }));
+tinput.addEventListener('input', () => typed.textContent = tinput.value);
+tinput.addEventListener('keydown', e => { if (e.key === 'Enter') { runCmd(tinput.value); tinput.value = ''; typed.textContent = ''; } });
+let termStarted = false;
+new IntersectionObserver(async ([e]) => {
+  if (!e.isIntersecting || termStarted) return; termStarted = true;
+  const wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+  for (const c of ['npx nimbus init', 'npx nimbus check']) {
+    for (let i = 0; i <= c.length; i++) { typed.textContent = c.slice(0, i); await wait(30 + Math.random() * 45); }
+    await wait(250); typed.textContent = ''; runCmd(c); await wait(500);
+  }
+  tPrint('<span class="c">type</span> <span class="w">help</span> <span class="c">to try more commands</span>');
+}, { threshold: .4 }).observe(term);
+
+/* ================= customers: ASCII peek ================= */
+const peek = $('#peek'), pcv = $('canvas', peek), pctx = pcv.getContext('2d');
+(() => { const d = DPR(); pcv.width = 280 * d; pcv.height = 186 * d; pctx.setTransform(d, 0, 0, d, 0, 0); })();
+let peekI = -1, px = 0, py = 0, tpx = 0, tpy = 0;
+const PAT = [
+  (u, v, t) => .5 + .5 * Math.sin(Math.hypot(u - .5, v - .5) * 30 - t * 3),
+  (u, v, t) => .5 + .5 * Math.sin(u * 12 + Math.sin(v * 6 + t) * 2),
+  (u, v, t) => (Math.abs(Math.sin(u * 14 + t * .5)) < .25 || Math.abs(Math.sin(v * 10)) < .2) ? .9 : .15,
+  (u, v, t) => clamp(1 - Math.hypot(u - .5 - .15 * Math.sin(t), v - .5) * 2.6) + .1,
+  (u, v, t) => { const b = Math.floor(u * 9); return v > 1 - (.3 + .6 * (.5 + .5 * Math.sin(b * 1.7 + t))) ? .85 : .08; },
+  (u, v, t) => .5 + .5 * Math.sin((u + v) * 16 - t * 2),
+  (u, v, t) => .5 + .5 * Math.sin(u * 8 + t) * Math.cos(v * 8 - t),
+];
+const drawPeek = now => {
+  px += (tpx - px) * .16; py += (tpy - py) * .16;
+  peek.style.left = (px + 24) + 'px'; peek.style.top = (py - 93) + 'px';
+  const f = PAT[peekI % PAT.length], t = now * .001, cw = 8, ch = 12, cols = 35, rows = 15;
+  pctx.fillStyle = BLACK; pctx.fillRect(0, 0, 280, 186);
+  pctx.font = `500 10px ${MONO}`; pctx.textAlign = 'center'; pctx.textBaseline = 'middle';
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    const b = clamp(f(c / cols, r / rows, t));
+    const chr = RAMP[Math.min(9, b * 9.99 | 0)]; if (chr === ' ') continue;
+    pctx.fillStyle = b > .85 ? ACC : `rgba(241,238,231,${.3 + b * .7})`;
+    pctx.fillText(chr, c * cw + cw / 2, r * ch + ch / 2 + 2);
+  }
+  pctx.fillStyle = OFF; pctx.textAlign = 'left'; pctx.font = `500 10px ${MONO}`;
+  pctx.fillText(('FIG. ' + String(peekI + 3).padStart(2, '0') + ' / ' + CUSTOMERS[peekI][0]).toUpperCase(), 10, 176);
+};
+$$('.crow[data-i]').forEach(row => {
+  row.addEventListener('pointerenter', e => { if (!matchMedia('(hover:hover) and (min-width:860px)').matches) return; peekI = +row.dataset.i; tpx = px = e.clientX; tpy = py = e.clientY; peek.classList.add('on'); });
+  row.addEventListener('pointermove', e => { tpx = e.clientX; tpy = e.clientY; });
+  row.addEventListener('pointerleave', () => { peek.classList.remove('on'); });
+});
+
+/* ================= pricing slider ================= */
+const range = $('#range'), evsEl = $('#evs'), costEl = $('#priceAmt');
+const fmt = n => n >= 1e9 ? +(n / 1e9).toFixed(1) + 'B' : n >= 1e6 ? +(n / 1e6).toFixed(n < 1e7 ? 1 : 0) + 'M' : Math.round(n / 1e3) + 'K';
+const nice = n => { const m = Math.pow(10, Math.floor(Math.log10(n)) - 1); return Math.round(n / m) * m; };
+const price = ev => { if (ev <= 1e6) return 0; const k = (ev - 1e6) / 1000; return Math.round(Math.min(k, 49000) * .02 + Math.max(0, k - 49000) * .008); };
+let cc = 180, ct = 180, craf;
+const animCost = () => { cc += (ct - cc) * .2; costEl.textContent = '$' + Math.round(cc).toLocaleString('en-US'); if (Math.abs(ct - cc) > .5) craf = requestAnimationFrame(animCost); else costEl.textContent = '$' + ct.toLocaleString('en-US'); };
+const upd = () => { const p = +range.value, ev = nice(Math.pow(10, 5 + p * 4 / 100)); range.style.setProperty('--p', p + '%'); evsEl.textContent = fmt(ev); ct = price(ev); cancelAnimationFrame(craf); animCost(); };
+range.addEventListener('input', upd); upd();
+
+/* ================= faq ================= */
+$$('.q button').forEach(b => b.addEventListener('click', () => {
+  const q = b.parentElement, o = q.classList.toggle('open'); b.setAttribute('aria-expanded', o);
+}));
+
+/* ================= footer wordmark rolls in ================= */
+const giant = $('#giant');
+new IntersectionObserver(([e]) => {
+  if (!e.isIntersecting) return;
+  giant.classList.add('roll');
+  setTimeout(() => giant.classList.remove('roll'), 2600);
+}, { threshold: .5 }).observe(giant);
+// give the giant odometer longer staggered rolls
+$$('.st', giant).forEach((s, i) => { s.style.transitionDelay = (i * 90) + 'ms'; s.style.transitionDuration = '1.2s'; });
+
+/* ================= minimap ================= */
+const mm = $('#minimap'), mmWorld = $('#mmWorld'), mmCv = $('#mmCanvas'), mmCtx = mmCv.getContext('2d'), mmView = $('#mmView'), mmLabel = $('#mmLabel');
+const MMW = 60, MMH = 110;
+let mmS = 0, mmWorldH = 0, mmSections = [];
+const buildMinimap = () => {
+  if (getComputedStyle(mm).display === 'none') return;
+  const docW = document.documentElement.clientWidth, docH = document.documentElement.scrollHeight;
+  mmS = MMW / docW; mmWorldH = docH * mmS;
+  const d = DPR(); mmCv.width = MMW * d; mmCv.height = Math.ceil(mmWorldH * d); mmCv.style.width = MMW + 'px'; mmCv.style.height = mmWorldH + 'px';
+  mmCtx.setTransform(d * mmS, 0, 0, d * mmS, 0, 0);
+  mmCtx.fillStyle = OFF; mmCtx.fillRect(0, 0, docW, docH);
+  const sy = scrollY;
+  const box = el => { const r = el.getBoundingClientRect(); return { x: r.left, y: r.top + sy, w: r.width, h: r.height }; };
+  // sticky stages: draw them at the top of their track
+  $$('.dark').forEach(el => { const b = box(el); mmCtx.fillStyle = BLACK; mmCtx.fillRect(b.x, b.y, b.w, b.h); });
+  $$('.seam').forEach(el => { const b = box(el); const g = mmCtx.createLinearGradient(0, b.y, 0, b.y + b.h); const fromD = el.dataset.from === 'dark'; g.addColorStop(0, fromD ? BLACK : OFF); g.addColorStop(1, fromD ? OFF : BLACK); mmCtx.fillStyle = g; mmCtx.fillRect(b.x, b.y, b.w, b.h); });
+  const ht = box(heroTrack);
+  mmCtx.fillStyle = BLACK; mmCtx.fillRect(ht.x + ht.w * .5, ht.y, ht.w * .5, innerHeight); mmCtx.fillRect(ht.x, ht.y + innerHeight, ht.w, ht.h - innerHeight);
+  $$('main h1, main h2, main h3, main p, main li, .ide, .art, .crow, .plan, .sbtn, footer h2, .fnav a, .giant').forEach(el => {
+    if (el.closest('.minimap, header')) return;
+    const b = box(el); if (b.w < 2 || b.h < 2) return;
+    const onDark = !!el.closest('.dark') || el.closest('.hero-art');
+    mmCtx.fillStyle = el.matches('.ide,.art') ? (onDark ? '#000' : BLACK) : onDark ? 'rgba(241,238,231,.35)' : 'rgba(35,35,35,.28)';
+    const pad = el.matches('h1,h2,.giant') ? 0 : b.h * .15;
+    mmCtx.fillRect(b.x, b.y + pad, b.w, Math.max(6, b.h - pad * 2));
+  });
+  mmSections = $$('[data-mm]').map(el => ({ name: el.dataset.mm, top: box(el).y }));
+};
+const updMinimap = () => {
+  if (!mmS) return;
+  const vh = innerHeight * mmS, vy = scrollY * mmS;
+  const off = clamp(vy - (MMH - vh) / 2, 0, Math.max(0, mmWorldH - MMH));
+  mmWorld.style.transform = `translateY(${-off}px)`;
+  mmView.style.top = (vy - off) + 'px'; mmView.style.height = vh + 'px';
+  let name = mmSections[0]?.name || '';
+  for (const s of mmSections) if (scrollY + innerHeight * .4 >= s.top) name = s.name;
+  if (mmLabel.textContent !== name) mmLabel.textContent = name;
+};
+mm.addEventListener('click', e => {
+  const r = mm.getBoundingClientRect(), vh = innerHeight * mmS, vy = scrollY * mmS;
+  const off = clamp(vy - (MMH - vh) / 2, 0, Math.max(0, mmWorldH - MMH));
+  const y = ((e.clientY - r.top) + off) / mmS - innerHeight / 2;
+  lenis ? lenis.scrollTo(Math.max(0, y), { duration: 1.4 }) : scrollTo({ top: y, behavior: 'smooth' });
+});
+
+/* ================= main loop ================= */
+const frame = now => {
+  requestAnimationFrame(frame);
+  // hero takeover + dive
+  if (desk.matches) {
+    const r = heroTrack.getBoundingClientRect(), span = r.height - innerHeight;
+    const s = clamp(-r.top / span);
+    T = sstep(0, .4, s); D = clamp((s - .42) / .58);
+    stage.style.setProperty('--t', T.toFixed(4));
+    // cost ledger: scroll-driven rows
+    const cr = costTrack.getBoundingClientRect(), cs = clamp(-cr.top / (cr.height - innerHeight));
+    showRows(Math.min(rowsL.length, Math.floor(cs * (rowsL.length + 1.2))));
+  } else { T = 0; D = 0; stage.style.setProperty('--t', 0); }
+  if (heroVis && now - lastG > 30) { lastG = now; drawGlobe(now); }
+  seams.forEach(s => s.vis && s.draw());
+  if (aVis) drawArt(now);
+  if (peek.classList.contains('on')) drawPeek(now);
+  updMinimap();
+};
+const sizeAll = () => { sizeGlobe(); seams.forEach(s => s.size()); sizeArt(); buildMinimap(); };
+sizeAll();
+let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(sizeAll, 150); });
+document.fonts && document.fonts.ready.then(() => setTimeout(buildMinimap, 300));
+addEventListener('load', () => setTimeout(buildMinimap, 400));
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

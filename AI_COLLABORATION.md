@@ -197,6 +197,12 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 
 Añadir entradas nuevas arriba de las anteriores.
 
+### 2026-11-19 — Claude (3)
+
+- /disenos: el índice en lista (`designs-index.tsx`) se reemplazó a pedido de Rubén por un "vistazo" fiel a la vista de rueda del Demo Index del builder (`designs-wheel.tsx` + `.module.css`, colores navy/hielo originales): la rueda de polaroids gira con el scroll y número/título/categoría ruedan al siguiente demo. Botón "Abrir índice" → página completa.
+- Nueva publicación de demos como páginas reales: `scripts/sync-demo-index.mjs` copia `index-library.html` a `public/indice/index.html` (con enlace "← Monarka TECH"), las capturas `_previews/` comprimidas y cada demo aprobado a `public/indice/<slug>/`. Todas con `noindex`. `hotel` (Sole) se excluye automáticamente (lista permitida = `studio.demos.items`). Correr `sync-demos.mjs` y `sync-demo-index.mjs` después de cambiar un demo.
+- Cada demo tiene `highlights` (chips) en `studio.demos.items`; `designs.index` ahora es el copy de la rueda.
+
 ### 2026-11-19 — Claude (2)
 
 - /disenos: índice centrado arriba del catálogo (`designs-index.tsx`, copy en `designs.index`), estilo del "Demo Index" del builder: filas numeradas, hover atenúa el resto y muestra vista previa en vivo flotante; clic abre el visor.

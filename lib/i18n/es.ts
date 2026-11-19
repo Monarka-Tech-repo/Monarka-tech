@@ -133,6 +133,7 @@ export const es = {
       items: [
         {
           slug: "construction-timelapse",
+          highlights: ["Timelapse con scroll", "Grúa animada", "Del día al atardecer"],
           type: "construction",
           name: "Strata Build Co.",
           category: "Construcción",
@@ -140,6 +141,7 @@ export const es = {
         },
         {
           slug: "construction",
+          highlights: ["Contadores", "Carrusel de casos", "Mapa de EE. UU."],
           type: "construction",
           name: "Meridian",
           category: "Construcción",
@@ -147,6 +149,7 @@ export const es = {
         },
         {
           slug: "villa-orso",
+          highlights: ["Intro animada", "Sonido ambiental", "Panel de reservas"],
           type: "hospitality",
           name: "Villa Orso",
           category: "Hospedaje boutique",
@@ -154,6 +157,7 @@ export const es = {
         },
         {
           slug: "saas",
+          highlights: ["Globo ASCII", "Registro con scroll", "IDE funcional"],
           type: "business",
           name: "Nimbus",
           category: "SaaS",
@@ -161,6 +165,7 @@ export const es = {
         },
         {
           slug: "fornello",
+          highlights: ["Hero que reacciona al cursor", "Scroll fijado", "Horario en vivo"],
           type: "restaurants",
           name: "Fornello",
           category: "Pizzería y bar",
@@ -168,6 +173,7 @@ export const es = {
         },
         {
           slug: "lindehof",
+          highlights: ["Menú a pantalla completa", "Contadores", "Parallax"],
           type: "hospitality",
           name: "Lindehof",
           category: "Retiro de negocios",
@@ -175,6 +181,7 @@ export const es = {
         },
         {
           slug: "portfolio",
+          highlights: ["Carrusel 3D", "Casos de estudio", "Copiar correo"],
           type: "portfolio",
           name: "Alex Moreno",
           category: "Portafolio",
@@ -182,6 +189,7 @@ export const es = {
         },
         {
           slug: "interactive-dev",
+          highlights: ["Intro con nombre", "Vista previa con cursor", "Páginas de proyecto"],
           type: "portfolio",
           name: "Elio Varenne",
           category: "Desarrollador freelance",
@@ -225,13 +233,12 @@ export const es = {
     countOne: "1 diseño",
     countMany: "{n} diseños",
     index: {
-      eyebrow: "Índice",
-      title: "Todos los diseños",
-      hint: "Pasa el cursor para ver la vista previa. Haz clic para abrirlo y recorrerlo.",
-      num: "No.",
-      project: "Proyecto",
-      type: "Industria",
-      open: "Abrir",
+      label: "Índice de demos",
+      button: "Abrir índice",
+      visit: "Ver sitio ↗",
+      scroll: "Scroll",
+      top: "Arriba ↑",
+      of: "de",
     },
     categories: [
       { id: "hospitality", title: "Hotelería", description: "Hoteles, apartamentos boutique y hospedajes con reservas, galerías y reseñas." },

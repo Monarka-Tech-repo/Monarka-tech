@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meridian — National Construction Alliance</title>
+<meta name="description" content="An illustrative website for a national alliance of independent regional builders.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0a1626;--navy2:#11233a;--steel:#3d6fb6;--sky:#8fb4e8;--rust:#c8643b;--paper:#f3f1ec;--ink:#0d1520;--mute:#5d6672;--line:#d9d6ce;--lined:#ffffff1f}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+img{display:block;max-width:100%}
+h1,h2,h3,.display{font-family:Archivo,Inter,sans-serif;letter-spacing:-.025em;line-height:1.02;font-weight:700}
+.wrap{width:min(1320px,100% - 64px);margin:0 auto}
+.eyebrow{font:600 12px/1 Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--steel);display:flex;align-items:center;gap:12px}
+.eyebrow:before{content:'';width:28px;height:2px;background:currentColor}
+.btn{display:inline-flex;align-items:center;gap:12px;padding:15px 24px;font-weight:600;font-size:14px;background:var(--rust);color:#fff;transition:background .25s,transform .25s}
+.btn:hover{background:#ad5230}
+.btn.ghost{background:transparent;border:1px solid currentColor}
+.btn.ghost:hover{background:#ffffff14}
+.btn .arr{transition:transform .25s}
+.btn:hover .arr{transform:translateX(4px)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--sky);outline-offset:4px}
+.skip{position:absolute;left:-999px;top:10px;background:#fff;padding:10px 14px;z-index:99}
+.skip:focus{left:10px}
+
+/* Header */
+header{position:fixed;inset:0 0 auto;z-index:50;color:#fff;transition:background .35s,box-shadow .35s}
+header.solid{background:var(--navy);box-shadow:0 1px 0 var(--lined)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:84px}
+.logo{display:flex;align-items:center;gap:12px;font:800 20px Archivo,sans-serif;letter-spacing:.14em}
+.logo small{display:block;font:500 9px Inter,sans-serif;letter-spacing:.22em;opacity:.7;margin-top:3px}
+.links{display:flex;gap:36px;font-size:14px;font-weight:500}
+.links a{position:relative;opacity:.85}
+.links a:after{content:'';position:absolute;left:0;bottom:-6px;height:1px;width:0;background:currentColor;transition:width .3s}
+.links a:hover{opacity:1}.links a:hover:after{width:100%}
+.nav .btn{padding:12px 20px}
+.burger{display:none;width:44px;height:44px;place-items:center}
+.burger span,.burger span:before,.burger span:after{display:block;width:22px;height:2px;background:#fff;position:relative;transition:.3s}
+.burger span:before,.burger span:after{content:'';position:absolute;left:0}
+.burger span:before{top:-7px}.burger span:after{top:7px}
+.open .burger span{background:transparent}.open .burger span:before{top:0;transform:rotate(45deg)}.open .burger span:after{top:0;transform:rotate(-45deg)}
+
+/* Hero */
+.hero{position:relative;min-height:100svh;color:#fff;display:flex;align-items:flex-end;background:var(--navy);overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(180deg,#0a162699 0%,#0a162640 40%,#0a1626f2 100%),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2200&q=80') center/cover;transform:scale(1.08);animation:zoom 2.4s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes zoom{to{transform:scale(1)}}
+.hero-inner{position:relative;padding:180px 0 72px;width:100%}
+.hero h1{font-size:clamp(52px,9vw,148px);font-weight:800;max-width:12ch}
+.hero h1 .line{display:block;overflow:hidden}
+.hero h1 .line span{display:block;transform:translateY(105%);animation:rise 1.1s cubic-bezier(.2,.7,.2,1) forwards}
+.hero h1 .line:nth-child(2) span{animation-delay:.15s;color:var(--sky)}
+@keyframes rise{to{transform:none}}
+.hero-foot{display:grid;grid-template-columns:1fr auto;gap:48px;align-items:end;margin-top:48px;padding-top:32px;border-top:1px solid #ffffff33}
+.hero-foot p{max-width:560px;font-size:18px;opacity:.85}
+.hero-foot .ctas{display:flex;gap:14px;flex-wrap:wrap}
+.fade{opacity:0;animation:fadein 1s .6s forwards}
+@keyframes fadein{to{opacity:1}}
+
+/* Stats */
+.stats{background:var(--navy);color:#fff;padding:96px 0 110px}
+.stats .tag{font:700 clamp(28px,3.4vw,48px) Archivo,sans-serif;letter-spacing:-.02em;margin-bottom:64px}
+.stats .tag em{font-style:normal;color:var(--sky)}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--lined)}
+.stat{padding:36px 32px 0 0;border-right:1px solid var(--lined)}
+.stat+.stat{padding-left:32px}
+.stat:last-child{border-right:0}
+.stat b{display:block;font:800 clamp(56px,7vw,104px)/1 Archivo,sans-serif;letter-spacing:-.04em}
+.stat span{display:block;margin-top:14px;color:#b9c3d0;max-width:260px}
+
+/* About */
+.about{padding:130px 0 100px}
+.about-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:80px;align-items:start}
+.about h2{font-size:clamp(40px,5vw,76px);margin-top:24px}
+.about p{font-size:18px;color:var(--mute);margin-bottom:22px}
+.since{margin-top:40px;display:flex;align-items:center;gap:28px;padding:28px;background:#fff;border-left:4px solid var(--rust)}
+.since b{font:800 64px/1 Archivo,sans-serif;letter-spacing:-.04em;color:var(--navy)}
+.since span{font-weight:600;font-size:15px;line-height:1.35}
+
+/* Photo strip */
+.strip{padding-bottom:130px}
+.strip-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 32px;scroll-padding:0 32px}
+.strip-track::-webkit-scrollbar{display:none}
+.strip-track figure{flex:0 0 min(68vw,860px);scroll-snap-align:start;position:relative;overflow:hidden;background:var(--navy2)}
+.strip-track figure:nth-child(even){flex-basis:min(44vw,560px)}
+.strip-track img{width:100%;height:clamp(320px,46vw,600px);object-fit:cover;transition:transform 1s}
+.strip-track figure:hover img{transform:scale(1.04)}
+.strip-track figcaption{position:absolute;left:0;bottom:0;padding:18px 22px;color:#fff;font-size:13px;font-weight:500;background:linear-gradient(transparent,#0008);width:100%}
+.ctrl{display:flex;justify-content:space-between;align-items:center;margin-top:28px}
+.arrows{display:flex;gap:10px}
+.arrows button{width:54px;height:54px;border:1px solid currentColor;display:grid;place-items:center;font-size:18px;transition:background .25s,color .25s}
+.arrows button:hover{background:var(--ink);color:#fff}
+.progress{flex:1;max-width:320px;height:2px;background:var(--line);position:relative}
+.progress i{position:absolute;left:0;top:0;height:100%;background:var(--ink);width:20%;transition:width .3s}
+
+/* Network logos */
+.network{background:var(--navy);color:#fff;padding:120px 0}
+.network h2{font-size:clamp(36px,4.6vw,68px);max-width:16ch;margin:24px 0 64px}
+.network .eyebrow{color:var(--sky)}
+.logo-wall{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--lined);border-left:1px solid var(--lined)}
+.logo-wall a{border-right:1px solid var(--lined);border-bottom:1px solid var(--lined);min-height:170px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:24px;transition:background .3s}
+.logo-wall a:hover{background:var(--navy2)}
+.mark{display:flex;align-items:center;gap:12px;font:700 19px/1.05 Archivo,sans-serif;letter-spacing:.02em;text-transform:uppercase}
+.mark svg{flex:none}
+.logo-wall small{font-size:12px;color:#8b98a9;letter-spacing:.06em}
+.logo-wall .join{color:var(--sky);font-weight:600;font-size:15px}
+
+/* Case studies */
+.cases{padding:130px 0}
+.cases-head{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:56px}
+.cases-head h2{font-size:clamp(44px,6vw,92px);margin-top:20px}
+.case-track{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 32px;scroll-padding:0 32px}
+.case-track::-webkit-scrollbar{display:none}
+.case{flex:0 0 min(80vw,440px);scroll-snap-align:start;text-align:left;background:#fff;display:flex;flex-direction:column;transition:transform .35s,box-shadow .35s}
+.case:hover{transform:translateY(-6px);box-shadow:0 30px 50px -30px #0a162666}
+.case .img{overflow:hidden;background:var(--navy2)}
+.case img{width:100%;height:320px;object-fit:cover;transition:transform .9s}
+.case:hover img{transform:scale(1.05)}
+.case .meta{padding:26px 26px 30px;display:flex;flex-direction:column;gap:10px;flex:1}
+.pill{align-self:flex-start;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--steel);border:1px solid #3d6fb655;padding:6px 10px}
+.case h3{font-size:25px}
+.case p{color:var(--mute);font-size:14px}
+.case .more{margin-top:auto;padding-top:12px;font-weight:600;font-size:14px;display:flex;gap:10px;align-items:center}
+
+dialog{border:0;padding:0;max-width:1100px;width:calc(100% - 32px);background:#fff;color:var(--ink)}
+dialog::backdrop{background:#0a1626d9;backdrop-filter:blur(4px)}
+.dlg{display:grid;grid-template-columns:1.1fr 1fr}
+.dlg img{width:100%;height:100%;min-height:420px;object-fit:cover}
+.dlg .body{padding:56px 48px;position:relative}
+.dlg h3{font-size:40px;margin:18px 0 18px}
+.dlg p{color:var(--mute);margin-bottom:28px}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:20px 24px;margin-bottom:32px;border-top:1px solid var(--line);padding-top:24px}
+.facts dt{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.facts dd{font:700 20px Archivo,sans-serif}
+.x{position:absolute;right:14px;top:10px;font-size:32px;width:44px;height:44px}
+
+/* Map */
+.map{background:#e8e5dd;padding:130px 0}
+.map-grid{display:grid;grid-template-columns:1fr 2fr;gap:60px;align-items:center}
+.map h2{font-size:clamp(38px,4.4vw,64px);margin:22px 0 22px}
+.map p{color:var(--mute);font-size:17px;margin-bottom:30px}
+.region-list{list-style:none;border-top:1px solid #c9c5bb}
+.region-list li button{width:100%;display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #c9c5bb;font-weight:600;text-align:left;transition:color .2s,padding .3s}
+.region-list li button span{color:var(--mute);font-weight:400}
+.region-list li button:hover,.region-list li button.on{color:var(--rust);padding-left:8px}
+#usmap{width:100%;height:auto;overflow:visible}
+#usmap .pin circle.dot{fill:var(--navy);transition:r .3s,fill .3s}
+#usmap .pin circle.halo{fill:var(--rust);opacity:0;transform-origin:center;transform-box:fill-box}
+#usmap .pin text{font:600 15px Inter,sans-serif;fill:var(--navy);opacity:.75;transition:opacity .3s}
+#usmap .pin.on circle.dot{fill:var(--rust);r:10}
+#usmap .pin.on circle.halo{animation:pulse 1.6s infinite}
+#usmap .pin.on text{opacity:1}
+#usmap .pin{cursor:pointer}
+@keyframes pulse{0%{opacity:.5;transform:scale(1)}100%{opacity:0;transform:scale(3.4)}}
+
+/* Leadership */
+.leaders{padding:130px 0}
+.leaders h2{font-size:clamp(44px,6vw,92px);margin:20px 0 60px}
+.people{display:grid;grid-template-columns:repeat(4,1fr);gap:28px 20px}
+.person .ph{overflow:hidden;background:#d7d3ca;aspect-ratio:4/5}
+.person img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transition:filter .5s,transform .8s}
+.person:hover img{filter:none;transform:scale(1.04)}
+.person h3{font-size:22px;margin-top:16px}
+.person p{font-size:14px;color:var(--mute)}
+.person a{display:inline-block;margin-top:8px;font-size:13px;font-weight:600;color:var(--steel)}
+.people .quote{grid-column:span 1;background:var(--navy);color:#fff;padding:32px;display:flex;flex-direction:column;justify-content:space-between}
+.quote blockquote{font:600 22px/1.3 Archivo,sans-serif;letter-spacing:-.01em}
+.quote cite{font-style:normal;font-size:13px;color:#b9c3d0}
+
+/* Partners */
+.partners{background:var(--navy);color:#fff;padding:130px 0}
+.partners .eyebrow{color:var(--sky)}
+.partners-head{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:60px}
+.partners h2{font-size:clamp(40px,5vw,76px);margin-top:20px}
+.partners-head p{color:#b9c3d0;font-size:17px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.pcard{background:var(--navy2);padding:28px;display:flex;flex-direction:column;gap:22px;min-height:230px;border:1px solid transparent;transition:border-color .3s,background .3s}
+.pcard:hover,.pcard.on{border-color:var(--sky);background:#152b46}
+.pcard .city{font-size:13px;color:#8b98a9;margin-top:auto}
+.pcard .go{font-weight:600;font-size:14px;color:var(--sky)}
+.contact-card{background:var(--rust)!important;border:0!important}
+.contact-card h3{font-size:28px}
+.contact-card .go{color:#fff}
+
+/* Footer */
+footer{background:#060e19;color:#c6cfdb;padding:90px 0 36px;font-size:14px}
+.f-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.4fr;gap:48px;padding-bottom:70px}
+footer h4{font:600 12px Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#fff;margin-bottom:20px}
+footer ul{list-style:none;display:grid;gap:10px}
+footer a:hover{color:#fff}
+.f-big{font:800 clamp(64px,13vw,210px)/.8 Archivo,sans-serif;letter-spacing:-.05em;color:#0f1f33;user-select:none;margin-bottom:36px;overflow:hidden;white-space:nowrap}
+.fine{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid var(--lined);padding-top:24px;font-size:12px;color:#7d8a9b}
+
+/* Reveal */
+.js .rv{opacity:0;transform:translateY(30px);transition:opacity .9s,transform 1s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.js .rv.in{opacity:1;transform:none}
+
+@media(max-width:1020px){
+  .links,.nav>.btn{display:none}
+  .burger{display:grid}
+  .open .links{display:flex;position:fixed;inset:84px 0 0;background:var(--navy);flex-direction:column;gap:0;padding:24px 32px}
+  .open .links a{font:700 34px Archivo,sans-serif;padding:14px 0;border-bottom:1px solid var(--lined);opacity:1}
+  .open .links a:after{display:none}
+  .about-grid,.map-grid,.partners-head{grid-template-columns:1fr;gap:40px}
+  .logo-wall,.cards,.people{grid-template-columns:repeat(2,1fr)}
+  .f-grid{grid-template-columns:1fr 1fr}
+  .dlg{grid-template-columns:1fr}.dlg img{min-height:260px;max-height:320px}
+}
+@media(max-width:640px){
+  .wrap{width:calc(100% - 32px)}
+  .strip-track,.case-track{padding:0 16px;scroll-padding:0 16px}
+  .hero-foot{grid-template-columns:1fr;gap:28px}
+  .hero-foot p{font-size:16px}
+  .stat-grid{grid-template-columns:1fr}
+  .stat,.stat+.stat{padding:28px 0;border-right:0;border-bottom:1px solid var(--lined)}
+  .logo-wall{grid-template-columns:1fr}
+  .cards,.people{grid-template-columns:1fr}
+  .people .person .ph{aspect-ratio:1/1}
+  .cases-head{flex-direction:column;align-items:flex-start}
+  .about,.cases,.map,.leaders,.partners,.network{padding:88px 0}
+  .strip{padding-bottom:88px}
+  .f-grid{grid-template-columns:1fr}
+  .dlg .body{padding:40px 24px}
+  .dlg h3{font-size:30px}
+  .since b{font-size:48px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.hero h1 .line span{transform:none}.fade{opacity:1}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header id="hdr">
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="Meridian home">
+      <svg width="34" height="34" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M4 36V10l16-6 16 6v26" stroke="currentColor" stroke-width="2.6"/><path d="M12 36V18l8-3 8 3v18" stroke="#8fb4e8" stroke-width="2.6"/><path d="M20 15v21" stroke="currentColor" stroke-width="2.6"/></svg>
+      <span>MERIDIAN<small>NATIONAL CONSTRUCTION ALLIANCE</small></span>
+    </a>
+    <nav class="links" id="links">
+      <a href="#about">About</a><a href="#case-studies">Case Studies</a><a href="#map">Map</a><a href="#leadership">Leadership</a>
+    </nav>
+    <a class="btn" href="#partners">Find a Partner <span class="arr">→</span></a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero" id="top">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <h1><span class="line"><span>Regional roots.</span></span><span class="line"><span>National reach.</span></span></h1>
+    <div class="hero-foot fade">
+      <p>Meridian brings together seven independent, top-ranked regional contractors. You get one national partner, backed by local builders who know each market.</p>
+      <div class="ctas"><a class="btn" href="#partners">Find a Partner <span class="arr">→</span></a><a class="btn ghost" href="#case-studies">See our work</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="stats" aria-label="Alliance at a glance">
+  <div class="wrap">
+    <p class="tag rv">Local strength. <em>National scale.</em></p>
+    <div class="stat-grid">
+      <div class="stat rv"><b data-count="2.4" data-dec="1" data-suf="k+">0</b><span>Projects delivered across the contiguous United States in 2026</span></div>
+      <div class="stat rv" style="--d:.1s"><b data-count="11" data-pre="$" data-suf="Bn">0</b><span>In combined construction volume in 2026</span></div>
+      <div class="stat rv" style="--d:.2s"><b data-count="9" data-suf="K">0</b><span>Combined employees, craft and professional</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div class="rv">
+      <div class="eyebrow">About Meridian</div>
+      <h2>Built for clients with national needs.</h2>
+    </div>
+    <div class="rv" style="--d:.1s">
+      <p>Meridian is a group of seven separately owned construction firms. Each one is a leading builder in its own region, and together we serve clients who build in many markets.</p>
+      <p>Our partners share best practices, safety programs and pricing data. They also share relationships with local trades. Clients get one point of contact and consistent standards everywhere, with a team on site that knows the local codes, labor market and suppliers.</p>
+      <div class="since"><b>2001</b><span>One national network,<br>working together since</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="strip" aria-label="Project gallery">
+  <div class="strip-track" id="strip">
+    <figure><img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1600&q=80" alt="White modern building facade" loading="lazy"><figcaption>Civic Arts Center · Denver, CO</figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1100&q=80" alt="Construction site with steel framing" loading="lazy"><figcaption>Riverside Logistics Hub · Dallas, TX</figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80" alt="Bright open-plan office interior" loading="lazy"><figcaption>Harbor Tech HQ interiors · Seattle, WA</figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1100&q=80" alt="Tower cranes over a city skyline" loading="lazy"><figcaption>Market Street Tower · Philadelphia, PA</figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=80" alt="Residential apartment building with balconies" loading="lazy"><figcaption>Westgate Residences · Pasadena, CA</figcaption></figure>
+  </div>
+  <div class="wrap ctrl">
+    <div class="progress"><i id="stripBar"></i></div>
+    <div class="arrows"><button data-scroll="strip" data-dir="-1" aria-label="Previous image">←</button><button data-scroll="strip" data-dir="1" aria-label="Next image">→</button></div>
+  </div>
+</section>
+
+<section class="network" aria-labelledby="net-h">
+  <div class="wrap">
+    <div class="eyebrow rv">The alliance</div>
+    <h2 id="net-h" class="rv">Seven firms. One connected construction network.</h2>
+    <div class="logo-wall" id="logoWall"></div>
+  </div>
+</section>
+
+<section class="cases" id="case-studies">
+  <div class="wrap cases-head">
+    <div class="rv"><div class="eyebrow">Selected work</div><h2>Case Studies</h2></div>
+    <div class="arrows rv"><button data-scroll="caseTrack" data-dir="-1" aria-label="Previous case study">←</button><button data-scroll="caseTrack" data-dir="1" aria-label="Next case study">→</button></div>
+  </div>
+  <div class="case-track" id="caseTrack"></div>
+</section>
+
+<section class="map" id="map">
+  <div class="wrap map-grid">
+    <div class="rv">
+      <div class="eyebrow">Coverage</div>
+      <h2>Local expertise wherever you build.</h2>
+      <p>Choose a region to see which partner leads there.</p>
+      <ul class="region-list" id="regionList"></ul>
+    </div>
+    <div class="rv" style="--d:.1s"><svg id="usmap" viewBox="0 0 1000 540" role="img" aria-label="Map of partner headquarters across the United States"></svg></div>
+  </div>
+</section>
+
+<section class="leaders" id="leadership">
+  <div class="wrap">
+    <div class="eyebrow rv">Leadership</div>
+    <h2 class="rv">Meet the principals</h2>
+    <div class="people" id="people"></div>
+  </div>
+</section>
+
+<section class="partners" id="partners">
+  <div class="wrap">
+    <div class="partners-head">
+      <div class="rv"><div class="eyebrow">Partners</div><h2>Connect with a Meridian partner</h2></div>
+      <p class="rv" style="--d:.1s">Explore the firms behind Meridian. Find the local builder that fits your region, market and project.</p>
+    </div>
+    <div class="cards" id="cards"></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-big" aria-hidden="true">MERIDIAN</div>
+    <div class="f-grid">
+      <div>
+        <a class="logo" href="#top" style="color:#fff"><svg width="34" height="34" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M4 36V10l16-6 16 6v26" stroke="currentColor" stroke-width="2.6"/><path d="M12 36V18l8-3 8 3v18" stroke="#8fb4e8" stroke-width="2.6"/><path d="M20 15v21" stroke="currentColor" stroke-width="2.6"/></svg><span>MERIDIAN<small>NATIONAL CONSTRUCTION ALLIANCE</small></span></a>
+        <p style="margin-top:22px;max-width:320px">Seven regional builders working as one national team.</p>
+      </div>
+      <div><h4>We are Meridian</h4><ul><li><a href="#about">About</a></li><li><a href="#case-studies">Case Studies</a></li><li><a href="#map">Map</a></li><li><a href="#leadership">Leadership</a></li><li><a href="#partners">Partners</a></li></ul></div>
+      <div><h4>Social</h4><ul><li><a href="#">LinkedIn ↗</a></li><li><a href="#">Instagram ↗</a></li><li><a href="#">Careers ↗</a></li></ul></div>
+      <div><h4>Partners</h4><ul id="footPartners"></ul></div>
+    </div>
+    <div class="fine"><span>© <span id="yr"></span> Meridian National Construction Alliance · Website concept</span><span>Illustrative demo. All firms and people are fictional. Photography from Unsplash.</span></div>
+  </div>
+</footer>
+
+<dialog id="caseDlg" aria-labelledby="dlgTitle">
+  <div class="dlg">
+    <img id="dlgImg" alt="">
+    <div class="body">
+      <button class="x" id="dlgClose" aria-label="Close case study details">×</button>
+      <span class="pill" id="dlgTag"></span>
+      <h3 id="dlgTitle"></h3>
+      <p id="dlgDesc"></p>
+      <dl class="facts" id="dlgFacts"></dl>
+      <a class="btn" id="dlgLink" href="#partners">Meet the builder <span class="arr">→</span></a>
+    </div>
+  </div>
+</dialog>
+
+<script>
+document.documentElement.classList.add('js');
+const U=(id,w)=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
+
+const firms=[
+  {id:'harbor',name:'Harbor & Pine Builders',city:'Seattle, WA',region:'Pacific Northwest',lon:-122.33,lat:47.61,shape:'tri'},
+  {id:'pacific',name:'Pacific Arc Construction',city:'Pasadena, CA',region:'California & Southwest',lon:-118.14,lat:34.15,shape:'arc'},
+  {id:'ridgeline',name:'Ridgeline Contractors',city:'Denver, CO',region:'Mountain West',lon:-104.99,lat:39.74,shape:'peak'},
+  {id:'lonestar',name:'Lone Star Structures',city:'Dallas, TX',region:'Texas & South Central',lon:-96.8,lat:32.78,shape:'star'},
+  {id:'lakeshore',name:'Lakeshore Building Co.',city:'Oak Brook, IL',region:'Midwest',lon:-87.95,lat:41.84,shape:'wave'},
+  {id:'peachtree',name:'Peachtree Constructors',city:'Atlanta, GA',region:'Southeast',lon:-84.39,lat:33.75,shape:'circle'},
+  {id:'keystone',name:'Keystone Works',city:'Malvern, PA',region:'Mid-Atlantic & Northeast',lon:-75.51,lat:40.04,shape:'key'}
+];
+const glyph={
+  tri:'<path d="M3 31 18 5l15 26z" stroke="currentColor" stroke-width="2.4" fill="none"/><path d="M11 31 18 18l7 13" stroke="#8fb4e8" stroke-width="2.4" fill="none"/>',
+  arc:'<path d="M4 30a14 14 0 0 1 28 0" stroke="currentColor" stroke-width="2.6" fill="none"/><path d="M11 30a7 7 0 0 1 14 0" stroke="#8fb4e8" stroke-width="2.6" fill="none"/>',
+  peak:'<path d="M2 30 12 12l6 9 6-13 10 22z" stroke="currentColor" stroke-width="2.4" fill="none"/>',
+  star:'<path d="m18 3 4 10h11l-9 7 3 11-9-7-9 7 3-11-9-7h11z" stroke="currentColor" stroke-width="2.2" fill="none"/>',
+  wave:'<path d="M3 14c5-5 10 5 15 0s10 5 15 0M3 23c5-5 10 5 15 0s10 5 15 0" stroke="currentColor" stroke-width="2.4" fill="none"/>',
+  circle:'<circle cx="18" cy="18" r="14" stroke="currentColor" stroke-width="2.4" fill="none"/><circle cx="18" cy="18" r="6" fill="#c8643b"/>',
+  key:'<rect x="4" y="4" width="28" height="28" stroke="currentColor" stroke-width="2.4" fill="none"/><path d="M18 4v28M4 18h14" stroke="#8fb4e8" stroke-width="2.4"/>'
+};
+const mark=f=>`<span class="mark"><svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true">${glyph[f.shape]}</svg><span>${f.name.replace(/ (Builders|Construction|Contractors|Structures|Building Co\.|Constructors|Works)$/,'<br>$1')}</span></span>`;
+
+document.getElementById('logoWall').innerHTML=firms.map((f,i)=>`<a href="#partners" data-firm="${f.id}" class="rv" style="--d:${i*.05}s">${mark(f)}<small>${f.city}</small></a>`).join('')+`<a href="#partners" class="rv" style="--d:.35s"><span class="join">One contract.<br>Seven home teams. →</span></a>`;
+
+const cases=[
+  {tag:'Mixed-Use',t:'Cascade Commons',loc:'Bend, OR',img:'photo-1545324418-cc1a3fa10c00',firm:'harbor',d:'A walkable neighborhood with 300+ homes, shops and a central green, built to all-electric, net-zero-ready standards.',facts:[['Size','440,000 sq ft'],['Homes','312'],['Rating','LEED Platinum'],['Delivered','2025']]},
+  {tag:'Civic',t:'Front Range Legacy Hall',loc:'Denver, CO',img:'photo-1487958449943-2429e8be8625',firm:'ridgeline',d:'A multi-use exhibition and event hall for year-round civic programming, delivered in phases on a live campus.',facts:[['Size','118,000 sq ft'],['Value','$72M'],['Method','CM at Risk'],['Delivered','2024']]},
+  {tag:'Healthcare',t:'Northfield Rehabilitation Center',loc:'Oak Brook, IL',img:'photo-1519494026892-80bbd2d6fd0d',firm:'lakeshore',d:'An outpatient rehab center with therapy gyms, aquatic therapy and daylight-filled treatment spaces.',facts:[['Size','26,000 sq ft'],['Schedule','11 months'],['Type','Outpatient'],['Delivered','2025']]},
+  {tag:'Corporate',t:'Southern Trust Headquarters',loc:'Atlanta, GA',img:'photo-1497366216548-37526070297c',firm:'peachtree',d:'A full renovation of a downtown tower to modern workplace standards, done floor by floor while it stayed occupied.',facts:[['Size','97,000 sq ft'],['Floors','8'],['Occupied','Yes'],['Delivered','2024']]},
+  {tag:'Academic',t:'Valley College Learning Complex',loc:'Pasadena, CA',img:'photo-1562774053-701939374585',firm:'pacific',d:'A new academic hub with classrooms, labs and a student commons around a shaded central courtyard.',facts:[['Size','84,000 sq ft'],['Value','$90M'],['Rating','LEED Gold'],['Delivered','2023']]},
+  {tag:'Healthcare',t:'Lakeview Medical Tower Addition',loc:'Rockwall, TX',img:'photo-1504307651254-35680f356dfd',firm:'lonestar',d:'A vertical expansion and renovation of an active hospital campus, adding patient beds and surgical suites.',facts:[['Size','115,000 sq ft'],['Beds added','64'],['Campus','Active'],['Delivered','2025']]},
+  {tag:'Commercial Office',t:'2200 Market Core & Shell',loc:'Philadelphia, PA',img:'photo-1486406146926-c627a92ad1ab',firm:'keystone',d:'A 19-story glass office tower with a high-performance curtain wall and a public plaza at street level.',facts:[['Size','305,000 sq ft'],['Stories','19'],['Type','Core & Shell'],['Delivered','2026']]}
+];
+const ct=document.getElementById('caseTrack');
+ct.innerHTML=cases.map((c,i)=>`<button class="case" data-i="${i}" aria-label="Open case study: ${c.t}"><div class="img"><img src="${U(c.img,900)}" alt="" loading="lazy"></div><div class="meta"><span class="pill">${c.tag}</span><h3>${c.t}</h3><p>${c.loc} · ${firms.find(f=>f.id===c.firm).name}</p><span class="more">View project →</span></div></button>`).join('');
+const dlg=document.getElementById('caseDlg');
+ct.addEventListener('click',e=>{const b=e.target.closest('.case');if(!b)return;const c=cases[b.dataset.i];
+  dlgImg.src=U(c.img,1400);dlgImg.alt=c.t;dlgTag.textContent=c.tag;dlgTitle.textContent=c.t;dlgDesc.textContent=c.d;
+  dlgFacts.innerHTML=[['Location',c.loc],...c.facts].map(([k,v])=>`<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')+`<div><dt>Builder</dt><dd>${firms.find(f=>f.id===c.firm).name}</dd></div>`;
+  dlgLink.onclick=()=>{dlg.close();setTimeout(()=>select(c.firm),400)};dlg.showModal()});
+dlgClose.onclick=()=>dlg.close();
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+
+const people=[
+  ['Daniel Okafor','CEO','Harbor & Pine Builders','photo-1507003211169-0a1dd7228f2d'],
+  ['Elena Marquez','President & CEO','Pacific Arc Construction','photo-1494790108377-be9c29b29330'],
+  ['Thomas Reyes','CEO','Ridgeline Contractors','photo-1500648767791-00dcc994a43e'],
+  ['Grace Whitfield','President','Lone Star Structures','photo-1438761681033-6461ffad8d80'],
+  ['Marcus Hale','President & CEO','Lakeshore Building Co.','photo-1472099645785-5658abf4ff4e'],
+  ['Naomi Brennan','CEO','Peachtree Constructors','photo-1544005313-94ddf0286df2'],
+  ['William Cho','CEO','Keystone Works','photo-1506794778202-cad84cf45f1d']
+];
+document.getElementById('people').innerHTML=people.map((p,i)=>`<article class="person rv" style="--d:${(i%4)*.07}s"><div class="ph"><img src="${U(p[3],700)}" alt="Portrait of ${p[0]}" loading="lazy"></div><h3>${p[0]}</h3><p>${p[1]}, ${p[2]}</p><a href="#">Read about ${p[0].split(' ')[0]} ↗</a></article>`).join('')+`<div class="quote rv" style="--d:.21s"><blockquote>“We compete on talent, not territory. Each of us is stronger because the other six are behind us.”</blockquote><cite>Principals’ Council, Meridian</cite></div>`;
+
+document.getElementById('cards').innerHTML=firms.map((f,i)=>`<a class="pcard rv" id="card-${f.id}" href="#" style="--d:${(i%4)*.06}s">${mark(f)}<span class="city">${f.city} · ${f.region}</span><span class="go">Visit partner ↗</span></a>`).join('')+`<a class="pcard contact-card rv" href="mailto:hello@example.com" style="--d:.18s"><h3>Building in several markets?</h3><span class="city" style="color:#fff">Talk to the alliance team</span><span class="go">Start a conversation →</span></a>`;
+document.getElementById('footPartners').innerHTML=firms.map(f=>`<li><a href="#card-${f.id}">${f.name} <span style="opacity:.55">· ${f.city}</span></a></li>`).join('');
+
+/* Map */
+const outline=[[-124.7,48.4],[-122.8,49],[-95.2,49],[-94.6,48.7],[-91.4,48.1],[-89.5,48],[-88.4,48.3],[-84.9,46.9],[-84.1,46.5],[-82.5,45.3],[-82.4,43],[-83.1,42],[-82.5,41.7],[-79,42.8],[-76.5,43.6],[-75,44.9],[-71.5,45],[-70,46.7],[-67.8,47.1],[-67,44.8],[-70.2,43.7],[-70.6,42.6],[-70,41.8],[-71.9,41.3],[-73.9,40.6],[-74.1,39.7],[-75,38.8],[-75.9,37.3],[-76,36.9],[-75.5,35.2],[-76.9,34.6],[-78.6,33.9],[-80.8,32.1],[-81.4,30.7],[-80,26.8],[-80.4,25.2],[-81.1,25.2],[-81.8,26.7],[-82.7,28],[-82.8,29.2],[-84,30],[-85.4,29.7],[-86.5,30.4],[-88.9,30.4],[-89.6,30.2],[-89.4,29.2],[-90.2,29.1],[-91.8,29.5],[-93.8,29.7],[-94.7,29.4],[-96.6,28.1],[-97.4,26.9],[-97.2,25.9],[-99.1,26.4],[-101.4,29.8],[-102.4,29.8],[-103.1,29],[-104.5,29.6],[-106.5,31.8],[-108.2,31.8],[-111.1,31.3],[-114.8,32.5],[-117.1,32.5],[-117.3,33.1],[-118.5,34],[-120.6,34.6],[-121.9,36.6],[-122.5,37.8],[-123.7,38.9],[-124.2,40.4],[-124.4,42],[-124,43.7],[-124,46.3]];
+const P=(lon,lat)=>[(lon+125.5)*16.9+10,(49.8-lat)*20.6+10];
+const svg=document.getElementById('usmap'),NS='http://www.w3.org/2000/svg';
+const d='M'+outline.map(p=>P(...p).map(v=>v.toFixed(1)).join(',')).join('L')+'Z';
+let dots='';for(let x=8;x<1000;x+=14)for(let y=8;y<540;y+=14)dots+=`<circle cx="${x}" cy="${y}" r="2.6"/>`;
+svg.innerHTML=`<defs><clipPath id="us"><path d="${d}"/></clipPath></defs><path d="${d}" fill="#dcd8cf" stroke="#bdb8ad" stroke-width="1.5"/><g clip-path="url(#us)" fill="#aaa498">${dots}</g><g id="pins"></g>`;
+const pins=svg.querySelector('#pins');
+firms.forEach(f=>{const [x,y]=P(f.lon,f.lat);const g=document.createElementNS(NS,'g');g.classList.add('pin');g.dataset.firm=f.id;g.setAttribute('tabindex','0');g.setAttribute('role','button');g.setAttribute('aria-label',f.name+', '+f.city);
+  const right=x<820;g.innerHTML=`<circle class="halo" cx="${x}" cy="${y}" r="8"/><circle class="dot" cx="${x}" cy="${y}" r="7"/><text x="${right?x+16:x-16}" y="${y+5}" text-anchor="${right?'start':'end'}">${f.city.split(',')[0]}</text>`;pins.appendChild(g)});
+document.getElementById('regionList').innerHTML=firms.map(f=>`<li><button data-firm="${f.id}">${f.region}<span>${f.city}</span></button></li>`).join('');
+function select(id){document.querySelectorAll('[data-firm]').forEach(el=>el.classList.toggle('on',el.dataset.firm===id));document.querySelectorAll('.pcard').forEach(c=>c.classList.toggle('on',c.id==='card-'+id))}
+document.addEventListener('click',e=>{const el=e.target.closest('#regionList [data-firm], #usmap .pin');if(el)select(el.dataset.firm)});
+svg.addEventListener('keydown',e=>{const p=e.target.closest('.pin');if(p&&(e.key==='Enter'||e.key===' ')){e.preventDefault();select(p.dataset.firm)}});
+document.querySelectorAll('#logoWall [data-firm]').forEach(a=>a.addEventListener('click',()=>setTimeout(()=>select(a.dataset.firm),50)));
+select('ridgeline');
+
+/* Carousels */
+document.querySelectorAll('[data-scroll]').forEach(b=>b.onclick=()=>{const t=document.getElementById(b.dataset.scroll);const item=t.firstElementChild;t.scrollBy({left:(item.offsetWidth+20)*b.dataset.dir,behavior:'smooth'})});
+const strip=document.getElementById('strip'),bar=document.getElementById('stripBar');
+const upd=()=>{const m=strip.scrollWidth-strip.clientWidth;bar.style.width=(20+80*(m?strip.scrollLeft/m:1))+'%'};strip.addEventListener('scroll',upd,{passive:true});upd();
+
+/* Header + burger */
+const hdr=document.getElementById('hdr'),burger=document.getElementById('burger');
+const onScroll=()=>hdr.classList.toggle('solid',scrollY>40||hdr.classList.contains('open'));addEventListener('scroll',onScroll,{passive:true});onScroll();
+burger.onclick=()=>{const o=hdr.classList.toggle('open');burger.setAttribute('aria-expanded',o);document.body.style.overflow=o?'hidden':'';onScroll()};
+document.querySelectorAll('#links a').forEach(a=>a.onclick=()=>{if(hdr.classList.contains('open'))burger.click()});
+
+/* Reveal + counters */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add('in');io.unobserve(e.target);
+  e.target.querySelectorAll('[data-count]').forEach(count)}),{threshold:.15});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+function count(el){const to=+el.dataset.count,dec=+(el.dataset.dec||0),pre=el.dataset.pre||'',suf=el.dataset.suf||'';
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=pre+to.toFixed(dec)+suf;return}
+  const t0=performance.now();const step=t=>{const k=Math.min(1,(t-t0)/1800),v=to*(1-Math.pow(1-k,4));el.textContent=pre+v.toFixed(dec)+suf;if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)}
+
+/* Image fallback */
+document.querySelectorAll('img').forEach(i=>i.addEventListener('error',()=>{i.style.visibility='hidden'},{once:true}));
+document.getElementById('yr').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>

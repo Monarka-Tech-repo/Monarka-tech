@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elio Varenne — Freelance Interactive Developer</title>
+<meta name="description" content="Elio Varenne, freelance interactive developer. Demo site with fictional content.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EFEEEA; --fg:#0E0E0E; --mute:#8D8A84; --line:rgba(14,14,14,.13);
+  --dark:#0E0E0E; --light:#EFEEEA;
+  --pad:clamp(16px,2vw,28px);
+  --ease:cubic-bezier(.76,0,.24,1);
+  --out:cubic-bezier(.16,1,.3,1);
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--fg);font-family:"Inter Tight",system-ui,sans-serif;font-size:14px;line-height:1.4;-webkit-font-smoothing:antialiased}
+body.lock{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+ul{list-style:none}
+::selection{background:var(--fg);color:var(--bg)}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.03em;text-transform:uppercase}
+.mute{color:var(--mute)}
+.u{position:relative;display:inline-block}
+.u::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+.u:hover::after{transform:scaleX(1);transform-origin:left}
+
+/* ---------- loader ---------- */
+.loader{position:fixed;inset:0;z-index:200;background:var(--dark);color:var(--light);display:flex;flex-direction:column;justify-content:space-between;padding:var(--pad);transition:clip-path 1.1s var(--ease);clip-path:inset(0 0 0 0)}
+.loader.done{clip-path:inset(0 0 100% 0)}
+.loader .ln{display:flex;justify-content:space-between}
+.loader .big{font-size:clamp(56px,12vw,200px);font-weight:500;letter-spacing:-.06em;line-height:.85;display:flex;justify-content:space-between;align-items:flex-end}
+.loader .big span{display:inline-block;overflow:hidden}
+.loader .big span i{display:inline-block;font-style:normal;transform:translateY(100%);transition:transform 1s var(--out)}
+.loader.go .big span i{transform:none}
+.loader .pct{font-variant-numeric:tabular-nums}
+
+/* ---------- header ---------- */
+header{position:fixed;top:0;left:0;right:0;z-index:150;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:start;padding:var(--pad);color:#fff;mix-blend-mode:difference}
+header .mid{justify-self:center;text-align:center}
+header .right{justify-self:end;display:flex;gap:18px}
+.toggle{position:relative;overflow:hidden;display:inline-block;height:1.4em}
+.toggle span{display:block;transition:transform .6s var(--ease)}
+.toggle span + span{position:absolute;left:0;top:100%}
+body.panel-open .toggle span{transform:translateY(-100%)}
+
+/* ---------- index list ---------- */
+main{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--pad)*5) var(--pad) calc(var(--pad)*6)}
+.list{width:100%;max-width:1100px;margin:0 auto}
+.item a{display:flex;align-items:baseline;gap:clamp(10px,1.4vw,20px);padding:2px 0;transition:opacity .5s var(--out)}
+.item .n{font-family:var(--mono);font-size:11px;color:var(--mute);width:24px;flex:none;transform:translateY(-.3em)}
+.item .t{font-size:clamp(30px,5.1vw,78px);font-weight:500;letter-spacing:-.05em;line-height:1;text-transform:uppercase;display:inline-block;overflow:hidden;padding-bottom:.04em}
+.item .t span{display:inline-block;transform:translateY(105%);transition:transform 1.1s var(--out),letter-spacing .6s var(--out);transition-delay:calc(var(--i)*.05s + .15s)}
+body.ready .item .t span{transform:none}
+.item .t em{font-style:italic;font-weight:400;text-transform:none}
+.item .tag{margin-left:auto;opacity:0;transform:translateX(-10px);transition:opacity .4s,transform .5s var(--out);white-space:nowrap}
+.list.hov .item a{opacity:.16}
+.list.hov .item.on a{opacity:1}
+.item.on .tag{opacity:1;transform:none}
+.item.on .t span{letter-spacing:-.03em}
+
+.preview{position:fixed;left:0;top:0;z-index:20;width:clamp(220px,22vw,340px);aspect-ratio:4/5;pointer-events:none;transform:translate(-50%,-50%) scale(0);will-change:transform}
+.pv{position:absolute;inset:0;clip-path:inset(100% 0 0 0);transition:clip-path .75s var(--ease)}
+.pv.on{clip-path:inset(0 0 0 0)}
+.pv canvas{width:100%;height:100%;display:block}
+
+/* ---------- bottom bar ---------- */
+.bottom{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:var(--pad);padding:var(--pad);pointer-events:none}
+.bottom > *{pointer-events:auto}
+.bottom .intro{max-width:30ch}
+.bottom .socials{justify-self:center;display:flex;gap:16px}
+.bottom .time{justify-self:end;text-align:right}
+.fade-in{opacity:0;transition:opacity 1s .9s}
+body.ready .fade-in{opacity:1}
+
+/* ---------- panels ---------- */
+.panel{position:fixed;inset:0;z-index:100;overflow-y:auto;overscroll-behavior:contain;visibility:hidden;clip-path:inset(100% 0 0 0);transition:clip-path 1s var(--ease),visibility 0s 1s}
+.panel.open{visibility:visible;clip-path:inset(0 0 0 0);transition:clip-path 1s var(--ease),visibility 0s}
+.panel .wrap{opacity:0;transform:translateY(60px);transition:opacity .5s,transform 1s var(--out)}
+.panel.open .wrap{opacity:1;transform:none;transition-delay:.4s}
+
+/* about */
+#about{background:var(--dark);color:var(--light)}
+#about .mute{color:#86837d}
+#about .wrap{padding:calc(var(--pad)*5) var(--pad) var(--pad);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:calc(var(--pad)*2) var(--pad);min-height:100%}
+.a-head{grid-column:1/-1;font-size:clamp(36px,6vw,100px);font-weight:500;letter-spacing:-.055em;line-height:.92;max-width:16ch}
+.a-head em{font-weight:400}
+.a-bio{grid-column:2/span 2;font-size:clamp(17px,1.5vw,22px);line-height:1.38;letter-spacing:-.01em;display:flex;flex-direction:column;gap:1em}
+.a-bio a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.a-col h3{font-family:var(--mono);font-weight:400;font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:#86837d;margin-bottom:12px}
+.a-col li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid rgba(239,238,234,.14)}
+.a-col li b{font-weight:500;font-family:var(--mono);font-size:12px}
+.a-awards{grid-column:2/span 2}
+.a-awards ul{columns:2;column-gap:var(--pad)}
+.a-awards li{break-inside:avoid}
+.a-foot{grid-column:1/-1;display:flex;justify-content:space-between;align-items:end;padding-top:14px;border-top:1px solid rgba(239,238,234,.14);margin-top:auto}
+
+/* project */
+#project{background:var(--bg)}
+#project .wrap{padding:calc(var(--pad)*5) var(--pad) var(--pad)}
+.p-top{display:flex;justify-content:space-between;margin-bottom:12px}
+.p-title{font-size:clamp(48px,11vw,190px);font-weight:500;letter-spacing:-.065em;line-height:.85;text-transform:uppercase}
+.p-meta{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--pad);margin-top:clamp(40px,7vh,80px);padding-top:12px;border-top:1px solid var(--line)}
+.p-meta div{display:flex;flex-direction:column;gap:6px}
+.p-body{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--pad);margin:clamp(40px,8vh,100px) 0}
+.p-body p{grid-column:2/span 2;font-size:clamp(18px,1.8vw,26px);line-height:1.3;letter-spacing:-.015em;text-indent:3em}
+.p-body .visit{grid-column:4;justify-self:end;align-self:end}
+.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--pad)}
+.gallery figure{overflow:hidden;background:#ddd}
+.gallery figure.wide{grid-column:1/-1;aspect-ratio:16/9}
+.gallery figure.tall{aspect-ratio:4/5}
+.gallery canvas{width:100%;height:100%;display:block;transform:scale(1.08);transition:transform 1.6s var(--out)}
+.gallery figure.in canvas{transform:scale(1)}
+.gallery figcaption{display:none}
+.next{display:block;margin-top:clamp(70px,14vh,160px);padding-top:12px;border-top:1px solid var(--line)}
+.next .p-title{margin-top:18px;transition:transform .8s var(--out)}
+.next:hover .p-title{transform:translateX(2.5vw)}
+
+/* cursor */
+.cursor{position:fixed;left:0;top:0;z-index:300;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#fff;mix-blend-mode:difference;pointer-events:none;transition:width .35s var(--out),height .35s var(--out),margin .35s var(--out)}
+.cursor.big{width:40px;height:40px;margin:-20px 0 0 -20px}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:calc(var(--pad)*3);z-index:250;transform:translate(-50%,20px);opacity:0;background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;transition:opacity .3s,transform .5s var(--out);pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (hover:none),(max-width:860px){ .preview,.cursor{display:none} }
+@media (max-width:860px){
+  header{grid-template-columns:1fr auto}
+  header .mid{display:none}
+  main{padding-bottom:var(--pad)}
+  .item .tag{display:none}
+  .bottom{position:static;grid-template-columns:1fr;gap:16px;padding-top:40px}
+  .bottom .socials,.bottom .time{justify-self:start;text-align:left}
+  #about .wrap{grid-template-columns:1fr}
+  .a-bio,.a-awards{grid-column:1}
+  .a-awards ul{columns:1}
+  .a-foot{flex-direction:column;align-items:flex-start;gap:10px}
+  .p-meta{grid-template-columns:1fr 1fr;row-gap:20px}
+  .p-body{grid-template-columns:1fr}
+  .p-body p{grid-column:1;text-indent:0}
+  .p-body .visit{grid-column:1;justify-self:start}
+  .gallery{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important;transition-delay:0s!important}
+}
+</style>
+</head>
+<body class="lock">
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="ln mono"><span>Elio Varenne</span><span>Portfolio — ©2026</span></div>
+  <div class="big"><span><i>Elio&nbsp;Varenne</i></span><span class="pct"><i id="pct">0</i></span></div>
+</div>
+
+<header>
+  <a href="#" class="u" data-home data-c>Elio Varenne</a>
+  <span class="mid mute">Freelance interactive developer</span>
+  <div class="right">
+    <a href="#about" class="toggle" id="toggle" data-c><span>About</span><span>Close</span></a>
+  </div>
+</header>
+
+<main>
+  <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Elio Varenne — selected projects</h1>
+  <ol class="list" id="list"></ol>
+</main>
+
+<div class="bottom">
+  <p class="intro fade-in">Elio Varenne, freelance interactive developer crafting websites with movement and care.</p>
+  <ul class="socials fade-in" id="socials"></ul>
+  <span class="time fade-in mono"><span class="mute">Lyon, FR</span>&nbsp; <span id="clock">--:--</span></span>
+</div>
+
+<div class="preview" id="preview" aria-hidden="true"></div>
+
+<!-- About -->
+<section class="panel" id="about" aria-hidden="true" aria-label="About">
+  <div class="wrap">
+    <h2 class="a-head">Elio Varenne, freelance interactive developer. <em>Movement is the message.</em></h2>
+    <span class="mono mute">(About)</span>
+    <div class="a-bio">
+      <p>With a designer’s eye for rhythm and timing, I build websites where every transition has a reason to exist. I spend the time it takes to get the details right: the weight of a scroll, the delay of a hover, the first second of a page.</p>
+      <p>I’m the founder of <a href="#" data-c>OSTRA</a>, a small journal about slow living and hand-made objects. Before going independent I worked at <a href="#" data-c>Northlight Studio</a> and <a href="#" data-c>Pixel &amp; Grain</a>, and I’ve been a web awards jury member since 2021.</p>
+      <p>Open to collaborations with studios, agencies and brands from autumn 2026.</p>
+    </div>
+    <div class="a-col">
+      <h3>Contact</h3>
+      <ul>
+        <li><button class="u copy" data-c>Copy email</button></li>
+        <li id="aboutSocials" style="display:block;border:0;padding:0"></li>
+      </ul>
+    </div>
+    <span class="mono mute">(Recognition)</span>
+    <div class="a-col a-awards">
+      <h3>Awards</h3>
+      <ul>
+        <li><span>Site of the Day</span><b>14×</b></li>
+        <li><span>Developer Award</span><b>12×</b></li>
+        <li><span>Honorable Mention</span><b>21×</b></li>
+        <li><span>Site of the Month</span><b>2×</b></li>
+        <li><span>Independent of the Year — Nominee</span><b>2×</b></li>
+        <li><span>Developer of the Year — Nominee</span><b>1×</b></li>
+        <li><span>Mobile Excellence</span><b>9×</b></li>
+        <li><span>Design Annual Selection</span><b>3×</b></li>
+      </ul>
+    </div>
+    <div class="a-col">
+      <h3>Services</h3>
+      <ul><li>Creative development</li><li>WebGL &amp; 3D</li><li>Motion &amp; interaction</li><li>Headless CMS</li></ul>
+    </div>
+    <div class="a-foot">
+      <span class="mono mute">Demo website — all names, projects and awards are fictional.</span>
+      <span class="mono mute">©2026 Elio Varenne</span>
+    </div>
+  </div>
+</section>
+
+<!-- Project -->
+<section class="panel" id="project" aria-hidden="true" aria-label="Project">
+  <div class="wrap">
+    <div class="p-top mono mute"><span id="pNo">01 / 12</span><span id="pCat"></span></div>
+    <h2 class="p-title" id="pTitle"></h2>
+    <div class="p-meta">
+      <div><span class="mono mute">Client</span><span id="pClient"></span></div>
+      <div><span class="mono mute">Year</span><span id="pYear"></span></div>
+      <div><span class="mono mute">Role</span><span id="pRole"></span></div>
+      <div><span class="mono mute">With</span><span id="pWith"></span></div>
+      <div><span class="mono mute">Recognition</span><span id="pAward"></span></div>
+    </div>
+    <div class="p-body">
+      <span class="mono mute">(Overview)</span>
+      <p id="pDesc"></p>
+      <a href="#" class="visit u mono" data-c onclick="return false">Visit site ↗</a>
+    </div>
+    <div class="gallery" id="gallery"></div>
+    <a href="#" class="next" id="pNext" data-c>
+      <span class="mono mute">Next project</span>
+      <div class="p-title" id="pNextTitle"></div>
+    </a>
+  </div>
+</section>
+
+<div class="cursor" id="cursor"></div>
+<div class="toast mono" id="toast">Email copied</div>
+
+<script>
+/* =========================================================
+   Fictional demo content — edit freely
+   ========================================================= */
+const PERSON = {
+  email: "hello@eliovarenne.example",
+  socials: [["Instagram","#"],["LinkedIn","#"],["Twitter","#"]],
+  timeZone: "Europe/Paris"
+};
+
+const P = [
+  { s:"nocta", t:"NOCTA", cat:"Fragrance launch", client:"Nocta Parfums", year:"2026", role:"Creative development", with:"Studio Halde", award:"Site of the Day",
+    d:"A night-time launch for a fragrance built around the smell of rain on warm stone. The bottle floats through a slow WebGL storm, and every scroll pulls a new note of the scent out of the dark.",
+    pal:["#0b0d1a","#3d3a8c","#b9a7ff","#f1ece2"], style:"blobs" },
+  { s:"maison-ardent", t:"Maison Ardent — <em>Ember</em>", cat:"Fashion campaign", client:"Maison Ardent", year:"2026", role:"Development, motion", with:"Agence Lumen", award:"Site of the Day, Developer Award",
+    d:"A campaign site for a couture house’s autumn line. Garments drift in and out of focus like heat haze, and the lookbook turns pages with a weighted, paper-like motion.",
+    pal:["#2a0d06","#c2431b","#f59a3c","#f7e6cf"], style:"stripes" },
+  { s:"juno-okafor", t:"Juno Okafor", cat:"Photographer portfolio", client:"Juno Okafor", year:"2025", role:"Design & development", with:"Independent", award:"Honorable Mention",
+    d:"A portfolio for a documentary photographer. Images are laid out like contact sheets you can drag, pinch and loupe, with the series descriptions typed as quiet captions.",
+    pal:["#141414","#5a5a55","#d9d5cc","#f4f1ea"], style:"grid" },
+  { s:"halo-run", t:"Halo Run", cat:"Product launch", client:"Halo Athletics", year:"2025", role:"Creative development", with:"Forward Studio", award:"Site of the Day",
+    d:"A launch for a running shoe engineered for night races. The shoe is rebuilt in 3D layer by layer as you scroll, ending in a lit-up track you can run along with your cursor.",
+    pal:["#06110d","#13c58a","#d6ff5c","#eefcf5"], style:"rings" },
+  { s:"mira-lenz", t:"Mira Lenz", cat:"Director portfolio", client:"Mira Lenz", year:"2025", role:"Design & development", with:"Independent", award:"Developer Award",
+    d:"A reel-first portfolio for a film director. Hover any title and the film plays inside the letters; click and it opens full-screen with frame-accurate scrubbing.",
+    pal:["#1a0f12","#8c2a3d","#e8b4b8","#faf0ee"], style:"arch" },
+  { s:"tessera", t:"Tessera", cat:"Architecture studio", client:"Tessera Architects", year:"2025", role:"Development", with:"Bureau Oslo", award:"Honorable Mention",
+    d:"A calm, grid-led site for an architecture studio. Projects assemble from their own floor plans, and the archive can be browsed by material, scale or light.",
+    pal:["#1c1e20","#7a8691","#c8ccc5","#efefe9"], style:"grid" },
+  { s:"little-orchard", t:"Little Orchard", cat:"Food brand", client:"Little Orchard Co.", year:"2024", role:"Creative development", with:"Studio Peppi", award:"Site of the Day, Mobile Excellence",
+    d:"A cheerful site for an organic snack brand for kids. Fruit bounces, squishes and stacks with real physics, and a small orchard game unlocks a recipe at the end.",
+    pal:["#ff6b3d","#ffd23f","#3bb273","#fff6e6"], style:"blobs" },
+  { s:"portfolio-2025", t:"Portfolio 2025", cat:"Personal", client:"Self-initiated", year:"2025", role:"Everything", with:"—", award:"Site of the Month",
+    d:"The previous version of this website: a single scrolling ribbon of projects that bent and twisted in 3D as you moved through it. Retired, but not forgotten.",
+    pal:["#0e0e0e","#3a3a3a","#efeeea","#ff4d2e"], style:"stripes" },
+  { s:"basile-roux", t:"Basile Roux", cat:"Illustrator portfolio", client:"Basile Roux", year:"2024", role:"Development", with:"Independent", award:"Honorable Mention",
+    d:"An illustrator’s sketchbook you can flip through. Drawings come alive line by line, and the ink bleeds slightly as each page settles.",
+    pal:["#f3eadb","#1f3a5f","#e4572e","#2d2a26"], style:"arch" },
+  { s:"koen", t:"Kōen Tea House", cat:"Hospitality", client:"Kōen", year:"2024", role:"Creative development", with:"Atelier Mori", award:"Developer Award",
+    d:"A website for a Kyoto-inspired tea house that slows visitors down. Steam rises from the cup as you scroll, and the ceremony is told in seven quiet steps.",
+    pal:["#20261d","#6b7d4f","#c9c39a","#f2efe3"], style:"rings" },
+  { s:"static-bloom", t:"Static Bloom", cat:"Album microsite", client:"Static Bloom", year:"2024", role:"Creative development", with:"Wavelength Records", award:"Site of the Day",
+    d:"A microsite for an electronic album. Each track grows its own audio-reactive flower in WebGL; finish the record and you’re left with a garden to share.",
+    pal:["#08040f","#ff3fa4","#5b2bff","#f6e9ff"], style:"blobs" },
+  { s:"atlas-noir", t:"Atlas Noir", cat:"Watch collection", client:"Atlas Horlogerie", year:"2024", role:"Development, 3D", with:"Maison Cadran", award:"Site of the Day, Developer Award",
+    d:"A collection site for a limited series of black-dial watches. Every movement can be taken apart piece by piece in real time, and the dial lights up at the exact local hour.",
+    pal:["#050505","#3b3528","#c8a76a","#ecebe6"], style:"rings" }
+];
+
+/* ========================================================= */
+const $ = s => document.querySelector(s);
+const pad = n => String(n).padStart(2, "0");
+const strip = h => h.replace(/<[^>]+>/g, "");
+const fine = matchMedia("(hover:hover) and (min-width:861px)").matches;
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- generative artwork ---------- */
+function rand(seed){ let s = 0; for (const c of seed) s = (s * 31 + c.charCodeAt(0)) | 0; return () => { s = (s + 0x6D2B79F5) | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+function paint(cv, p, variant = 0){
+  const W = cv.width, H = cv.height, g = cv.getContext("2d"), r = rand(p.s + variant), [a, b, c, d] = p.pal;
+  const style = variant === 0 ? p.style : ["blobs","stripes","rings","grid","arch"][(variant + p.s.length) % 5];
+  g.fillStyle = a; g.fillRect(0, 0, W, H);
+  const M = Math.max(W, H);
+  if (style === "blobs"){
+    for (let i = 0; i < 6; i++){
+      const x = r()*W, y = r()*H, rad = M*(.25 + r()*.45), col = [b, c, d][i % 3];
+      const gr = g.createRadialGradient(x, y, 0, x, y, rad);
+      gr.addColorStop(0, col); gr.addColorStop(1, col + "00");
+      g.globalAlpha = .75; g.fillStyle = gr; g.fillRect(0, 0, W, H);
+    }
+    g.globalAlpha = 1;
+  } else if (style === "stripes"){
+    g.save(); g.translate(W/2, H/2); g.rotate((r() - .5) * 1.2);
+    let x = -M;
+    while (x < M){ const w = M*(.02 + r()*.12); g.fillStyle = [b, c, d, a][Math.floor(r()*4)]; g.fillRect(x, -M, w, M*2); x += w; }
+    g.restore();
+  } else if (style === "rings"){
+    const cx = W*(.3 + r()*.4), cy = H*(.3 + r()*.4);
+    for (let i = 24; i > 0; i--){ g.fillStyle = [b, a, c, a, d][i % 5]; g.beginPath(); g.arc(cx, cy, i*M*.035, 0, Math.PI*2); g.fill(); }
+  } else if (style === "grid"){
+    const n = 9 + Math.floor(r()*6), sx = W/n, ph = r()*6;
+    for (let y = sx/2; y < H; y += sx) for (let x = sx/2; x < W; x += sx){
+      const k = (Math.sin(x*.012 + ph) + Math.cos(y*.015 + ph)) * .25 + .5;
+      g.fillStyle = k > .62 ? c : k > .4 ? b : d; g.beginPath(); g.arc(x, y, sx*.42*k + 1, 0, Math.PI*2); g.fill();
+    }
+  } else {
+    const n = 3 + Math.floor(r()*3), w = W/n;
+    for (let i = 0; i < n; i++){
+      const h = H*(.45 + r()*.4), x = i*w;
+      g.fillStyle = [b, c, d][i % 3];
+      g.beginPath(); g.moveTo(x + w*.1, H); g.lineTo(x + w*.1, H - h + w*.4); g.arc(x + w/2, H - h + w*.4, w*.4, Math.PI, 0); g.lineTo(x + w*.9, H); g.fill();
+    }
+  }
+  // grain
+  const img = g.getImageData(0, 0, W, H), px = img.data;
+  for (let i = 0; i < px.length; i += 4){ const n = (Math.random() - .5) * 22; px[i] += n; px[i+1] += n; px[i+2] += n; }
+  g.putImageData(img, 0, 0);
+}
+function canvas(w, h, p, v){ const c = document.createElement("canvas"); c.width = w; c.height = h; paint(c, p, v); return c; }
+
+/* ---------- build list + previews ---------- */
+const list = $("#list"), preview = $("#preview");
+P.forEach((p, i) => {
+  const li = document.createElement("li");
+  li.className = "item"; li.style.setProperty("--i", i); li.dataset.i = i;
+  li.innerHTML = `<a href="#/projects/${p.s}" data-c><span class="n">${pad(i+1)}</span><span class="t"><span>${p.t}</span></span><span class="tag mono mute">${p.cat} — ${p.year}</span></a>`;
+  list.appendChild(li);
+  if (fine){ const pv = document.createElement("div"); pv.className = "pv"; pv.appendChild(canvas(400, 500, p, 0)); preview.appendChild(pv); }
+});
+
+const socialHTML = PERSON.socials.map(([n, u]) => `<li><a class="u" href="${u}" data-c>${n}</a></li>`).join("") + `<li><button class="u copy" data-c>Copy email</button></li>`;
+$("#socials").innerHTML = socialHTML;
+$("#aboutSocials").innerHTML = PERSON.socials.map(([n, u]) => `<div style="padding:8px 0;border-top:1px solid rgba(239,238,234,.14)"><a class="u" href="${u}" data-c>${n} ↗</a></div>`).join("");
+
+/* ---------- loader ---------- */
+(function(){
+  const L = $("#loader"), el = $("#pct"), dur = reduced ? 300 : 1800, t0 = performance.now();
+  requestAnimationFrame(() => L.classList.add("go"));
+  (function tick(t){
+    const k = Math.min((performance.now() - t0) / dur, 1), e = 1 - Math.pow(1 - k, 3);
+    el.textContent = Math.round(e * 100);
+    if (k < 1) return requestAnimationFrame(tick);
+    setTimeout(() => {
+      L.classList.add("done"); document.body.classList.add("ready");
+      if (!location.hash.startsWith("#/") && location.hash !== "#about") document.body.classList.remove("lock");
+      route();
+    }, 300);
+  })();
+})();
+
+/* ---------- clock ---------- */
+function tickClock(){ try { $("#clock").textContent = new Intl.DateTimeFormat("en-GB", { hour:"2-digit", minute:"2-digit", timeZone: PERSON.timeZone }).format(new Date()); } catch(e){} }
+tickClock(); setInterval(tickClock, 10000);
+
+/* ---------- cursor + hover preview ---------- */
+const cursor = $("#cursor");
+let mx = innerWidth/2, my = innerHeight/2, cx = mx, cy = my, px = mx, py = my, sc = 0, tsc = 0, rot = 0, cur = -1, z = 1;
+addEventListener("mousemove", e => { mx = e.clientX; my = e.clientY; });
+function loop(){
+  cx += (mx - cx) * .3; cy += (my - cy) * .3;
+  const ox = px; px += (mx - px) * .1; py += (my - py) * .1;
+  sc += (tsc - sc) * .12; rot += (Math.max(-10, Math.min(10, (px - ox) * .4)) - rot) * .12;
+  cursor.style.transform = `translate(${cx}px,${cy}px)`;
+  preview.style.transform = `translate(${px}px,${py}px) translate(-50%,-50%) rotate(${rot}deg) scale(${sc})`;
+  requestAnimationFrame(loop);
+}
+if (fine) loop();
+
+document.addEventListener("mouseover", e => cursor.classList.toggle("big", !!e.target.closest("[data-c]")));
+
+list.addEventListener("mouseover", e => {
+  const it = e.target.closest(".item"); if (!it) return;
+  const i = +it.dataset.i; if (i === cur) return;
+  list.querySelectorAll(".item.on").forEach(x => x.classList.remove("on"));
+  it.classList.add("on"); list.classList.add("hov"); tsc = 1;
+  if (fine){
+    const prev = preview.children[cur], next = preview.children[i];
+    next.style.zIndex = ++z; next.classList.add("on");
+    if (prev) setTimeout(() => { if (cur !== +[...preview.children].indexOf(prev)) prev.classList.remove("on"); }, 760);
+  }
+  cur = i;
+});
+list.addEventListener("mouseleave", () => {
+  list.classList.remove("hov"); list.querySelectorAll(".item.on").forEach(x => x.classList.remove("on"));
+  tsc = 0; cur = -1;
+  setTimeout(() => { if (cur < 0) [...preview.children].forEach(c => c.classList.remove("on")); }, 400);
+});
+
+/* ---------- copy email ---------- */
+document.addEventListener("click", async e => {
+  const b = e.target.closest(".copy"); if (!b) return;
+  e.preventDefault();
+  try { await navigator.clipboard.writeText(PERSON.email); } catch(_) {
+    const ta = document.createElement("textarea"); ta.value = PERSON.email; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); } catch(__) {} ta.remove();
+  }
+  const t = $("#toast"); t.textContent = PERSON.email + " — copied"; t.classList.add("show");
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 1800);
+});
+
+/* ---------- panels & routing ---------- */
+const about = $("#about"), proj = $("#project");
+const gio = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add("in")), { root: proj, threshold: .2 });
+
+function show(panel){
+  [about, proj].forEach(x => { const on = x === panel; x.classList.toggle("open", on); x.setAttribute("aria-hidden", !on); });
+  document.body.classList.toggle("panel-open", !!panel);
+  document.body.classList.toggle("lock", !!panel || !document.body.classList.contains("ready"));
+  $("#toggle").setAttribute("href", panel ? "#" : "#about");
+  tsc = 0;
+}
+function fillProject(i){
+  const p = P[i], n = P[(i + 1) % P.length];
+  $("#pNo").textContent = `${pad(i+1)} / ${pad(P.length)}`;
+  $("#pCat").textContent = p.cat;
+  $("#pTitle").innerHTML = p.t;
+  $("#pClient").textContent = p.client; $("#pYear").textContent = p.year; $("#pRole").textContent = p.role;
+  $("#pWith").textContent = p.with; $("#pAward").textContent = p.award;
+  $("#pDesc").textContent = p.d;
+  $("#pNext").href = `#/projects/${n.s}`; $("#pNextTitle").innerHTML = n.t;
+  const gal = $("#gallery"); gal.innerHTML = "";
+  [["wide",1600,900,0],["tall",800,1000,1],["tall",800,1000,2],["wide",1600,900,3]].forEach(([cls, w, h, v]) => {
+    const f = document.createElement("figure"); f.className = cls; f.appendChild(canvas(w, h, p, v)); gal.appendChild(f); gio.observe(f);
+  });
+  proj.scrollTop = 0;
+  document.title = `${strip(p.t)} — Elio Varenne`;
+}
+function route(){
+  if (!document.body.classList.contains("ready")) return;
+  const h = location.hash;
+  if (h === "#about"){ show(about); document.title = "About — Elio Varenne"; return; }
+  const m = h.match(/^#\/projects\/(.+)$/);
+  if (m){ const i = P.findIndex(p => p.s === m[1]); if (i > -1){ fillProject(i); show(proj); return; } }
+  show(null); document.title = "Elio Varenne — Freelance Interactive Developer";
+}
+addEventListener("hashchange", route);
+function home(e){ e.preventDefault(); if (location.hash) history.pushState("", "", location.pathname + location.search); route(); }
+document.querySelectorAll("[data-home]").forEach(a => a.addEventListener("click", home));
+$("#toggle").addEventListener("click", e => { if (document.body.classList.contains("panel-open")) home(e); });
+addEventListener("popstate", route);
+addEventListener("keydown", e => { if (e.key === "Escape" && document.body.classList.contains("panel-open")) home(e); });
+</script>
+</body>
+</html>

@@ -1,6 +1,8 @@
 // Bundles the demo sites built in "D:\MONARKA\Demo Webpage builder" into
 // lib/demo-sites.generated.ts, so the Studio page can show them inside laptop
-// mockups (iframe srcdoc). The demos get no URLs or pages of their own.
+// mockups (iframe srcdoc). Their standalone pages (/indice/<slug>/) and the
+// Demo Index page come from scripts/sync-demo-index.mjs — run both after
+// changing a demo.
 //
 //   node scripts/sync-demos.mjs [sourceDir]
 //

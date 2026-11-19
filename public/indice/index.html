@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo Index</title>
+<meta name="description" content="An index of sample websites built by Monarka, each designed for a different kind of business.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#061430;      /* page */
+    --navy-2:#0c2350;    /* wheel disc */
+    --navy-3:#163a7a;    /* lines on navy */
+    --ice:#d6e9ff;       /* top panel, light text */
+    --ice-2:#eef6ff;     /* card frames */
+    --sky:#5aa9ff;       /* accent */
+    --muted-on-navy:#7393c8;
+    --muted-on-ice:#4a6a9e;
+    --margin:clamp(.75rem, .3rem + 1.4vw, 1.5rem);
+    --gutter:clamp(.75rem, .4rem + 1vw, 1.25rem);
+    --t-small:clamp(.7rem, .65rem + .15vw, .85rem);
+    --t-main:clamp(.82rem, .76rem + .25vw, 1rem);
+    /* big type scales with width AND height, so short wide windows don't blow it up */
+    --t-big:clamp(1.75rem, min(3.4vw, 6.2vh), 5.5rem);
+    --t-next:calc(var(--t-big) * .78);
+    --t-cat:clamp(1.05rem, min(1.9vw, 3.6vh), 3rem);
+    --text-top:calc(var(--panel-top) + clamp(1.25rem, 4.5vh, 2.75rem));
+    --t-row:clamp(1.1rem, .8rem + 1.4vw, 2rem);
+    --ease:cubic-bezier(.2,.7,.1,1);
+    --panel-x:8vw;
+    --panel-top:4.6rem;
+    --panel-h:46vh;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  html.snap{scroll-snap-type:y proximity}
+  body{
+    font-family:"Inter Tight","Helvetica Neue",Arial,sans-serif;
+    font-weight:500;font-size:var(--t-main);line-height:1.1;letter-spacing:-.01em;
+    background:var(--navy);color:var(--ice);min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;letter-spacing:inherit;text-align:inherit}
+  ::selection{background:var(--sky);color:var(--navy)}
+  :focus-visible{outline:2px solid var(--sky);outline-offset:3px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* ---------- Nav ---------- */
+  .nav{position:fixed;inset:0 0 auto 0;z-index:30;display:flex;justify-content:space-between;align-items:flex-start;padding:1rem var(--margin);pointer-events:none}
+  .nav > *{pointer-events:auto}
+  .brand{display:flex;gap:.7rem;align-items:flex-start;line-height:1}
+  .brand-mark{width:2.4rem;height:2.4rem;border-radius:50%;border:.16rem solid var(--ice);position:relative;flex:none}
+  .brand-mark::after{content:"";position:absolute;left:50%;top:12%;width:.16rem;height:38%;background:var(--sky);transform:translateX(-50%);transform-origin:50% 100%;border-radius:1px}
+  .brand b{font-weight:600;display:block}
+  .nav-links{display:flex;gap:2rem}
+  .nav-links sup{font-size:.62em;margin-left:.1em}
+  .nav-links .on{border-bottom:.1rem solid var(--ice)}
+
+  .toggle{position:fixed;z-index:30;left:50%;top:1rem;transform:translateX(-50%);font-size:var(--t-main);color:var(--muted-on-navy);line-height:1.2}
+  .toggle button + button{margin-left:.15em}
+  .toggle button[aria-pressed="true"]{color:var(--ice);border-bottom:.1rem solid var(--ice)}
+
+  /* ---------- Wheel view ---------- */
+  .track{position:relative}
+  .snap-pt{position:absolute;left:0;width:1px;height:1px;scroll-snap-align:start}
+  .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+
+  .panel{position:absolute;left:var(--panel-x);right:var(--panel-x);top:var(--panel-top);height:var(--panel-h);background:var(--ice)}
+  .disc{position:absolute;border-radius:50%;background:var(--navy-2);transform:translate(-50%,-50%)}
+  .disc::after{content:"";position:absolute;inset:7%;border-radius:50%;border:1px dashed var(--navy-3)}
+  .band{position:absolute;left:50%;bottom:0;transform:translateX(-50%);background:var(--navy)}
+
+  .wheel{position:absolute;width:0;height:0;z-index:2}
+  .slots{z-index:3}
+  .card{
+    position:absolute;left:0;top:0;transform-origin:50% 50%;
+    background:var(--ice-2);padding:var(--frame) var(--frame) calc(var(--frame) * 2.6);
+    box-shadow:0 30px 60px -30px rgba(0,0,0,.7);
+    will-change:transform,opacity;
+  }
+  .card img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center;background:var(--navy-2)}
+  .card.is-active{cursor:pointer}
+  /* label sits in the thick polaroid strip under the photo, never on it */
+  .card::after{content:"Visit site ↗";position:absolute;left:var(--frame);right:var(--frame);bottom:0;height:calc(var(--frame) * 2.6);display:flex;align-items:center;justify-content:flex-end;
+    font-size:clamp(.66rem, calc(var(--frame) * .62), .9rem);letter-spacing:0;color:var(--navy);opacity:0;transition:opacity .3s}
+  .card.is-active::after{opacity:1}
+  .card.is-active:hover::after{color:var(--sky)}
+
+  /* rolling text */
+  .slots{position:absolute}
+  .slot{position:absolute;left:0;top:0;width:100%;pointer-events:none}
+  .slot[data-s="cur"]{pointer-events:auto}
+  .m{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+  .m > span{display:block;transform:translateY(108%);transition:transform .85s var(--ease);transition-delay:calc(var(--d,0) * 70ms)}
+  .slot[data-s="cur"] .m > span{transform:none}
+  .slot[data-s="prev"] .m > span{transform:translateY(-108%)}
+
+  .big{font-size:var(--t-big);letter-spacing:-.045em;line-height:1}
+  .s-num{left:var(--margin);top:var(--text-top);width:calc(var(--panel-x) - var(--margin) - .25rem);color:var(--ice);font-variant-numeric:tabular-nums}
+  .s-title{left:calc(var(--panel-x) + 13vw);top:var(--text-top);width:44vw;color:var(--navy)}
+  .s-title .q{display:block}
+  .m.sm{font-size:var(--t-small);letter-spacing:0;line-height:1.25}
+  .m.gap{margin-top:clamp(.6rem, 2vh, 1.1rem)}
+  .m.gap-s{margin-top:.5rem}
+  .s-spec{display:flex;flex-wrap:wrap;align-items:baseline;gap:.3rem .6rem;font-size:var(--t-small);letter-spacing:0;color:var(--muted-on-ice)}
+  .s-spec i{font-style:normal}
+  .s-spec .open{color:var(--navy);border-bottom:.08rem solid var(--navy);margin-left:.5rem}
+  .s-spec .open:hover{color:var(--sky);border-color:var(--sky)}
+  .s-cat{right:calc(var(--panel-x) + var(--margin));top:calc(var(--text-top) + (var(--t-big) - var(--t-cat)) * .8);width:22vw;text-align:right;color:var(--navy);font-size:var(--t-cat);letter-spacing:-.035em;line-height:1}
+  .s-cat small{display:block;font-size:inherit;color:var(--muted-on-ice)}
+  /* the up-next line is anchored to the bottom and sits behind the cards */
+  .s-next,.s-next-num{top:auto;bottom:3rem;z-index:1;color:var(--ice);opacity:.3;font-size:var(--t-next)}
+  .s-next .slot,.s-next-num .slot{top:auto;bottom:0}
+  .s-next{left:calc(var(--panel-x) + 13vw);width:60vw}
+  .s-next .q{display:none}
+  .s-next-num{left:var(--margin);width:calc(var(--panel-x) - var(--margin))}
+
+  .corner{position:absolute;bottom:.85rem;font-size:var(--t-main);z-index:5;background:var(--navy);padding:.15rem .35rem;margin:0 -.35rem;line-height:1.2}
+  .corner.l{left:var(--margin)}
+  .corner.r{right:var(--margin)}
+  .progress{position:absolute;left:var(--panel-x);right:var(--panel-x);bottom:1.45rem;height:1px;background:var(--navy-3);z-index:5}
+  .progress i{position:absolute;inset:0 auto 0 0;width:0;background:var(--sky)}
+
+  /* ---------- List view ---------- */
+  .list-view{padding:calc(16vh + 4.5rem) 0 6rem}
+  .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gutter);padding:0 var(--margin)}
+  .cols{padding:.6rem var(--margin);color:var(--muted-on-navy);font-size:var(--t-small);text-transform:uppercase;letter-spacing:.03em;border-bottom:.094rem solid var(--ice)}
+  .c-num{grid-column:1/span 2}
+  .c-name{grid-column:3/span 4}
+  .c-type{grid-column:7/span 3}
+  .c-year{grid-column:10/span 2}
+  .c-go{grid-column:12/-1;text-align:right}
+  .list{list-style:none}
+  .row{width:100%;align-items:baseline;padding:.85rem var(--margin);border-bottom:.094rem solid var(--navy-3);transition:opacity .15s ease}
+  .row .c-name{font-size:var(--t-row);letter-spacing:-.03em;line-height:1}
+  .row .c-name small{display:block;font-size:var(--t-small);color:var(--muted-on-navy);letter-spacing:0;margin-top:.45em;line-height:1.3;max-width:46ch}
+  .row .c-num{position:relative;font-variant-numeric:tabular-nums;transition:padding .25s var(--ease)}
+  .row .c-num i{position:absolute;left:0;top:.15em;width:.6em;height:.6em;border-radius:50%;background:var(--sky);transform:scale(0);transition:transform .25s var(--ease)}
+  .row .c-go{font-size:var(--t-row);line-height:1}
+  .row .arrow{display:inline-block;transition:transform .35s var(--ease)}
+  .list:hover .row,.list:focus-within .row{opacity:.3}
+  .list .row:hover,.list .row:focus-visible{opacity:1}
+  .row:hover .c-num,.row:focus-visible .c-num{padding-left:1.1em}
+  .row:hover .c-num i,.row:focus-visible .c-num i{transform:scale(1)}
+  .row:hover .arrow,.row:focus-visible .arrow{transform:translateX(.2em) rotate(-45deg)}
+  .peek{position:fixed;z-index:15;right:var(--margin);bottom:var(--margin);width:clamp(200px,17vw,320px);aspect-ratio:39/50;background:var(--ice-2);padding:.75rem;pointer-events:none;transform:translateY(20px) rotate(4deg);opacity:0;transition:opacity .3s,transform .5s var(--ease)}
+  .peek.is-on{opacity:1;transform:none}
+  .peek img{width:100%;height:100%;object-fit:cover;object-position:top}
+
+  body.view-list .track{display:none}
+  body.view-wheel .list-view{display:none}
+
+  /* ---------- Page transition (card grows to full screen, then the demo loads) ---------- */
+  .go{position:fixed;inset:0;z-index:50;background:var(--ice);color:var(--navy);pointer-events:none;visibility:hidden;
+    display:flex;flex-direction:column;justify-content:space-between;padding:1rem var(--margin) 2rem}
+  .go.is-on{visibility:visible;pointer-events:auto;transition:clip-path .7s var(--ease)}
+  .go-top{display:flex;justify-content:space-between;font-size:var(--t-main)}
+  .go-name{font-size:var(--t-big);letter-spacing:-.045em;line-height:1.05;overflow:hidden;margin-bottom:1rem}
+  .go-name span{display:block;transform:translateY(105%);transition:transform .6s var(--ease) .25s}
+  .go.is-on .go-name span{transform:none}
+  .go-bar{height:2px;background:rgba(6,20,48,.15);position:relative;overflow:hidden}
+  .go-bar i{position:absolute;inset:0;background:var(--navy);transform:scaleX(0);transform-origin:0 50%}
+  .go.is-on .go-bar i{transform:scaleX(1);transition:transform 1.4s var(--ease) .2s}
+
+  /* ---------- Small screens ---------- */
+  @media (max-width:767px){
+    :root{--panel-x:0px;--panel-top:3.9rem;--t-big:clamp(1.5rem,7.2vw,2.5rem);--t-cat:clamp(.95rem,4.2vw,1.3rem);--text-top:calc(var(--panel-top) + 1rem)}
+    .brand-mark{width:2rem;height:2rem}
+    .nav-links{gap:1rem}
+    .toggle{top:auto;bottom:.85rem}
+    .progress{display:none}
+    .s-num{top:var(--text-top);width:20vw;color:var(--navy);font-size:var(--t-cat);letter-spacing:-.02em}
+    .s-title{left:var(--margin);top:calc(var(--text-top) + var(--t-cat) + .9rem);width:calc(100vw - 2*var(--margin))}
+    .s-cat{right:var(--margin);top:var(--text-top);width:60vw}
+    .s-cat .gap-s{display:none}
+    .s-spec .chip{display:none}
+    .s-spec .open{margin-left:0}
+    .s-next{left:var(--margin);bottom:3rem;width:80vw;--t-next:var(--t-cat)}
+    .s-next-num{display:none}
+    .progress{left:var(--margin);right:var(--margin)}
+    .list-view{padding-top:6rem}
+    .c-type,.c-year{display:none}
+    .c-name{grid-column:3/span 9}
+    .cols .c-go{visibility:hidden}
+    .peek{display:none}
+    .list:hover .row{opacity:1}
+    .d-num{grid-column:1/span 3}
+    .d-title{grid-column:4/-1}
+    .d-title p{display:none}
+    .d-meta{grid-column:1/span 6;margin-top:1rem}
+    .d-actions{grid-column:7/-1;margin-top:1rem}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{transition-duration:.01ms !important;transition-delay:0s !important}
+  }
+</style>
+</head>
+<body class="view-wheel">
+
+<header class="nav">
+  <a class="brand" href="#" id="brandLink"><span class="brand-mark" aria-hidden="true"></span><span><b>Monarka</b>Demo Index<sup>®</sup></span></a>
+  <nav class="nav-links" aria-label="Main">
+    <a href="/disenos/">← Monarka TECH</a>
+    <a href="#" class="on" id="navDemos">Demos<sup id="count"></sup></a>
+  </nav>
+</header>
+
+<div class="toggle" role="group" aria-label="Layout">
+  <button type="button" data-view="wheel" aria-pressed="true">Wheel,</button>
+  <button type="button" data-view="list" aria-pressed="false">List</button>
+</div>
+
+<main>
+  <!-- Wheel -->
+  <section class="track" id="track" aria-label="Demo wheel">
+    <div class="stage" id="stage">
+      <div class="panel"></div>
+      <div class="disc" id="disc"></div>
+      <div class="band" id="band"></div>
+      <div class="wheel" id="wheel"></div>
+
+      <div class="slots big s-num" id="sNum" aria-hidden="true"></div>
+      <div class="slots big s-title" id="sTitle"></div>
+      <div class="slots s-cat" id="sCat" aria-hidden="true"></div>
+      <div class="slots big s-next-num" id="sNextNum" aria-hidden="true"></div>
+      <div class="slots big s-next" id="sNext" aria-hidden="true"></div>
+
+      <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+      <span class="corner l">'26</span>
+      <button class="corner r" type="button" id="scrollHint">Scroll</button>
+      <p class="sr" aria-live="polite" id="live"></p>
+    </div>
+  </section>
+
+  <!-- List -->
+  <section class="list-view" aria-label="Demo list">
+    <div class="grid cols" aria-hidden="true">
+      <span class="c-num">No.</span><span class="c-name">Project</span><span class="c-type">Type</span><span class="c-year">Year</span><span class="c-go">Open</span>
+    </div>
+    <ol class="list" id="list"></ol>
+  </section>
+</main>
+
+<div class="peek" id="peek" aria-hidden="true"><img alt="" id="peekImg"></div>
+
+<div class="go" id="go" aria-hidden="true">
+  <div class="go-top"><span id="goNum"></span><span id="goCat"></span></div>
+  <div>
+    <div class="go-name"><span id="goName"></span></div>
+    <div class="go-bar"><i></i></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var DEMOS = [
+    {id:"villa-orso", slug:"villa-orso/index.html", name:"Villa Orso", sub:"Boutique Apartments", type:"Hospitality", cat:"Hotel",
+     spec:["Intro loader","Ambient sound","Booking drawer"],
+     desc:"Immersive hotel site: intro loader, ambient sea sound, a box that opens, zooms and glides left then right, a sideways day-to-night journey, apartments that expand full screen, and a booking drawer."},
+    {id:"interactive-dev", slug:"interactive-dev/index.html", name:"Elio Varenne", sub:"Interactive Developer", type:"Portfolio", cat:"Portfolio",
+     spec:["Name reveal","Cursor preview","Project pages"],
+     desc:"Fictional freelance-developer site: name-reveal loader, oversized numbered project index with a cursor-following preview, full-screen project pages, an about panel with awards and copy-email."},
+    {id:"portfolio", slug:"portfolio/index.html", name:"Alex Moreno", sub:"Designer Portfolio", type:"Portfolio", cat:"Portfolio",
+     spec:["3D disc carousel","Case studies","Copy email"],
+     desc:"Fictional designer portfolio with a 3D record-disc carousel of eight made-up projects, generated case studies with mock screens and palettes, an about overlay and copy-email contact."},
+    {id:"lindehof", slug:"lindehof/index.html", name:"Lindehof", sub:"Farmstead Business Retreat", type:"Hospitality / B2B", cat:"Retreat",
+     spec:["Full-screen menu","Counters","Parallax"],
+     desc:"Countryside venue for meetings, events and stays, with a full-screen menu, counters, a marquee, parallax features and a newsletter form."},
+    {id:"fornello", slug:"fornello/index.html", name:"Fornello", sub:"Pizzeria & Lounge", type:"Restaurant", cat:"Restaurant",
+     spec:["Cursor-bulge hero","Pinned scroll","Live hours"],
+     desc:"Bold restaurant site: smooth scroll, a hero photo that bulges under the cursor, a pinned scroll section where plates spin and colour floods the screen, parallax stat stamps, a hiring side panel and a live opening-hours footer."},
+    {id:"construction-timelapse", slug:"construction-timelapse/index.html", name:"Strata", sub:"Construction Timelapse", type:"Construction", cat:"Construction",
+     spec:["Scroll timelapse","Crane animation","Day to dusk"],
+     desc:"Scroll builds a tower: a crane lifts beams floor by floor, the glass goes on, the crane comes down and the lights come on at sunset."},
+    {id:"construction", slug:"construction/index.html", name:"Meridian", sub:"Construction Alliance", type:"Construction / B2B", cat:"Construction",
+     spec:["Stat counters","Case carousel","US map"],
+     desc:"National builders network with stat counters, case-study carousel and an interactive US map."},
+    {id:"saas", slug:"saas/index.html", name:"Nimbus", sub:"Developer SaaS", type:"Tech / Software", cat:"SaaS",
+     spec:["ASCII globe","Scroll ledger","Working IDE"],
+     desc:"Editorial dev-tool site with an ASCII globe, scroll-driven ledger and a working IDE + terminal."}
+  ];
+  var YEAR = "2026", N = DEMOS.length;
+  var $ = function(id){ return document.getElementById(id); };
+  var pad = function(n){ return (n < 10 ? "0" : "") + n; };
+  var img = function(d){ return "_previews/" + d.id + ".png"; };
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  $("count").textContent = N;
+
+  /* ---------- text slots ---------- */
+  function line(text, d, cls){
+    var m = document.createElement("span"); m.className = "m" + (cls ? " " + cls : "");
+    var s = document.createElement("span"); s.style.setProperty("--d", d);
+    if (typeof text === "string") s.textContent = text; else s.appendChild(text);
+    m.appendChild(s); return m;
+  }
+  function buildSlots(container, render){
+    DEMOS.forEach(function(d, i){
+      var slot = document.createElement("div"); slot.className = "slot"; slot.dataset.s = "next";
+      render(slot, d, i); container.appendChild(slot);
+    });
+    return container.children;
+  }
+  var numSlots = buildSlots($("sNum"), function(s, d, i){ s.appendChild(line(String(i + 1), 0)); });
+  var nextNumSlots = buildSlots($("sNextNum"), function(s, d, i){ s.appendChild(line(String(i + 1), 0)); });
+  var titleSlots = buildSlots($("sTitle"), function(s, d, i){
+    s.appendChild(line(d.name, 0));
+    s.appendChild(line("“" + d.sub + "”", 1, "q"));
+    var spec = document.createElement("span"); spec.className = "s-spec";
+    d.spec.forEach(function(t){ var c = document.createElement("i"); c.className = "chip"; c.textContent = "(" + t + ")"; spec.appendChild(c); });
+    var open = document.createElement("button"); open.type = "button"; open.className = "open"; open.textContent = "View site ↗";
+    open.addEventListener("click", function(e){ visit(i, cards[i], e); });
+    spec.appendChild(open);
+    s.appendChild(line(spec, 2, "sm gap"));
+  });
+  var catSlots = buildSlots($("sCat"), function(s, d){
+    s.appendChild(line(d.cat, 0));
+    var sm = document.createElement("small");
+    sm.textContent = (d.type !== d.cat ? "(" + d.type + ") " : "") + "(" + YEAR + ")";
+    s.appendChild(line(sm, 1, "sm gap-s"));
+  });
+  var nextSlots = buildSlots($("sNext"), function(s, d){
+    s.appendChild(line(d.name, 0));
+    s.appendChild(line(d.sub, 1, "q"));
+  });
+
+  function setSlots(slots, cur){
+    for (var i = 0; i < slots.length; i++) slots[i].dataset.s = i < cur ? "prev" : i === cur ? "cur" : "next";
+  }
+
+  /* ---------- cards ---------- */
+  var wheel = $("wheel"), cards = [];
+  DEMOS.forEach(function(d, i){
+    var b = document.createElement("button"); b.type = "button"; b.className = "card";
+    b.setAttribute("aria-label", pad(i + 1) + " " + d.name + ", " + d.sub);
+    var im = document.createElement("img"); im.src = img(d); im.alt = ""; im.decoding = "async";
+    if (i > 2) im.loading = "lazy";
+    b.appendChild(im);
+    b.addEventListener("click", function(e){ if (i === active) visit(i, b, e); else goTo(i); });
+    wheel.appendChild(b); cards.push(b);
+  });
+
+  /* ---------- geometry ---------- */
+  var G = {}, per = 1, trackTop = 0;
+  var track = $("track"), stage = $("stage"), disc = $("disc"), band = $("band");
+  function layout(){
+    var W = window.innerWidth, H = stage.clientHeight || window.innerHeight, mob = W < 768;
+    var sRect = stage.getBoundingClientRect();
+    // Lowest point any demo's title block can reach (titles wrap differently)...
+    var textBottom = 0;
+    [$("sTitle"), $("sCat")].forEach(function(box){
+      var top = box.getBoundingClientRect().top - sRect.top;
+      for (var k = 0; k < box.children.length; k++) textBottom = Math.max(textBottom, top + box.children[k].offsetHeight);
+    });
+    // ...and the highest point of the "up next" line at the bottom.
+    var nextBox = $("sNext"), nextH = 0;
+    for (var k2 = 0; k2 < nextBox.children.length; k2++) nextH = Math.max(nextH, nextBox.children[k2].offsetHeight);
+    var nextTop = (nextBox.getBoundingClientRect().top - sRect.top) - nextH;
+
+    var gap = Math.max(14, H * .03);
+    var avail = nextTop - gap - (textBottom + gap);          // vertical room for the active card
+    var ratio = 1.36;                                         // polaroid: photo + thick bottom strip
+    var maxW = mob ? W * .5 : W * .17;
+    G.cardW = Math.max(110, Math.min(maxW, avail / ratio));
+    G.cardH = G.cardW * ratio;
+    G.frame = G.cardW * .07;
+    G.cy = textBottom + gap + G.cardH / 2;
+    G.R = mob ? W * 1.25 : Math.max(W * .8, G.cardW * 5.2);
+    G.step = mob ? 32 : 23;
+    document.documentElement.style.setProperty("--panel-h", Math.max(0, G.cy + G.cardH * .12 - parseFloat(getComputedStyle(stage.querySelector(".panel")).top)) + "px");
+    wheel.style.left = (W / 2) + "px";
+    wheel.style.top = (G.cy + G.R) + "px";
+    cards.forEach(function(c){
+      c.style.width = G.cardW + "px"; c.style.height = G.cardH + "px";
+      c.style.marginLeft = (-G.cardW / 2) + "px"; c.style.marginTop = (-G.cardH / 2) + "px";
+      c.style.setProperty("--frame", G.frame + "px");
+    });
+    var dr = G.R * .8;
+    disc.style.width = disc.style.height = (dr * 2) + "px";
+    disc.style.left = (W / 2) + "px"; disc.style.top = (G.cy + G.R) + "px";
+    band.style.width = (G.cardW * 1.7) + "px";
+    band.style.height = Math.max(0, H - (G.cy + G.R - dr) + 2) + "px";
+
+    per = Math.round(window.innerHeight * .7);
+    track.style.height = ((N - 1) * per + window.innerHeight) + "px";
+    var old = track.querySelectorAll(".snap-pt"); for (var k = 0; k < old.length; k++) old[k].remove();
+    for (var i = 0; i < N; i++){ var p = document.createElement("span"); p.className = "snap-pt"; p.style.top = (i * per) + "px"; track.insertBefore(p, stage); }
+    trackTop = track.getBoundingClientRect().top + window.scrollY;
+  }
+
+  /* ---------- scroll → wheel ---------- */
+  var cur = 0, target = 0, active = -1, running = false;
+  function readScroll(){
+    target = Math.max(0, Math.min(N - 1, (window.scrollY - trackTop) / per));
+    if (!running){ running = true; requestAnimationFrame(frame); }
+  }
+  function frame(){
+    cur += (target - cur) * (reduce ? 1 : .1);
+    if (Math.abs(target - cur) < .0005) cur = target;
+    render();
+    if (cur !== target) requestAnimationFrame(frame); else running = false;
+  }
+  function render(){
+    for (var i = 0; i < N; i++){
+      var off = i - cur, c = cards[i];
+      var ao = Math.abs(off);
+      if (ao > 2.6){ c.style.visibility = "hidden"; continue; }
+      c.style.visibility = "";
+      c.style.opacity = ao <= 1 ? "1" : String(Math.max(0, 1 - (ao - 1) * .55));
+      c.style.transform = "rotate(" + (off * G.step) + "deg) translateY(" + (-G.R) + "px)";
+      c.style.zIndex = String(100 - Math.round(Math.abs(off) * 10));
+    }
+    $("bar").style.width = (N > 1 ? cur / (N - 1) * 100 : 100) + "%";
+    var a = Math.round(cur);
+    if (a !== active) setActive(a);
+  }
+  function setActive(a){
+    active = a;
+    setSlots(numSlots, a); setSlots(titleSlots, a); setSlots(catSlots, a);
+    setSlots(nextSlots, a + 1); setSlots(nextNumSlots, a + 1);
+    cards.forEach(function(c, i){ c.classList.toggle("is-active", i === a); c.tabIndex = Math.abs(i - a) <= 1 ? 0 : -1; });
+    $("scrollHint").textContent = a === N - 1 ? "Back to top ↑" : "Scroll";
+    $("live").textContent = pad(a + 1) + " of " + N + ": " + DEMOS[a].name + ", " + DEMOS[a].sub;
+  }
+  function goTo(i){
+    i = Math.max(0, Math.min(N - 1, i));
+    window.scrollTo({top: trackTop + i * per, behavior: reduce ? "auto" : "smooth"});
+  }
+
+  $("scrollHint").addEventListener("click", function(){ goTo(active === N - 1 ? 0 : active + 1); });
+  window.addEventListener("scroll", readScroll, {passive: true});
+  window.addEventListener("resize", function(){ layout(); readScroll(); cur = target; render(); });
+
+  /* ---------- list view ---------- */
+  var list = $("list");
+  DEMOS.forEach(function(d, i){
+    var li = document.createElement("li");
+    var b = document.createElement("button"); b.type = "button"; b.className = "grid row"; b.dataset.i = i;
+    b.innerHTML = '<span class="c-num"><i></i>' + pad(i + 1) + '</span><span class="c-name"></span><span class="c-type"></span><span class="c-year">(' + YEAR + ')</span><span class="c-go"><span class="arrow">→</span></span>';
+    var nm = b.querySelector(".c-name"); nm.textContent = d.name + " — " + d.sub;
+    var sm = document.createElement("small"); sm.textContent = d.desc; nm.appendChild(sm);
+    b.querySelector(".c-type").textContent = d.type;
+    b.addEventListener("click", function(e){ visit(i, b, e); });
+    li.appendChild(b); list.appendChild(li);
+  });
+  var peek = $("peek"), peekImg = $("peekImg");
+  function showPeek(e){ var r = e.target.closest(".row"); if (!r) return; peekImg.src = img(DEMOS[+r.dataset.i]); peek.classList.add("is-on"); }
+  list.addEventListener("mouseover", showPeek);
+  list.addEventListener("focusin", showPeek);
+  list.addEventListener("mouseleave", function(){ peek.classList.remove("is-on"); });
+  list.addEventListener("focusout", function(e){ if (!list.contains(e.relatedTarget)) peek.classList.remove("is-on"); });
+
+  var toggles = document.querySelectorAll(".toggle button");
+  function setView(v){
+    document.body.classList.toggle("view-wheel", v === "wheel");
+    document.body.classList.toggle("view-list", v === "list");
+    document.documentElement.classList.toggle("snap", v === "wheel");
+    toggles.forEach(function(t){ t.setAttribute("aria-pressed", String(t.dataset.view === v)); });
+    peek.classList.remove("is-on");
+    window.scrollTo(0, 0);
+    if (v === "wheel"){ layout(); readScroll(); cur = target; render(); }
+    try { localStorage.setItem("demo-index-view", v); } catch(_){}
+  }
+  toggles.forEach(function(t){ t.addEventListener("click", function(){ setView(t.dataset.view); }); });
+  $("brandLink").addEventListener("click", function(e){ e.preventDefault(); setView("wheel"); });
+  $("navDemos").addEventListener("click", function(e){ e.preventDefault(); setView("list"); });
+
+  /* ---------- visit the real demo page ---------- */
+  var go = $("go"), leaving = false;
+  function remember(i){
+    try { sessionStorage.setItem("demo-index-pos", JSON.stringify({i: i, view: document.body.classList.contains("view-list") ? "list" : "wheel", y: window.scrollY})); } catch(_){}
+  }
+  function visit(i, fromEl, e){
+    var url = DEMOS[i].slug;
+    if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)){ window.open(url, "_blank", "noopener"); return; }
+    if (leaving) return;
+    leaving = true; remember(i); peek.classList.remove("is-on");
+    if (reduce || !fromEl){ window.location.href = url; return; }
+    $("goNum").textContent = pad(i + 1) + " / " + pad(N);
+    $("goCat").textContent = DEMOS[i].cat;
+    $("goName").textContent = DEMOS[i].name;
+    var r = fromEl.getBoundingClientRect(), W = window.innerWidth, H = window.innerHeight;
+    go.style.transition = "none";
+    go.style.clipPath = "inset(" + Math.max(0, r.top) + "px " + Math.max(0, W - r.right) + "px " + Math.max(0, H - r.bottom) + "px " + Math.max(0, r.left) + "px)";
+    go.getBoundingClientRect();           // commit the start state
+    go.style.transition = "";
+    go.classList.add("is-on");
+    go.style.clipPath = "inset(0px 0px 0px 0px)";
+    setTimeout(function(){ window.location.href = url; }, 750);
+  }
+  // Coming back with the Back button: drop the cover and let the page be used again.
+  window.addEventListener("pageshow", function(e){
+    if (!e.persisted) return;
+    leaving = false; go.classList.remove("is-on"); go.style.clipPath = "";
+  });
+
+  document.addEventListener("keydown", function(e){
+    if (!document.body.classList.contains("view-wheel")) return;
+    if (e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === "PageDown"){ e.preventDefault(); goTo(active + 1); }
+    else if (e.key === "ArrowUp" || e.key === "ArrowLeft" || e.key === "PageUp"){ e.preventDefault(); goTo(active - 1); }
+  });
+
+  /* ---------- init ---------- */
+  var startView = "wheel";
+  try { if (localStorage.getItem("demo-index-view") === "list") startView = "list"; } catch(_){}
+  var back = null;
+  try { back = JSON.parse(sessionStorage.getItem("demo-index-pos") || "null"); } catch(_){}
+  if (back && (back.view === "wheel" || back.view === "list")) startView = back.view;
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  layout(); setActive(0); render();
+  setView(startView);
+  if (back){                               // return to the card/row you left from
+    if (startView === "wheel" && back.i >= 0 && back.i < N){ window.scrollTo(0, trackTop + back.i * per); readScroll(); cur = target; render(); }
+    else if (startView === "list") window.scrollTo(0, back.y || 0);
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ layout(); readScroll(); });
+})();
+</script>
+</body>
+</html>

@@ -133,6 +133,7 @@ export const en: Dictionary = {
       items: [
         {
           slug: "construction-timelapse",
+          highlights: ["Scroll timelapse", "Crane animation", "Day to dusk"],
           type: "construction",
           name: "Strata Build Co.",
           category: "Construction",
@@ -140,6 +141,7 @@ export const en: Dictionary = {
         },
         {
           slug: "construction",
+          highlights: ["Stat counters", "Case carousel", "US map"],
           type: "construction",
           name: "Meridian",
           category: "Construction",
@@ -147,6 +149,7 @@ export const en: Dictionary = {
         },
         {
           slug: "villa-orso",
+          highlights: ["Intro loader", "Ambient sound", "Booking drawer"],
           type: "hospitality",
           name: "Villa Orso",
           category: "Boutique stay",
@@ -154,6 +157,7 @@ export const en: Dictionary = {
         },
         {
           slug: "saas",
+          highlights: ["ASCII globe", "Scroll ledger", "Working IDE"],
           type: "business",
           name: "Nimbus",
           category: "SaaS",
@@ -161,6 +165,7 @@ export const en: Dictionary = {
         },
         {
           slug: "fornello",
+          highlights: ["Cursor-bulge hero", "Pinned scroll", "Live hours"],
           type: "restaurants",
           name: "Fornello",
           category: "Pizzeria & bar",
@@ -168,6 +173,7 @@ export const en: Dictionary = {
         },
         {
           slug: "lindehof",
+          highlights: ["Full-screen menu", "Counters", "Parallax"],
           type: "hospitality",
           name: "Lindehof",
           category: "Business retreat",
@@ -175,6 +181,7 @@ export const en: Dictionary = {
         },
         {
           slug: "portfolio",
+          highlights: ["3D disc carousel", "Case studies", "Copy email"],
           type: "portfolio",
           name: "Alex Moreno",
           category: "Portfolio",
@@ -182,6 +189,7 @@ export const en: Dictionary = {
         },
         {
           slug: "interactive-dev",
+          highlights: ["Name reveal", "Cursor preview", "Project pages"],
           type: "portfolio",
           name: "Elio Varenne",
           category: "Freelance developer",
@@ -225,13 +233,12 @@ export const en: Dictionary = {
     countOne: "1 design",
     countMany: "{n} designs",
     index: {
-      eyebrow: "Index",
-      title: "All designs",
-      hint: "Hover for a preview. Click to open it and explore.",
-      num: "No.",
-      project: "Project",
-      type: "Industry",
-      open: "Open",
+      label: "Demo Index",
+      button: "Open index",
+      visit: "View site ↗",
+      scroll: "Scroll",
+      top: "Back to top ↑",
+      of: "of",
     },
     categories: [
       { id: "hospitality", title: "Hospitality", description: "Hotels, boutique apartments and stays with booking, galleries and reviews." },
