@@ -8,13 +8,15 @@ type TextCard = { kind: "text"; num: string; title: string; description: string 
 type LinkCard = { kind: "link"; num: string; title: string; description: string; href: string };
 type Card = TextCard | LinkCard;
 
-function buildCards(t: Dictionary["capabilities"], studioHref: string): Card[] {
+export type CapabilityHrefs = { apps: string; automation: string; studio: string };
+
+function buildCards(t: Dictionary["capabilities"], hrefs: CapabilityHrefs): Card[] {
   return [
     { kind: "text", num: "01", ...t.digitalProducts },
-    { kind: "text", num: "02", ...t.apps },
-    { kind: "text", num: "03", ...t.automation },
+    { kind: "link", num: "02", ...t.apps, href: hrefs.apps },
+    { kind: "link", num: "03", ...t.automation, href: hrefs.automation },
     { kind: "text", num: "04", ...t.support },
-    { kind: "link", num: "05", ...t.studio, href: studioHref },
+    { kind: "link", num: "05", ...t.studio, href: hrefs.studio },
   ];
 }
 
@@ -46,12 +48,12 @@ function CardShell({
 
 export function CapabilitiesCarousel({
   t,
-  studioHref,
+  hrefs,
 }: {
   t: Dictionary["capabilities"];
-  studioHref: string;
+  hrefs: CapabilityHrefs;
 }) {
-  const cards = buildCards(t, studioHref);
+  const cards = buildCards(t, hrefs);
   const trackRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
 

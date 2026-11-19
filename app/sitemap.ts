@@ -4,7 +4,7 @@ import { locales, localePath, type Locale } from "@/lib/i18n";
 
 export const dynamic = "force-static";
 
-const routes = ["/", "/studio", "/disenos"];
+const routes = ["/", "/apps", "/automatizacion", "/studio", "/disenos"];
 
 // Matches next.config's `trailingSlash: true`, so sitemap URLs equal the
 // canonical URLs instead of pointing at redirects.

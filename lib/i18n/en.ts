@@ -13,6 +13,12 @@ export const en: Dictionary = {
     designsTitle: "Our designs",
     designsDescription:
       "Monarka TECH web designs by industry: hospitality, business, interior design, restaurants, shops and more. Real demos you can explore.",
+    appsTitle: "Apps and Platforms — Monarka TECH",
+    appsDescription:
+      "Mobile apps and web platforms by Monarka TECH in El Paso, TX. Meet CATA, our own app, and the sites we design and build.",
+    automationTitle: "AI Automation — Monarka TECH",
+    automationDescription:
+      "AI agents, payment automation and agentic AI tools for businesses. Monarka TECH, El Paso, TX.",
   },
   common: {
     navLabel: "Main navigation",
@@ -33,6 +39,8 @@ export const en: Dictionary = {
     about: "About",
     faq: "FAQ",
     designs: "Our designs",
+    apps: "Apps",
+    automation: "Automation",
   },
   home: {
     capabilities: {
@@ -300,6 +308,123 @@ export const en: Dictionary = {
       a: "Fill out the project request form on this page, or email us directly at hello@monarka.tech.",
     },
   ],
+  appsPage: {
+    hero: {
+      eyebrow: "Apps and platforms",
+      title: "Apps people use. Platforms that grow with you.",
+      body: "We design, build and launch complete digital products — from the first idea to the app store.",
+    },
+    cata: {
+      eyebrow: "Built by Monarka TECH",
+      badge: "Live app",
+      subtitle: "Social food journal",
+      title: "A real app, made in-house.",
+      body: "CATA is our own product: a journal to log every dish, rate flavors, plan trips and discover restaurants. Designed and built end to end by Monarka.",
+      features: [
+        "Flavor profile and radar",
+        "Reviews with ingredients and aromas",
+        "Maps and trip routes",
+        "Shared lists and recipes",
+      ],
+      cta: "Discover CATA",
+    },
+    web: {
+      eyebrow: "Web platforms",
+      title: "Sites you can explore.",
+      body: "Two examples of what we build: a restaurant with an animated menu and an interactive 3D portfolio. Hover to scroll through them or click to explore full size.",
+    },
+    process: {
+      eyebrow: "How we build",
+      title: "From idea to launch.",
+      steps: [
+        ["Discovery", "We learn your business, your users and what the app needs to solve."],
+        ["Design", "Prototypes and a visual identity that feels like yours from the first tap."],
+        ["Development", "Modern, scalable code for iOS, Android and the web."],
+        ["Launch and support", "We publish to the stores and keep improving with you."],
+      ] as [string, string][],
+    },
+    start: {
+      eyebrow: "Start your project",
+      title: "Have an app idea?",
+      body: "Tell us what you want to build and we will get back to you with a clear plan.",
+    },
+  },
+  automationPage: {
+    hero: {
+      eyebrow: "AI automation",
+      title: "Your business, working 24/7.",
+      body: "We build AI agents, payment automation and smart tools that take care of repetitive work so your team can focus on growing.",
+    },
+    services: {
+      eyebrow: "What we build",
+      title: "Three ways to automate.",
+      items: [
+        {
+          num: "01",
+          title: "AI agents for businesses",
+          description: "Custom assistants that serve customers, answer questions, book appointments and follow up over WhatsApp or your website, any time of day.",
+          points: ["24/7 customer service", "Scheduling and reminders", "Trained on your business information"],
+        },
+        {
+          num: "02",
+          title: "Payment automation",
+          description: "Charges, invoices, reminders and confirmations connected to the platforms you already use, with no manual data entry.",
+          points: ["Stripe, Square and PayPal integration", "Automatic payment links and invoices", "Reminders for pending payments"],
+        },
+        {
+          num: "03",
+          title: "Agentic AI tools",
+          description: "Workflows that read information, make decisions and carry out tasks for you: reports, lead follow-up, inventory and more.",
+          points: ["Automatic reports", "Lead follow-up", "Connections between your apps"],
+        },
+      ],
+    },
+    demo: {
+      eyebrow: "See it in action",
+      title: "An agent that never sleeps.",
+      body: "A conversation with a WhatsApp agent: it answers, books and collects the deposit without anyone on your team stepping in.",
+      note: "Sample conversation",
+      agentName: "Assistant · Your business",
+      status: "online",
+      payLabel: "Reservation deposit",
+      payAmount: "$20.00",
+      payCta: "Pay",
+      messages: [
+        { from: "user", text: "Hi, do you have a table Saturday at 7pm? There are 4 of us." },
+        { from: "agent", text: "Hi! Yes, we have a table for 4 on Saturday at 7:00 pm. What name should I put it under?" },
+        { from: "user", text: "Laura." },
+        { from: "agent", text: "Perfect, Laura. To confirm, here is the deposit link 👇" },
+        { from: "pay", text: "" },
+        { from: "user", text: "Done, paid 👍" },
+        { from: "agent", text: "Got it! ✅ Your reservation is confirmed. I will send you a reminder Saturday at 5 pm." },
+      ] as { from: "user" | "agent" | "pay"; text: string }[],
+    },
+    useCases: {
+      eyebrow: "Use cases",
+      title: "Works for your industry.",
+      items: [
+        ["Restaurants", "Reservations, orders and deposits over WhatsApp."],
+        ["Clinics and offices", "Appointments, reminders and automatic confirmations."],
+        ["Shops", "Product questions, payments and order tracking."],
+        ["Events", "Quotes, bookings and payment reminders."],
+      ] as [string, string][],
+    },
+    process: {
+      eyebrow: "How it works",
+      title: "Automation without the hassle.",
+      steps: [
+        ["Assessment", "We review your processes and find what can be automated."],
+        ["Design", "We define the flow, the rules and how your agent talks."],
+        ["Implementation", "We connect your tools and test with real cases."],
+        ["Continuous improvement", "We measure results and tune the agent over time."],
+      ] as [string, string][],
+    },
+    start: {
+      eyebrow: "Start your project",
+      title: "What do you want to automate?",
+      body: "Answer a few questions and we will propose the best solution for your business.",
+    },
+  },
   contactForm: {
     name: "Name",
     namePlaceholder: "Your name",

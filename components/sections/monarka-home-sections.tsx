@@ -43,7 +43,14 @@ export function MonarkaHomeSections({ locale }: { locale: Locale }) {
           </RevealOnScroll>
         </div>
         <div className="relative z-[1]">
-          <CapabilitiesCarousel t={dict.capabilities} studioHref={localePath(locale, "/studio")} />
+          <CapabilitiesCarousel
+            t={dict.capabilities}
+            hrefs={{
+              apps: localePath(locale, "/apps"),
+              automation: localePath(locale, "/automatizacion"),
+              studio: localePath(locale, "/studio"),
+            }}
+          />
         </div>
       </section>
 

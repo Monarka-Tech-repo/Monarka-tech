@@ -266,9 +266,9 @@ export function DemoGallery({ t, viewAll }: { t: Copy; viewAll?: { href: string;
   // One demo: a single large, centred laptop. Otherwise a wide first laptop only
   // when it fills the 3-column grid evenly (5, 8…).
   const single = items.length === 1;
-  const featureFirst = items.length % 3 === 2;
-  // Four laptops sit better as a 2×2 grid than as 3 + 1.
-  const twoColumns = items.length === 4;
+  // Two or four laptops sit better side by side / as a 2×2 grid than in rows of three.
+  const twoColumns = items.length === 2 || items.length === 4;
+  const featureFirst = !twoColumns && items.length % 3 === 2;
 
   return (
     <div ref={rootRef}>

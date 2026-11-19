@@ -40,13 +40,16 @@ export function ServiceFunnelForm({
   locale,
   t,
   common,
+  initialArea,
 }: {
   locale: Locale;
   t: Dictionary["funnel"];
   common: Dictionary["common"];
+  /** Service pages open the form already on their own area's questions. */
+  initialArea?: FunnelArea;
 }) {
-  const [step, setStep] = useState<0 | 1 | 2>(0);
-  const [area, setArea] = useState<FunnelArea | null>(null);
+  const [step, setStep] = useState<0 | 1 | 2>(initialArea ? 1 : 0);
+  const [area, setArea] = useState<FunnelArea | null>(initialArea ?? null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

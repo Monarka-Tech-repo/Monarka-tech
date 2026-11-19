@@ -197,6 +197,14 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 
 Añadir entradas nuevas arriba de las anteriores.
 
+### 2026-11-19 — Claude
+
+- Nuevas páginas `/apps` y `/automatizacion` (+ `/en/...`), copy en `appsPage` / `automationPage` de `lib/i18n/{es,en}.ts`. Las tarjetas 02 y 03 del carrusel de capacidades ahora enlazan a ellas (`hrefs` reemplaza a `studioHref`). Ambas rutas en el sitemap.
+- `/apps`: CATA en el carrusel 3D de iPhones como "Creado por Monarka TECH" + demos web Fornello y Portafolio (lista en `FEATURED_SITES`). `DemoGallery` con 2 demos ahora usa 2 columnas.
+- `/automatizacion`: agentes de IA, automatización de pagos ("integración", no "procesamiento") e IA agéntica; demo animada de WhatsApp (`agent-chat-demo.tsx`, conversación de ejemplo, respeta reduced-motion).
+- Nuevos compartidos: `components/layout/site-footer.tsx` (solo usado por las páginas nuevas; home/studio siguen con su footer propio) y `process-steps.tsx`. `ServiceFunnelForm` acepta `initialArea`.
+- Pendiente idea de Rubén: página de renta de hologramas (holofans) para bodas/eventos — estructura acordada, sin construir.
+
 ### 2026-11-05 — Claude
 
 - Nuevos demos del builder publicados (revisados: imágenes Unsplash, CDNs con versión fija, formularios sin envío — el sandbox del iframe bloquea formularios): Fornello (restaurants), Lindehof (hospitality), Alex Moreno `portfolio/` y Elio Varenne `interactive-dev/` (portfolio). `hotel/` sigue fuera (fotos de Castello del Sole).
