@@ -19,6 +19,9 @@ export const en: Dictionary = {
     automationTitle: "AI Automation — Monarka TECH",
     automationDescription:
       "AI agents, payment automation and agentic AI tools for businesses. Monarka TECH, El Paso, TX.",
+    hardwareTitle: "Monarka Hardware",
+    hardwareDescription:
+      "Monarka Hardware: technology for rent for weddings, events and brands, starting with 3D holograms. Coming soon to El Paso, TX.",
   },
   common: {
     navLabel: "Main navigation",
@@ -41,6 +44,7 @@ export const en: Dictionary = {
     designs: "Our designs",
     apps: "Apps",
     automation: "Automation",
+    hardware: "Hardware",
   },
   home: {
     capabilities: {
@@ -220,6 +224,15 @@ export const en: Dictionary = {
     all: "All",
     countOne: "1 design",
     countMany: "{n} designs",
+    index: {
+      eyebrow: "Index",
+      title: "All designs",
+      hint: "Hover for a preview. Click to open it and explore.",
+      num: "No.",
+      project: "Project",
+      type: "Industry",
+      open: "Open",
+    },
     categories: [
       { id: "hospitality", title: "Hospitality", description: "Hotels, boutique apartments and stays with booking, galleries and reviews." },
       { id: "business", title: "Business", description: "Software, startups and service companies with pricing, product demos and contact forms." },
@@ -424,6 +437,13 @@ export const en: Dictionary = {
       title: "What do you want to automate?",
       body: "Answer a few questions and we will propose the best solution for your business.",
     },
+  },
+  hardwarePage: {
+    eyebrow: "Monarka Hardware",
+    badge: "Coming soon",
+    title: "Technology you can see and feel.",
+    body: "Equipment for rent for weddings, events and brands, starting with 3D holograms. We are putting this section together.",
+    cta: "Get in touch",
   },
   contactForm: {
     name: "Name",

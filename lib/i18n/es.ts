@@ -19,6 +19,9 @@ export const es = {
     automationTitle: "Automatización con IA — Monarka TECH",
     automationDescription:
       "Agentes de IA, automatización de pagos y herramientas de IA agéntica para empresas. Monarka TECH, El Paso, TX.",
+    hardwareTitle: "Monarka Hardware",
+    hardwareDescription:
+      "Monarka Hardware: tecnología en renta para bodas, eventos y marcas, empezando con hologramas 3D. Muy pronto, en El Paso, TX.",
   },
   common: {
     navLabel: "Navegación principal",
@@ -41,6 +44,7 @@ export const es = {
     designs: "Nuestros diseños",
     apps: "Apps",
     automation: "Automatización",
+    hardware: "Hardware",
   },
   home: {
     capabilities: {
@@ -220,6 +224,15 @@ export const es = {
     all: "Todas",
     countOne: "1 diseño",
     countMany: "{n} diseños",
+    index: {
+      eyebrow: "Índice",
+      title: "Todos los diseños",
+      hint: "Pasa el cursor para ver la vista previa. Haz clic para abrirlo y recorrerlo.",
+      num: "No.",
+      project: "Proyecto",
+      type: "Industria",
+      open: "Abrir",
+    },
     categories: [
       { id: "hospitality", title: "Hotelería", description: "Hoteles, apartamentos boutique y hospedajes con reservas, galerías y reseñas." },
       { id: "business", title: "Empresa", description: "Software, startups y empresas de servicios con precios, demos de producto y formularios de contacto." },
@@ -424,6 +437,13 @@ export const es = {
       title: "¿Qué quieres automatizar?",
       body: "Responde unas preguntas y te proponemos la mejor solución para tu negocio.",
     },
+  },
+  hardwarePage: {
+    eyebrow: "Monarka Hardware",
+    badge: "Próximamente",
+    title: "Tecnología que se ve y se siente.",
+    body: "Equipos en renta para bodas, eventos y marcas, empezando con hologramas 3D. Estamos preparando esta sección.",
+    cta: "Quiero información",
   },
   contactForm: {
     name: "Nombre",

@@ -26,6 +26,7 @@ export function MonarkaAppsSections({ locale }: { locale: Locale }) {
   const navLinksRight = [
     { label: dict.nav.studio, href: localePath(locale, "/studio") },
     { label: dict.nav.designs, href: localePath(locale, "/disenos") },
+    { label: dict.nav.hardware, href: localePath(locale, "/hardware") },
   ];
 
   const demos = {

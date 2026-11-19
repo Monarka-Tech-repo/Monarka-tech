@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import type { Dictionary } from "@/lib/i18n";
 import { DemoCard, useDemoSites, Viewer, type DemoCopy, type DemoItem } from "@/components/sections/demo-gallery";
+import { DesignsIndex } from "@/components/sections/designs-index";
 
 type Copy = Dictionary["designs"];
 type Category = Copy["categories"][number];
@@ -42,9 +43,12 @@ export function DesignsCatalog({ t, demos, contactHref }: { t: Copy; demos: Demo
   const empty = t.categories.filter((c) => byType(c.id).length === 0);
   // Viewer arrows move through every demo on the page, in order.
   const viewerItems: DemoItem[] = visible.flatMap((c) => byType(c.id));
+  const industryOf = (item: DemoItem) => t.categories.find((c) => c.id === item.type)?.title ?? item.category;
 
   return (
     <div ref={rootRef} className="scroll-mt-24">
+      <DesignsIndex t={t.index} items={viewerItems} sites={sites} industryOf={industryOf} onOpen={setOpen} />
+
       <div className="mx-auto max-w-[1600px]">
         {visible.map((category, ci) => {
           const list = byType(category.id);

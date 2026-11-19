@@ -197,6 +197,12 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 
 Añadir entradas nuevas arriba de las anteriores.
 
+### 2026-11-19 — Claude (2)
+
+- /disenos: índice centrado arriba del catálogo (`designs-index.tsx`, copy en `designs.index`), estilo del "Demo Index" del builder: filas numeradas, hover atenúa el resto y muestra vista previa en vivo flotante; clic abre el visor.
+- Nueva página `/hardware` (+ `/en/hardware`) como placeholder "Próximamente" (`monarka-hardware-sections.tsx`, copy en `hardwarePage`). Enlace "Hardware" agregado al menú de todas las páginas. Fuera del sitemap hasta que tenga contenido. Rubén la construye el 2026-11-20 (renta de hologramas/holofans para bodas, eventos y marcas).
+- `out/` quedó bloqueado por Windows (EPERM) — el build compila y genera las 20 páginas, solo falla al escribir `out/`. Cerrar lo que lo tenga abierto o reiniciar VS Code.
+
 ### 2026-11-19 — Claude
 
 - Nuevas páginas `/apps` y `/automatizacion` (+ `/en/...`), copy en `appsPage` / `automationPage` de `lib/i18n/{es,en}.ts`. Las tarjetas 02 y 03 del carrusel de capacidades ahora enlazan a ellas (`hrefs` reemplaza a `studioHref`). Ambas rutas en el sitemap.
