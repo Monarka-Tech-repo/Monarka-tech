@@ -9,7 +9,7 @@ export const en: Dictionary = {
       "Monarka TECH is a software company based in El Paso, TX. Makers of CATA — the social food journal for people who live to eat.",
     studioTitle: "Monarka Studio — 3D Media and Sound",
     studioDescription:
-      "Monarka Studio: spatial audio and sound design for ads, plus immersive 3D experiences in development with Unity.",
+      "Monarka Studio: 3D characters and animation, spatial audio and sound design for ads.",
     designsTitle: "Our designs",
     designsDescription:
       "Monarka TECH web designs by industry: hospitality, business, interior design, restaurants, shops and more. Real demos you can explore.",
@@ -87,7 +87,7 @@ export const en: Dictionary = {
     hero: {
       eyebrow: "Monarka Studio · 3D Media + Sound",
       title: "Sound and 3D worlds, built with intention.",
-      body: "Monarka's branch for sensory experiences — spatial audio for ads today, with the groundwork for immersive 3D experiences on the way.",
+      body: "Monarka's branch for sensory experiences: 3D characters and animation, and spatial audio for ads.",
     },
     available: {
       eyebrow: "Available today",
@@ -104,6 +104,33 @@ export const en: Dictionary = {
           title: "Brand sound design",
           description:
             "Custom jingles, soundscapes and audio identities that reinforce your brand at every touchpoint.",
+        },
+      ],
+    },
+    renders: {
+      eyebrow: "3D renders · NOVA characters",
+      title: "Characters that look, breathe and react.",
+      body: "Animations made in Blender by Monarka Studio: statues with a gaze of their own, blinks, a neck with weight and light effects that respond to the motion.",
+      play: "Play",
+      pause: "Pause",
+      items: [
+        {
+          slug: "nova-seraph",
+          title: "Seraph",
+          material: "Marble · Wings and halo",
+          motion: "A winged bust that scans the scene and fires a laser show from its eyes.",
+        },
+        {
+          slug: "nova-bronze-eye-hall",
+          title: "Bronze angel",
+          material: "Bronze · Hall of eyes",
+          motion: "A 20-second living world: the angel wakes among hundreds of eyes and floods the hall with light.",
+        },
+        {
+          slug: "nova-glitch-marble",
+          title: "Glitch marble",
+          material: "Marble · Glitch skin",
+          motion: "A confused performance: the eyes lead the neck, it blinks, and a magenta and cyan glitch travels with every turn.",
         },
       ],
     },
@@ -210,13 +237,6 @@ export const en: Dictionary = {
       cta: "I want my website",
       screenHint: "Hover to scroll through it · Click to explore it",
     },
-    building: {
-      eyebrow: "In progress",
-      title: "Learning Unity to bring sound into complete worlds.",
-      lead: "We're building immersive 3D experiences in Unity — the next chapter of Monarka Studio.",
-      body: "It's a work in progress, and we're documenting it as we go. If you have a project that could use spatial audio today, or you want to be among the first to try what's coming in 3D, get in touch.",
-      cta: "Let's talk about your project",
-    },
     footer: {
       eyebrow: "Have a project in mind?",
       title: "Let's make it sound.",
@@ -285,7 +305,7 @@ export const en: Dictionary = {
     },
     studio: {
       title: "Monarka 3D Studio",
-      description: "3D media and sound — spatial audio for ads, with immersive experiences on the way.",
+      description: "3D media and sound: animated characters and spatial audio for ads.",
     },
   },
   cataShowcase: {

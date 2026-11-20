@@ -9,7 +9,7 @@ export const es = {
       "Monarka TECH es una empresa de software de El Paso, TX. Creadores de CATA — el diario gastronómico social para quienes viven para comer.",
     studioTitle: "Monarka Studio — Medios 3D y Sonido",
     studioDescription:
-      "Monarka Studio: audio espacial y diseño sonoro para anuncios, y el desarrollo en curso de experiencias inmersivas en 3D con Unity.",
+      "Monarka Studio: personajes y animación 3D, audio espacial y diseño sonoro para anuncios.",
     designsTitle: "Nuestros diseños",
     designsDescription:
       "Diseños web de Monarka TECH por industria: hotelería, empresas, diseño de interiores, restaurantes, tiendas y más. Demos reales que puedes recorrer.",
@@ -87,7 +87,7 @@ export const es = {
     hero: {
       eyebrow: "Monarka Studio · Medios 3D + Sonido",
       title: "Sonido y mundos en 3D, construidos con intención.",
-      body: "La rama de Monarka dedicada a experiencias sensoriales — audio espacial para anuncios hoy, y las bases de experiencias inmersivas en 3D en camino.",
+      body: "La rama de Monarka dedicada a experiencias sensoriales: personajes y animación 3D, y audio espacial para anuncios.",
     },
     available: {
       eyebrow: "Disponible hoy",
@@ -104,6 +104,33 @@ export const es = {
           title: "Diseño sonoro de marca",
           description:
             "Jingles, paisajes sonoros e identidad auditiva hechos a la medida para reforzar tu marca en cada punto de contacto.",
+        },
+      ],
+    },
+    renders: {
+      eyebrow: "Renders 3D · Personajes NOVA",
+      title: "Personajes que miran, respiran y reaccionan.",
+      body: "Animaciones hechas en Blender por Monarka Studio: estatuas con mirada propia, parpadeos, cuello con inercia y efectos de luz que responden al movimiento.",
+      play: "Reproducir",
+      pause: "Pausar",
+      items: [
+        {
+          slug: "nova-seraph",
+          title: "Serafín",
+          material: "Mármol · Alas y halo",
+          motion: "Busto alado que recorre la escena con la mirada y lanza un espectáculo de láseres desde los ojos.",
+        },
+        {
+          slug: "nova-bronze-eye-hall",
+          title: "Ángel de bronce",
+          material: "Bronce · Sala de los ojos",
+          motion: "Un mundo vivo de 20 segundos: el ángel despierta entre cientos de ojos y llena la sala de luz.",
+        },
+        {
+          slug: "nova-glitch-marble",
+          title: "Mármol glitch",
+          material: "Mármol · Piel glitch",
+          motion: "Actuación de confusión: mirada que se adelanta al cuello, parpadeos y un glitch magenta y cian que viaja con cada giro.",
         },
       ],
     },
@@ -210,13 +237,6 @@ export const es = {
       cta: "Quiero mi sitio web",
       screenHint: "Pasa el cursor para recorrerlo · Haz clic para explorarlo",
     },
-    building: {
-      eyebrow: "En construcción",
-      title: "Aprendiendo Unity para llevar el sonido a mundos completos.",
-      lead: "Estamos desarrollando experiencias 3D e inmersivas en Unity — el siguiente capítulo de Monarka Studio.",
-      body: "Es un trabajo en progreso y lo estamos documentando en el camino. Si tienes un proyecto que podría beneficiarse de audio espacial hoy, o quieres ser de los primeros en probar lo que viene en 3D, escríbenos.",
-      cta: "Hablemos de tu proyecto",
-    },
     footer: {
       eyebrow: "¿Tienes un proyecto en mente?",
       title: "Hagámoslo sonar.",
@@ -285,7 +305,7 @@ export const es = {
     },
     studio: {
       title: "Monarka 3D Studio",
-      description: "Medios 3D y sonido — audio espacial para anuncios, y experiencias inmersivas en camino.",
+      description: "Medios 3D y sonido: personajes animados y audio espacial para anuncios.",
     },
   },
   cataShowcase: {

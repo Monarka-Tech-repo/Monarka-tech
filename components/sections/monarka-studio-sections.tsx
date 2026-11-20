@@ -1,13 +1,12 @@
 import { RevealOnScroll } from "@/components/effects/reveal-on-scroll";
-import { ArrowLink } from "@/components/effects/arrow-link";
 import { ContactForm } from "@/components/sections/contact-form";
 import { StripeWarp } from "@/components/effects/stripe-warp";
-import { HalftoneTexture } from "@/components/effects/halftone-texture";
 import { DreamBigBurst } from "@/components/effects/dream-big-burst";
 import { SiteNav } from "@/components/layout/site-nav";
 import { WebDesignShowcase } from "@/components/sections/web-design-showcase";
 import { ImmersiveAudioPlayer } from "@/components/sections/immersive-audio-player";
 import { DemoGallery } from "@/components/sections/demo-gallery";
+import { RenderShowcase } from "@/components/sections/render-showcase";
 import { ArrowUpRight } from "lucide-react";
 import { getDictionary, localePath, type Locale } from "@/lib/i18n";
 
@@ -62,6 +61,15 @@ export function MonarkaStudioSections({ locale }: { locale: Locale }) {
         </div>
       </section>
 
+      <section id="renders" className="relative overflow-hidden bg-[#06070b] px-5 pt-24 text-white md:px-10 md:pt-36">
+        <div aria-hidden className="absolute -right-40 top-0 size-[36rem] rounded-full bg-[#ec4899]/10 blur-[140px]" />
+        <div className="relative mx-auto max-w-[1600px]">
+          <RevealOnScroll>
+            <RenderShowcase t={t.renders} />
+          </RevealOnScroll>
+        </div>
+      </section>
+
       <section id="listen" className="relative overflow-hidden bg-[#06070b] px-5 py-24 text-white md:px-10 md:py-36">
         <div aria-hidden className="absolute -left-40 top-1/3 size-[40rem] rounded-full bg-[#3d8bff]/15 blur-[140px]" />
         <div aria-hidden className="absolute -right-40 bottom-0 size-[34rem] rounded-full bg-[#ec4899]/10 blur-[140px]" />
@@ -93,27 +101,6 @@ export function MonarkaStudioSections({ locale }: { locale: Locale }) {
               </RevealOnScroll>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="relative overflow-hidden bg-[#3d8bff] px-5 py-24 text-black md:px-10 md:py-36">
-        <HalftoneTexture />
-        <div className="relative z-[1] mx-auto grid max-w-[1600px] gap-16 lg:grid-cols-[1.15fr_.85fr]">
-          <RevealOnScroll>
-            <p className="mb-8 text-xs font-bold uppercase tracking-[0.2em]">{t.building.eyebrow}</p>
-            <h2 className="text-[clamp(2.8rem,6vw,6rem)] font-medium leading-[0.9] tracking-[-0.065em]">
-              {t.building.title}
-            </h2>
-          </RevealOnScroll>
-          <RevealOnScroll delay={0.15} className="flex flex-col justify-end">
-            <p className="mb-10 max-w-lg text-xl leading-8 md:text-2xl md:leading-9">
-              {t.building.lead}
-            </p>
-            <p className="mb-10 max-w-lg text-base leading-7 text-black/65">
-              {t.building.body}
-            </p>
-            <ArrowLink href="mailto:hello@monarka.tech">{t.building.cta}</ArrowLink>
-          </RevealOnScroll>
         </div>
       </section>
 

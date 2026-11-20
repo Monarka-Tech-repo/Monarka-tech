@@ -195,6 +195,24 @@ Añadir handoffs activos arriba de los anteriores usando este formato:
 
 ## 10. Bitácora
 
+### 2026-11-20 — Claude (2) — /studio: fuera el texto de "Aprendiendo Unity"
+
+- A pedido de Rubén se quitó la sección azul "En construcción · Aprendiendo Unity…" de `monarka-studio-sections.tsx` (y los imports `ArrowLink`/`HalftoneTexture` que solo usaba ella) y el bloque `studio.building` de `lib/i18n/{es,en}.ts`.
+- Reescritos los textos que hablaban de 3D/Unity "en camino": `meta.studioDescription`, `studio.hero.body` y la tarjeta `studio` (Monarka 3D Studio) del home — ahora presentan personajes/animación 3D + audio espacial como trabajo actual.
+- Verificación: grep sin coincidencias de Unity/en camino/on the way/en construcción/in progress; Problems de VS Code sin errores. Sin build (no hay Node en la máquina). Sin commit ni push.
+
+### 2026-11-20 — Claude — Renders 3D de NOVA en /studio
+
+- Tarea: Rubén pidió poner ~3 de los mejores renders de personajes/movimientos de `Monarka Blender/renders` en la página de Monarka 3D Studio.
+- Elegidos (revisando previews y frames): `show_C3_seraph` (busto alado, láseres, 8 s, 720²), `world20_E4_bronze` (ángel de bronce en la sala de ojos, 20 s, 720²) y `nova_D_confused_glitch_20s` (mármol glitch actuando confusión, 20 s, 480²). Copiados como `public/assets/renders/nova-{seraph,bronze-eye-hall,glitch-marble}.mp4` (~7.4 MB total) + posters `.jpg` sacados del mismo video con Blender (bronze en el frame 170, donde salen los láseres).
+- Archivos: nuevo `components/sections/render-showcase.tsx` (cliente: video muted/loop, `preload="none"`, solo se reproduce en pantalla con IntersectionObserver, sin autoplay con reduced-motion, botón play/pausa accesible); `monarka-studio-sections.tsx` (sección `#renders` oscura antes de `#listen`); copy `studio.renders` en `lib/i18n/es.ts` y `en.ts`.
+- Verificación: posters revisados visualmente; Problems de VS Code sin errores. **No corrí build ni lint** — Node no está instalado/en PATH en esta máquina. No desplegado ni commiteado.
+- Pendiente: `npm run build` + revisar `/studio` y `/en/studio` en navegador (móvil incluido); si Rubén prefiere otros renders (p. ej. `world20_E1_seraph` en el mar lunar o los Greeks cuando terminen), solo cambiar el mp4/jpg y `studio.renders.items`.
+
+### 2026-11-20 — Codex
+
+- Revisé el tablero y el historial local para el traspaso. El último commit visible, `033bd75`, incorpora el índice de demos y publica las demos como páginas. Sin cambios en archivos rastreados antes de esta entrada. No ejecuté build ni despliegue.
+
 Añadir entradas nuevas arriba de las anteriores.
 
 ### 2026-11-19 — Claude (3)
